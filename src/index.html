@@ -1,0 +1,96 @@
+<body style=margin:0>
+<canvas id=a>
+<script>
+// initialize 2D canvas (c)
+// initialize game state (s)
+// initialize keys states (u,r,d,l for directions, k for all the keyboard)
+c=a.getContext`2d`,k=[u=r=d=l=s=0]
+
+// update u,l,d,r globals when an arrow key/wasd/zqsd is pressed or released
+  // TODO: Seems a bit buggy and super optimized, Ctrl and other keys are detected as directions.
+// update k[keyCode] if any other key is pressed/released
+onkeydown=onkeyup=e=>k[e.which]=self['lld*rlurdu'[e.which%32%17]]=e.type[5]
+
+
+/// ------ Custom display framework below
+
+layers = [
+    { visible: true, sprites: []}, // Terrain
+    { visible: true, sprites: []}, // Mobs
+]
+
+/**
+ * i = Sprite index, in the order we load them
+ * l = Layer number, see above
+ */
+function addSprite(i, l, x, y) {
+    var s = {i, x, y};
+    layers[l].sprites.push(s);
+    return s;
+}
+
+function draw () {
+    layers.forEach(l => { if (l.visible) {
+        l.sprites.forEach( s => {
+            // TODO: Use the renderer instead :D
+            c.font = '20px monospace';
+            c.fillText(s.i, s.x, s.y);
+        })
+    }});
+}
+
+/// ------ End of custom display framework
+
+function update () {
+    if (u) playerSprite.y--;
+    if (d) playerSprite.y++;
+    if (l) playerSprite.x--;
+    if (r) playerSprite.x++;
+}
+
+// start game loop (60fps)
+// the canvas is cleared and adjusted to fullscreen at each frame
+// draw each screen in the switch's cases
+// in each screen, you can make key presses update the game state
+// ex: "press enter to open the menu" => `if(k[13])s=1;`
+setInterval(e=>{
+    a.width=innerWidth,a.height=innerHeight; // @slash We probably don't want this. unles this also clears the canvas???
+
+    switch(s){
+    case 0: // ex: draw title screen
+        update();
+        draw();
+    case 1: // ex: draw menu screen
+    case 2: // ex: draw game board
+    case 3: // ex: draw game over screen
+    }
+},16)
+
+// handle click/touch events
+// globals x and y contain the pointer's coordinates
+// in each screen, you can make a click update the game state
+// ex: "game over if we click on the bottom half of the screen" => `if(y>h/2)s=3;`
+// @slash maybe some time we'll need this for a virtual keyboard, not sure
+onclick=e=>{
+    x=e.pageX;y=e.pageY;
+    switch(s){
+    case 0: // react to clicks on screen 0
+    case 1: // react to clicks on screen 1
+    case 2: // react to clicks on screen 2
+    case 3: // react to clicks on screen 3
+    }
+}
+
+// @slash the actual game is below
+
+var tilesize = 20;
+playerSprite = addSprite(2, 1, 5.5 * tilesize, 5.5 * tilesize);
+
+for (var x = 0; x < 20; x++) {
+    for (var y = 0; y < 20; y++) {
+        var floorIndex = x == 0 || y == 0 || x == 19 || y == 19 ? 0 : 1;
+        addSprite(floorIndex, 0, x * tilesize, y * tilesize);
+    }
+}
+
+</script>
