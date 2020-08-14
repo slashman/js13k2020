@@ -1,5 +1,7 @@
+<head><meta charset="UTF-8"></head>
 <body style=margin:0>
 <canvas id=a>
+<script src = "tiny8Sprite.js"></script>
 <script>
 // initialize 2D canvas (c)
 // initialize game state (s)
@@ -22,9 +24,10 @@ layers = [
 /**
  * i = Sprite index, in the order we load them
  * l = Layer number, see above
+ * pi = Palette index
  */
-function addSprite(i, l, x, y) {
-    var s = {i, x, y};
+function addSprite(i, l, x, y, pi) {
+    var s = {i, x, y, pi};
     layers[l].sprites.push(s);
     return s;
 }
@@ -32,9 +35,7 @@ function addSprite(i, l, x, y) {
 function draw () {
     layers.forEach(l => { if (l.visible) {
         l.sprites.forEach( s => {
-            // TODO: Use the renderer instead :D
-            c.font = '20px monospace';
-            c.fillText(s.i, s.x, s.y);
+            drawSprite(s.i, s.x, s.y, s.pi)
         })
     }});
 }
@@ -64,7 +65,7 @@ setInterval(e=>{
     case 2: // ex: draw game board
     case 3: // ex: draw game over screen
     }
-},16)
+},41)
 
 // handle click/touch events
 // globals x and y contain the pointer's coordinates
@@ -83,13 +84,13 @@ onclick=e=>{
 
 // @slash the actual game is below
 
-var tilesize = 20;
-playerSprite = addSprite(2, 1, 5.5 * tilesize, 5.5 * tilesize);
+var tilesize = 16;
+playerSprite = addSprite(1, 1, 5.5 * tilesize, 5.5 * tilesize, 0);
 
 for (var x = 0; x < 20; x++) {
-    for (var y = 0; y < 20; y++) {
-        var floorIndex = x == 0 || y == 0 || x == 19 || y == 19 ? 0 : 1;
-        addSprite(floorIndex, 0, x * tilesize, y * tilesize);
+    for (var y = 0; y < 10; y++) {
+        var floorIndex = x == 0 || y == 0 || x == 19 || y == 9 ? 1 : 2;
+        addSprite(0, 0, x * tilesize, y * tilesize, floorIndex);
     }
 }
 
