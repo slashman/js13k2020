@@ -2,8 +2,8 @@
 // src/spriteLoader.js
 // read and process the sprites to generate images
 var CHAR_OFFSET = 200;
-var scale = 1;
-const pi = 0;
+var scale = 3;
+const pi = 2;
 var palette = palettes[pi];
 
 
@@ -29,15 +29,15 @@ function charactersToBitsString(string) {
   return allBits;
 }
 
-var sprites = rawSprites.map(rs => toSpriteData(charactersToBitsString(rs)));
+//var sprites = rawSprites.map(rs => toSpriteData(charactersToBitsString(rs)));
 
 function drawSprite(sprite) {
   graphics.save();
   graphics.translate(0, 0);
   for (var j = 0; j < 16; j++) {
     for (var i = 0; i < 16; i++) {
-      var index = sprite.charAt(j*16+i);
-      if (pi==0 && index==0) continue;
+      var index = sprite[j*16+i];
+      if (index==1) continue;
       var color = palette[parseInt(index, 10)];
       graphics.fillStyle = color;
       graphics.fillRect(i*scale, j*scale, scale, scale);
@@ -46,7 +46,7 @@ function drawSprite(sprite) {
   graphics.restore();
 }
 
-drawSprite(sprites[1])
+drawSprite(sprites[0])
 
 var data = graphics.getImageData(0, 0, 16, 16);
 var dataURL = c.toDataURL('image/png');

@@ -32,6 +32,7 @@ cat lib/keyboardController.js
 #cd ..;
 
 # game engine declaration
+cat src/setup/rawSprites.js
 cat src/setup/generatedSprites.js
 cat src/setup/spriteLoader.js
 cat src/engine/gameObject.js

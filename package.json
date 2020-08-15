@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "concat": "./tooling/concat.sh > dist/build.js && cp dist/build.js target/b.js",
-    "clean": "rm target.zip; rm -rf dist/; rm -rf target/; mkdir -p dist target",
+    "clean": "rm -rf dist/; rm -rf target/; mkdir -p dist target",
     "compileglsl": "./tooling/compileglsfiles.sh src/shaders dist",
     "minify": "npx google-closure-compiler --compilation_level=ADVANCED_OPTIMIZATIONS --js=dist/build.js --js_output_file=dist/build.min.js",
     "gen": "cp src/index.html target/index.html && cp dist/build.min.js target/b.js",
@@ -20,7 +20,8 @@
     "build-sprites": "node ./spriteConverter.js",
     "concatlite": "./tooling/concat.sh > dist/build.js && cp dist/build.js target/b.js",
     "watchlite": "nodemon -e js,sh,html --watch src --watch tooling --exec npm run concatlite",
-    "lite": "npm run watchlite & npm run liveserver"
+    "lite": "npm run watchlite & npm run liveserver",
+    "sprites": "node tooling/pngToTiny8.js > src/setup/rawSprites.js"
   },
   "repository": {
     "type": "git",

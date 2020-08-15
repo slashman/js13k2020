@@ -1,5 +1,5 @@
-var fs = require('fs'),
-  PNG = require('pngjs').PNG;
+var fs = require('fs');
+var PNG = require('pngjs').PNG;
 
 var colors = {};
 
@@ -23,18 +23,18 @@ function toBitsString(sprite) {
 
 function toBinary(bitString) {
   var totalBytes = bitString.length / 8;
-  var bytes = new Buffer(totalBytes);
+  var bytes = Buffer.alloc(totalBytes);
+  var intArray = [];
   for (var i = 0; i < totalBytes; i++) {
-    bytes[i] = parseInt(bitString.slice(i * 8, (i + 1) * 8), 2);
+    var value = parseInt(bitString.slice(i * 8, (i + 1) * 8), 2);
+    intArray.push(value)
+    bytes[i] = value;
   }
-  console.log(String(bytes))
-  fs.writeFile('output.bin', bytes, 'binary', (err) => {
-    if (err) return console.err(err)
-    console.log('file saved');
-  })
+  var latin1stringescaped = String.fromCharCode.apply(!1, new Uint8Array(intArray)).replace(/\\/g, "\\\\").replace(/`/g, "\\`").replace(/\r/g, "\\r");
+  process.stdout.write(`var binarySprites=\`${latin1stringescaped}\`;`)
 }
 
-fs.createReadStream('../resources/c.png')
+fs.createReadStream('resources/c.png')
   .pipe(
     new PNG({
       filterType: 4,
@@ -50,8 +50,6 @@ fs.createReadStream('../resources/c.png')
         spriteAsString += colors[color];
       }
     }
-    console.log('total colors')
-    console.log(colors)
     var bitsString = toBitsString(spriteAsString);
     toBinary(bitsString);
   });
