@@ -39,6 +39,7 @@
     "glslmin": "0.0.0",
     "google-closure-compiler": "^20200719.0.0",
     "live-server": "^1.2.1",
-    "nodemon": "^2.0.4"
+    "nodemon": "^2.0.4",
+    "pngjs": "^5.0.0"
   }
 }
