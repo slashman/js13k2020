@@ -46,7 +46,7 @@ function Scene (props) {
         var gameObject = t.children[i]
         // check that game object is in the visible viewport
         if(gameObject.x + 24 > -this.x && gameObject.x < -this.x + 320){
-          gameObject.update(dt);
+          gameObject.update(dt, time);
         }
       }
       t.updateData(time, dt);

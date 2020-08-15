@@ -36,6 +36,7 @@ cat src/setup/generatedSprites.js
 cat src/setup/spriteLoader.js
 cat src/engine/gameObject.js
 cat src/gameObjects/items.js
+cat src/gameObjects/test.js
 #cat src/fighter.js
 #cat src/font.js
 #cat src/tiles.js

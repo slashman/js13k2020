@@ -5,3 +5,5 @@ var H = 240;
 
 var c = document.getElementById('c');
 var g = document.getElementById('g');
+
+var graphics = c.getContext('2d');

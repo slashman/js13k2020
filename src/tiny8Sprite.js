@@ -1,5 +1,5 @@
 var CHAR_OFFSET = 200;
-var scale = 3;
+var scale = 1;
 var palettes = [
 [ // Mario
     "#FFFFFF",

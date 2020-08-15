@@ -7,7 +7,8 @@ function GameObject(props) {
     x: props[0],
     y: props[1],
     visible: true,
-    update: function(dt) {},
+    update: function(dt, time) {},
     draw: function() {}
   }
 }
+

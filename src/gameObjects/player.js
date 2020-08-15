@@ -7,3 +7,4 @@ var basePlayerStat = {
   damage: 0,
   defense: 0
 };
+
