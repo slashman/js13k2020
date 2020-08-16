@@ -3,12 +3,11 @@
 // initialize the game
 // setup game player, items and main scene
 
-var mainScene = Scene({});
+var mainScene = Scene();
 
-mainScene.create = function(){};
-for (var i = 0; i < 10*2; i++) {
-  for (var j = 0; j < 10*2; j++) {
-    var obj1 = TestObject([(16 * scale + 2) * i, (16 * scale + 2)*j]);
+for (var i = 0; i < 5*2; i++) {
+  for (var j = 0; j < 5*2; j++) {
+    var obj1 = TestObject([(SIXTEEN * scale + 2) * i, (SIXTEEN * scale + 2)*j, (i +10*j)%4]);
     mainScene.add(obj1);
   }
 }

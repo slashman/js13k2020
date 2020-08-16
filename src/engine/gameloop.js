@@ -2,8 +2,8 @@
 // src/gameLoop.js >>>
 
 var timeEnd = 0;
-function loop(time) {
-  if(DEBUG){
+var loop = time => {
+  if (DEBUG) {
     _fps_.begin();
     _processing_.begin();
     _memory_.begin();
@@ -20,7 +20,7 @@ function loop(time) {
 //  drawPostProcessing(~~(time));
   requestAnimationFrame(loop);
 
-  if(DEBUG){
+  if (DEBUG) {
     _fps_.end();
     _processing_.end();
     _memory_.end();

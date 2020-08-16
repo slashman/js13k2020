@@ -1,9 +1,7 @@
 
 // src/gameHud.js
 // HUD
-var hudScene = Scene({});
-
-hudScene.create = function() {};
+var hudScene = Scene();
 
 sceneManager.add(hudScene);
 

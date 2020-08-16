@@ -3,25 +3,22 @@
 
 var sceneManager = {
   scenes: [],
-  add: function(scene) {
-    scene.create();
-    this.scenes.push(scene);
+  add: scene => {
+    scene.init();
+    sceneManager.scenes.push(scene);
   },
-  update: function(time, dt) {
-    for (var i = 0; i < this.scenes.length; i++) {
-      this.scenes[i].update(time, dt);
+  update: (time, dt) => {
+    for (var i = 0; i < sceneManager.scenes.length; i++) {
+      sceneManager.scenes[i].update(time, dt);
     }
   },
-  draw: function() {
-    for (var i = 0; i < this.scenes.length; i++) {
-      this.scenes[i].predraw();
-      this.scenes[i].draw();
-    }
+  draw: _ => {
+    sceneManager.scenes.map( scene => scene.draw())
   }
 };
 
-function Scene (props) {
-  var t = {
+var Scene = () => {
+  var self = {
     x: 0,
     dx: 0,
     active: true,
@@ -29,67 +26,62 @@ function Scene (props) {
     following: undefined,
     limit: [],
     maxWidth: 320,
-    create: function(){},
-    add: function (gameObject) {
-      t.children.push(gameObject);
-    },
-    remove: function (gameObject) {
-      var index = t.children.indexOf(gameObject);
-      if(index!=-1){
-        t.children.splice(index, 1);
+    init: noop,
+    add: gameObject => self.children.push(gameObject),
+    remove: gameObject => {
+      var index = self.children.indexOf(gameObject);
+      if (index!=-1) {
+        self.children.splice(index, 1);
       }
     },
-    updateData: function (time, dt){},
-    update: function(time, dt) {
-      if(!t.active) return;
-      for (var i = 0; i < t.children.length; i++) {
-        var gameObject = t.children[i]
-        // check that game object is in the visible viewport
-        if(gameObject.x + 24 > -this.x && gameObject.x < -this.x + 320){
+    applyToChildren: fn => { self.children.forEach(fn) },
+    updateData: noop, // time, dt
+    update: (time, dt) => {
+      if (!self.active) return;
+      self.applyToChildren( gameObject => {
+        if (gameObject.x + 24 > -self.x && gameObject.x < -self.x + 320) {
           gameObject.update(dt, time);
         }
-      }
-      t.updateData(time, dt);
-
-      if (this.moving) {
-        this.moving = this.x>-this.targetX && this.x-320>-this.limit[1];
-        if (this.moving) this.x -= 1;
-      }else if(this.following) {
-        this.x = -(this.following.x-150);
-        this.x = ~~this.x;
-        if(this.x>-this.limit[0]) {
-          this.x = -this.limit[0];
-        }else if(this.x<-this.limit[1]+320){
-          this.x = -this.limit[1]+320;
+      })
+      self.updateData(time, dt);
+      
+      if (self.moving) {
+        self.moving = self.x > -self.targetX && self.x-320 > -self.limit[1];
+        if (self.moving) self.x -= 1;
+      } else if (self.following) {
+        self.x = -(self.following.x-150);
+        self.x = ~~self.x;
+        if (self.x > -self.limit[0]) {
+          self.x = -self.limit[0];
+        } else if (self.x <- self.limit[1]+320) {
+          self.x = -self.limit[1]+320;
         }
       }
     },
-    predraw: function(){},
-    draw: function() {
-      if(!t.active) return;
+    predraw: noop,
+    draw: _ => {
+      if(!self.active) return;
       graphics.save();
-      graphics.translate(this.x, 0);
-
-      for (var i = 0; i < t.children.length; i++) {
-        var gameObject = t.children[i]
-        if(gameObject.x + 24 > -this.x && gameObject.x < -this.x + 310 && gameObject.visible){
+      graphics.translate(self.x, 0);
+      
+      self.applyToChildren( gameObject => {
+        if (gameObject.x + 24 > -self.x && gameObject.x < -self.x + 310 && gameObject.visible) {
           gameObject.draw();
         }
-      }
-
+      })
       graphics.restore();
     },
-    moveToLimit: function(minLimit, maxLimit){
-      this.moving = true;
+    moveToLimit: (minLimit, maxLimit) => {
+      self.moving = true;
       // follows player
-      //this.targetX = player.x-150;
-      if (this.targetX<minLimit){
-        this.targetX = minLimit;
+      //self.targetX = player.x-150;
+      if (self.targetX < minLimit) {
+        self.targetX = minLimit;
       }
-      this.limit[0] = minLimit;
-      this.limit[1] = maxLimit;
+      self.limit[0] = minLimit;
+      self.limit[1] = maxLimit;
     }
-  };
-  return t;
+  }
+  return self;
 }
 
