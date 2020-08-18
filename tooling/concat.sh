@@ -51,6 +51,7 @@ cat src/gameObjects/player.js
 cat src/engine/canvasRenderer.js
 #cat src/webglRenderer.js
 #cat src/effects.js
+cat src/engine/paletteRenderer.js
 cat src/engine/scene.js
 
 # game mechanics
