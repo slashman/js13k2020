@@ -61,15 +61,12 @@ var Scene = () => {
     predraw: noop,
     draw: _ => {
       if(!self.active) return;
-      graphics.save();
-      graphics.translate(self.x, 0);
       
       self.applyToChildren( gameObject => {
         if (gameObject.x + 24 > -self.x && gameObject.x < -self.x + 310 && gameObject.visible) {
           gameObject.draw();
         }
       })
-      graphics.restore();
     },
     moveToLimit: (minLimit, maxLimit) => {
       self.moving = true;

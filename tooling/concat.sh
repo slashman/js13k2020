@@ -34,7 +34,6 @@ cat lib/keyboardController.js
 # game engine declaration
 cat src/setup/rawSprites.js
 cat src/setup/generatedSprites.js
-cat src/setup/spriteLoader.js
 cat src/engine/gameObject.js
 cat src/gameObjects/sprite.js
 cat src/gameObjects/items.js
@@ -51,6 +50,7 @@ cat src/gameObjects/player.js
 cat src/engine/canvasRenderer.js
 #cat src/webglRenderer.js
 #cat src/effects.js
+cat src/engine/paletteRenderer.js
 cat src/engine/scene.js
 
 # game mechanics

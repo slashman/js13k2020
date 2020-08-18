@@ -3,57 +3,6 @@
 // sprites generated with npm run build-sprites
 // all sprites declarations should be listed here.
 
-var palettes = [
-  [
-    '#305182',
-    '0',
-    '#4192c3',
-    '#71e392',
-    '#a2ffcb',
-    '#db4161',
-    '#ebebeb',
-    '#ebebeb'
-  ],
-  [
-    '#ebebeb',
-    '0',
-    '#a2ffcb',
-    '#4192c3',
-    '#db4161',
-    '#305182',
-    '#71e392',
-    '#ebebeb',
-  ],
-  [
-    '#4192c3',
-    '0',
-    '#305182',
-    '#ebebeb',
-    '#71e392',
-    '#a2ffcb',
-    '#db4161',
-    '#ebebeb'
-  ],
-[ // Mario
-  "#FFFFFF",
-  "#020202",
-  "#cf1614",
-  "#ebc09d",
-  "#5671e4",
-  "#dfd3d3",
-  "#fbf330",
-  "#8e5739"
-],
-[ // Wall
-  "#49e7ec",
-  "#3368dc"
-],
-[ // Floor
-  "#ab1f65",
-  "#020202"
-]
-];
-
 // transform strings to byte array
 var byteSprite = [];
 for (i of binarySprites) {
