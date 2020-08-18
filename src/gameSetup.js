@@ -27,6 +27,8 @@ var indexToSprite = [ // Maps the map above to sprite and palette indexes
   { sprite: 2, palette: 3 }
 ];
 
+var scale = 1;
+
 for (var y = 0; y < map.length; y++) {
   for (var x = 0; x < map[y].length; x++) {
     var char = map[y].charAt(x);
