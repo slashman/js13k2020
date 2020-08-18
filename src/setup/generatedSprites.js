@@ -71,8 +71,8 @@ for (var i = 0; i<byteSprite.length; i+=3) {
   }
 }
 
-var hFrames = 4;
-var vFrames = 1;
+var hFrames = 8;
+var vFrames = 8;
 var sprites = [];
 for ( var i = 0; i<hFrames*vFrames; i++) {
   sprites.push([]);
@@ -80,7 +80,10 @@ for ( var i = 0; i<hFrames*vFrames; i++) {
 
 // group octal pixels in sprite frames
 // assumes horizontal spritesheet hframes = n, vframes = 1
+console.log(allSprites.length)
 for (var i = 0; i < allSprites.length / SIXTEEN; i+=1) {
-  var index = i % hFrames;
+  var hIndex = i % hFrames;
+  var vIndex = ~~(i/(SIXTEEN*hFrames));
+  var index = hIndex + vIndex*vFrames
   sprites[index] = sprites[index].concat(allSprites.slice(i * SIXTEEN, (i + 1) * SIXTEEN))
 }

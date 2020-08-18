@@ -7,10 +7,10 @@ var mainScene = Scene();
 mainScene.viewport = [0, 0, 500, 500]
 mainScene.limit = [0, 500]
 
-for (var i = 0; i < 6; i++) {
-  var obj1 = GameObject([(SIXTEEN * scale * 5 + 2) * i + 5, 20, [0,1,2,3], i+3]);
+for (var i = 0; i < 8; i++) {
+  var obj1 = GameObject([(SIXTEEN * scale * 5 + 2) * i + 5, 20, [i*4+0,i*4+1,i*4+2,i*4+3], i+3]);
   mainScene.add(obj1);
-  var obj2 = GameObject([(SIXTEEN * scale * 5 + 2) * i + 0, 210, [0,1,2,3], i+3]);
+  var obj2 = GameObject([(SIXTEEN * scale * 5 + 2) * i + 0, 210, [i*4+32,i*4+33,i*4+34,i*4+35], i+3]);
   mainScene.add(obj2);
 }
 
