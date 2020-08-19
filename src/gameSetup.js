@@ -39,9 +39,7 @@ for (var y = 0; y < map.length; y++) {
 }
 
 var spriteTest = MainCharacter([60, 60, [3, 4], 5, 0]);
-spriteTest.head = 0;
-spriteTest.torso = 0;
-spriteTest.wheels = 1;
+spriteTest.rc = [0, 0, 1]; // robot config, [head, torso, wheels]
 spriteTest.setSprites();
 mainScene.add(spriteTest);
 mainScene.following = spriteTest;

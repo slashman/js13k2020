@@ -23,20 +23,20 @@ var GameObject = props => {
   return self;
 };
 
-var partsConfig = {
-  heads: [
+var partsConfig = [
+  [ // heads
     [0],
     [6]
   ],
-  torsos: [
+  [ // torsos
     [2],
     [8]
   ],
-  wheels: [
+  [ // wheels
     [4],
     [8]
   ],
-};
+];
 
 var Robot = props => {
   var self = GameObject(props);
@@ -47,52 +47,19 @@ var Robot = props => {
     });
   }
   self.setSprites = () => {
-    self.head1.frames = partsConfig.heads[self.head];
-    self.head2.frames = partsConfig.heads[self.head];
-    self.torso1.frames = partsConfig.torsos[self.torso];
-    self.torso2.frames = partsConfig.torsos[self.torso];
-    self.wheels1.frames = partsConfig.wheels[self.wheels];
-    self.wheels2.frames = partsConfig.wheels[self.wheels];
+    var f = self.rc.map((pi, i) => partsConfig[i][pi])
+    self.components.forEach((c,i) => c.frames = f[~~(i/2)])
   }
   self.draw = noop; // We don't draw this gameObject, it's just a container
-  self.head1 = GameObject([0, 0, [1], i+3, self.paletteIndex]);
-  self.head1.dx = 0;
-  self.head1.dy = 0;
-  self.head2 = GameObject([0, 0, [1], i+3, self.paletteIndex]);
-  self.head2.flipped = true;
-  self.head2.dx = 16;
-  self.head2.dy = 0;
-  
-  self.torso1 = GameObject([0, 0, [1], i+3, self.paletteIndex]);
-  self.torso1.dx = 0;
-  self.torso1.dy = 16;
-  self.torso2 = GameObject([0, 0, [1], i+3, self.paletteIndex]);
-  self.torso2.flipped = true;
-  self.torso2.dx = 16;
-  self.torso2.dy = 16;
-
-  self.wheels1 = GameObject([0, 0, [1], i+3, self.paletteIndex]);
-  self.wheels1.dx = 0;
-  self.wheels1.dy = 32;
-  self.wheels2 = GameObject([0, 0, [1], i+3, self.paletteIndex]);
-  self.wheels2.flipped = true;
-  self.wheels2.dx = 16;
-  self.wheels2.dy = 32;
-
-  self.components = [];
-  self.components.push(self.head1);
-  self.components.push(self.head2);
-  self.components.push(self.torso1);
-  self.components.push(self.torso2);
-  self.components.push(self.wheels1);
-  self.components.push(self.wheels2);
-  mainScene.add(self.head1);
-  mainScene.add(self.head2);
-  mainScene.add(self.torso1);
-  mainScene.add(self.torso2);
-  mainScene.add(self.wheels1);
-  mainScene.add(self.wheels2);
+  var ngo = () => GameObject([0, 0, [1], i+3, self.paletteIndex]);
+  self.components = [...new Array(6)].map(x => ngo());
+  var c = self.components;
+  c.forEach((x, i) => {
+    x.dx = (i%2) * 16;
+    x.dy = ~~(i/2) * 16;
+    x.flipped = x.dx == 16
+    mainScene.add(x)
+  });
   self._update = self.update;
-
   return self;
 };
