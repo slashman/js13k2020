@@ -51,8 +51,7 @@ var Robot = props => {
     self.components.forEach((c,i) => c.frames = f[~~(i/2)])
   }
   self.draw = noop; // We don't draw this gameObject, it's just a container
-  var ngo = () => GameObject([0, 0, [1], i+3, self.paletteIndex]);
-  self.components = [...new Array(6)].map(x => ngo());
+  self.components = [...new Array(6)].map(x => GameObject([0, 0, [1], i+3, self.paletteIndex]));
   var c = self.components;
   c.forEach((x, i) => {
     x.dx = (i%2) * 16;
