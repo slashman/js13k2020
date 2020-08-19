@@ -38,7 +38,7 @@ for (var y = 0; y < map.length; y++) {
   }
 }
 
-var spriteTest = MainCharacter([60, 60, [3, 4], 5, 0]);
+var spriteTest = MainCharacter([60, 60, [3, 4], 8, 0]);
 spriteTest.rc = [0, 0, 1]; // robot config, [head, torso, wheels]
 spriteTest.setSprites();
 mainScene.add(spriteTest);

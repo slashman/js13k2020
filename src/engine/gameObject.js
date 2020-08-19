@@ -45,6 +45,12 @@ var Robot = props => {
       c.x = self.x + c.dx;
       c.y = self.y + c.dy;
     });
+    self.frame = (self.frame + self.frameRate * dt) % 6;
+    var iframe = ~~self.frame;
+    headOffset =     [0,1,2,3,2,1][iframe];
+    torsoOffset =    [0,1,2,1,0,0][iframe];
+    [self.components[0], self.components[1]].forEach(s => s.y += headOffset); // head sprites
+    [self.components[2], self.components[3]].forEach(s => s.y += torsoOffset) // torso sprites
   }
   self.setSprites = () => {
     var f = self.rc.map((pi, i) => partsConfig[i][pi])
@@ -57,7 +63,7 @@ var Robot = props => {
     x.dx = (i%2) * 16;
     x.dy = ~~(i/2) * 16;
     x.flipped = x.dx == 16
-    mainScene.add(x)
+    mainScene.add(c[5-i]);
   });
   self._update = self.update;
   return self;
