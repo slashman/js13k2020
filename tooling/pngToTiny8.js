@@ -34,7 +34,7 @@ function toBinary(bitString) {
   process.stdout.write(`var binarySprites=\`${latin1stringescaped}\`;`)
 }
 
-fs.createReadStream('resources/1bit-64-2.png')
+fs.createReadStream('resources/tileset.png')
   .pipe(
     new PNG({
       filterType: 4,

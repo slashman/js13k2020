@@ -10,10 +10,10 @@ var basePlayerStat = {
 
 
 var MainCharacter = props => {
-  var self = GameObject(props);
+  var self = Robot(props);
   var speed = 100;
   self.update = dt => {
-    self._update(dt);
+    self._update(dt); // Robot
     var v = {x:0.0, y:0.0};
     if (keyMap & keys[inputs.LEFT])  v.x = -1.0;
     if (keyMap & keys[inputs.RIGHT]) v.x =  1.0;

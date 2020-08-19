@@ -21,10 +21,10 @@ var map = [
 ];
 
 var indexToSprite = [ // Maps the map above to sprite and palette indexes 
-  { sprite: 0, palette: 2 },
-  { sprite: 1, palette: 1 },
-  { sprite: 2, palette: 2 },
-  { sprite: 2, palette: 3 }
+  { sprite: 1, palette: 2 },
+  { sprite: 2, palette: 1 },
+  { sprite: 5, palette: 2 },
+  { sprite: 5, palette: 3 }
 ];
 
 var scale = 1;
@@ -39,6 +39,10 @@ for (var y = 0; y < map.length; y++) {
 }
 
 var spriteTest = MainCharacter([60, 60, [3, 4], 5, 0]);
+spriteTest.head = 0;
+spriteTest.torso = 0;
+spriteTest.wheels = 1;
+spriteTest.setSprites();
 mainScene.add(spriteTest);
 mainScene.following = spriteTest;
 
