@@ -3,13 +3,27 @@ var paletteRenderer = {
     saveSprite: function (spriteId, spriteData) {
         this.sprites[spriteId] = spriteData;
     },
-    shiftPalette: function (paletteId, start, end, direction) {
+    shiftPalette: function (paletteId, start = 0, end = 7, direction = 1) {
         var palette = this.palettes[paletteId];
-        var lastColor = palette[7];
-        for (var i = 0; i < 7; i++) {
-            palette[7 - i] = palette[6 - i];
+        var lastColor = palette[end];
+        for (var i = 0; i < end - start; i++) {
+            palette[end - i] = palette[end - 1 - i];
         }
-        palette[0] = lastColor;
+        palette[start] = lastColor;
+    },
+    cyclePaletteIndex: function (paletteId, index, colorCycle) {
+        var cycleIndex = 0;
+        var dir = 1;
+        colorCycle = colorCycle.map(hex => hexToRgb(hex));
+        return setInterval(() => {
+            cycleIndex += dir;
+            if (cycleIndex == colorCycle.length - 1) {
+                dir = -1;
+            } else if (cycleIndex == 0) {
+                dir = 1;
+            }
+            this.palettes[paletteId][index] = colorCycle[cycleIndex];
+        }, 200);
     },
     draw: function (spriteId, x, y, pi, flip) {
         this.drawRaw(this.sprites[spriteId], x, y, pi, flip);
@@ -21,7 +35,7 @@ var paletteRenderer = {
                 if (flip) {
                     index = sprite[(y + 1) * 16 - 1 - x];
                 }
-                if (index == 0 && pi < 2){
+                if (index == 0 && pi < 3){
                     // Palette 0 considers color 0 as "transparency"
                     continue;
                 }
@@ -92,6 +106,17 @@ var grassPalette = [
     "#000000"
 ];
 
+var walls = [
+    "#2e2e2e", // Background
+    "#e82b3b",
+    "#c80b1b",
+    "#a80000",
+    "#880000",
+    "#a80000",
+    "#c80b1b",
+    "#e82b3b"
+];
+
 var rosePalette = [
     "#346f00",
     "#2a4600",
@@ -107,6 +132,7 @@ var rosePalette = [
 paletteRenderer.palettes = [
     blueRobot,
     orangeRobot,
+    walls,
     oceanPalette,
     grassPalette,
     rosePalette,
@@ -125,5 +151,5 @@ paletteRenderer.palettes = paletteRenderer.palettes.map(palette => palette.map(h
 
 // Waterfall effect
 setInterval(function() {
-    paletteRenderer.shiftPalette(2);
+    paletteRenderer.shiftPalette(2, 1, 7, 1);
 }, 100);
