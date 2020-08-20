@@ -20,8 +20,8 @@ for (var i = 0; i<byteSprite.length; i+=3) {
   }
 }
 
-var hFrames = 6;
-var vFrames = 4;
+var hFrames = 8;
+var vFrames = 8;
 var sprites = [];
 for ( var i = 0; i<hFrames*vFrames; i++) {
   sprites.push([]);

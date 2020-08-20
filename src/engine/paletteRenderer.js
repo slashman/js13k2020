@@ -21,7 +21,7 @@ var paletteRenderer = {
                 if (flip) {
                     index = sprite[(y + 1) * 16 - 1 - x];
                 }
-                if (index == 1 && pi == 0){
+                if (index == 0 && pi < 2){
                     // Palette 0 considers color 0 as "transparency"
                     continue;
                 }
@@ -45,6 +45,28 @@ var marioPalette = [
     "#5bc4dc",
     "#d47564",
     "#257953"
+];
+
+var blueRobot = [
+    "#FF0000", // Transparency
+    "#050320", // Outline
+    "#ffffff", // Shine
+    "#08b23b", // Cold Light
+    "#47f641", // Warm Light
+    "#1831a7", // Cold Base
+    "#2890dc", // Base
+    "#5ee9e9"  // Warm Base
+];
+
+var orangeRobot = [
+    "#FF0000", // Transparency
+    "#260503", // Outline
+    "#fbff86", // Shine
+    "#e83b3b", // Cold Light
+    "#fb6b1d", // Warm Light
+    "#7a3045", // Cold Base
+    "#cd683d", // Base
+    "#fbb954"  // Warm Base
 ];
 
 var oceanPalette = [
@@ -83,7 +105,8 @@ var rosePalette = [
 ];
 
 paletteRenderer.palettes = [
-    marioPalette,
+    blueRobot,
+    orangeRobot,
     oceanPalette,
     grassPalette,
     rosePalette,
@@ -102,5 +125,5 @@ paletteRenderer.palettes = paletteRenderer.palettes.map(palette => palette.map(h
 
 // Waterfall effect
 setInterval(function() {
-    paletteRenderer.shiftPalette(1);
+    paletteRenderer.shiftPalette(2);
 }, 100);

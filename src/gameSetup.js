@@ -21,10 +21,10 @@ var map = [
 ];
 
 var indexToSprite = [ // Maps the map above to sprite and palette indexes 
-  { sprite: 1, palette: 2 },
-  { sprite: 2, palette: 1 },
-  { sprite: 5, palette: 2 },
-  { sprite: 5, palette: 3 }
+  { sprite: 7, palette: 3 },
+  { sprite: 7, palette: 3 },
+  { sprite: 7, palette: 3 },
+  { sprite: 7, palette: 3 }
 ];
 
 var scale = 1;
@@ -39,10 +39,23 @@ for (var y = 0; y < map.length; y++) {
 }
 
 var spriteTest = MainCharacter([60, 60, [3, 4], 8, 0]);
-spriteTest.rc = [0, 0, 1]; // robot config, [head, torso, wheels]
+spriteTest.rc = [0, 0, 0]; // robot config, [head, torso, wheels]
 spriteTest.setSprites();
+spriteTest.bounceOffset = 0;
 mainScene.add(spriteTest);
 mainScene.following = spriteTest;
+
+var robot2 = Robot([60, 60, [3, 4], 8, 1]);
+robot2.rc = [1, 0, 0]; // robot config, [head, torso, wheels]
+robot2.setSprites();
+robot2.bounceOffset = 1;
+mainScene.add(robot2);
+
+var robot3 = Robot([95, 65, [3, 4], 8, 1]);
+robot3.rc = [1, 1, 0]; // robot config, [head, torso, wheels]
+robot3.setSprites();
+robot3.bounceOffset = 3;
+mainScene.add(robot3);
 
 sceneManager.add(mainScene);
 

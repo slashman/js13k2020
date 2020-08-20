@@ -25,16 +25,16 @@ var GameObject = props => {
 
 var partsConfig = [
   [ // heads
-    [0],
-    [6]
+    [1],
+    [2]
   ],
   [ // torsos
-    [2],
-    [8]
+    [3],
+    [4]
   ],
   [ // wheels
-    [4],
-    [8]
+    [5],
+    [6]
   ],
 ];
 
@@ -47,6 +47,7 @@ var Robot = props => {
     });
     self.frame = (self.frame + self.frameRate * dt) % 6;
     var iframe = ~~self.frame;
+    iframe = (iframe+ self.bounceOffset) % 6;
     headOffset =     [0,1,2,3,2,1][iframe];
     torsoOffset =    [0,1,2,1,0,0][iframe];
     [self.components[0], self.components[1]].forEach(s => s.y += headOffset); // head sprites
