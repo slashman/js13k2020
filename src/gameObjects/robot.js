@@ -31,6 +31,11 @@ var Robot = props => {
       var f = self.rc.map((pi, i) => partsConfig[i][pi])
       self.components.forEach((c,i) => c.frames = f[~~(i/2)])
     }
+    self.arms = [false, false]; // Both down
+    self.flipArm = (left) => {
+      self.arms[left ? 0 : 1] = !self.arms[left ? 0 : 1];
+      self.arms.forEach((s,i) => self.components[4+i].vFlip = s);
+    }
     self.draw = noop; // We don't draw this gameObject, it's just a container
     self.components = [...new Array(6)].map(x => GameObject([0, 0, [1], i+3, self.paletteIndex]));
     var c = self.components;
@@ -44,5 +49,8 @@ var Robot = props => {
       c.forEach(x=>x.paletteIndex=index);
     };
     self._update = self.update;
+
+    self.flipArm(false);
+    
     return self;
   };

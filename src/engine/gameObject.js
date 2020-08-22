@@ -16,7 +16,7 @@ var GameObject = props => {
       self.frame = (self.frame + self.frameRate * dt) % self.frames.length;
     },
     draw: _ => {
-      paletteRenderer.draw(self.frames[~~self.frame], ~~self.x, ~~self.y, self.paletteIndex, self.flipped);
+      paletteRenderer.draw(self.frames[~~self.frame], ~~self.x, ~~self.y, self.paletteIndex, self.flipped, self.vFlip);
     }
   };
   self._update = self.update;

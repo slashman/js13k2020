@@ -25,15 +25,17 @@ var paletteRenderer = {
             this.palettes[paletteId][index] = colorCycle[cycleIndex];
         }, 200);
     },
-    draw: function (spriteId, x, y, pi, flip) {
-        this.drawRaw(this.sprites[spriteId], x, y, pi, flip);
+    draw: function (spriteId, x, y, pi, flip, vflip) {
+        this.drawRaw(this.sprites[spriteId], x, y, pi, flip, vflip);
     },
-    drawRaw: function (sprite, px, py, pi, flip) {
+    drawRaw: function (sprite, px, py, pi, flip, vflip) { // TODO: Just receive a sprite and use the flip and vflip attributes
         for (var y = 0; y < 16; y++) {
             for (var x = 0; x < 16; x++) {
-                var index = sprite[y * 16 + x];
+                var ry = vflip ? 15 - y : y;
+                var vfo = vflip ? -10 : 0;
+                var index = sprite[ry * 16 + x];
                 if (flip) {
-                    index = sprite[(y + 1) * 16 - 1 - x];
+                    index = sprite[(ry + 1) * 16 - 1 - x];
                 }
                 if (index == 0 && pi < 3){
                     // Palette 0 considers color 0 as "transparency"
@@ -41,7 +43,7 @@ var paletteRenderer = {
                 }
                 var palette = this.palettes[pi];
                 var color = palette[parseInt(index, 10)];
-                setPixel(x + px, y + py, color.r, color.g, color.b, 255);
+                setPixel(x + px, y + py + vfo, color.r, color.g, color.b, 255);
             }
         }
     }
