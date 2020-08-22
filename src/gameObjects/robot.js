@@ -7,7 +7,7 @@ var partsConfig = [
     [3],
     [4]
 ],
-[ // wheels
+[ // Arms
     [5],
     [6]
 ],
@@ -23,9 +23,9 @@ var Robot = props => {
       var iframe = ~~self.frame;
       iframe = (iframe+ self.bounceOffset) % 6;
       headOffset =     [0,1,2,3,2,1][iframe];
-      torsoOffset =    [0,1,2,1,0,0][iframe];
+      torsoOffset =    [0,1,2,1,0,0][iframe]; // For now, arms have the same offset as torso
       [self.components[0], self.components[1]].forEach(s => s.y += headOffset); // head sprites
-      [self.components[2], self.components[3]].forEach(s => s.y += torsoOffset) // torso sprites
+      [self.components[2], self.components[3],self.components[4],self.components[5]].forEach(s => s.y += torsoOffset) // torso and arm sprites
     }
     self.setSprites = () => {
       var f = self.rc.map((pi, i) => partsConfig[i][pi])
@@ -35,9 +35,9 @@ var Robot = props => {
     self.components = [...new Array(6)].map(x => GameObject([0, 0, [1], i+3, self.paletteIndex]));
     var c = self.components;
     c.forEach((x, i) => {
-      x.dx = (i%2) * 16;
-      x.dy = ~~(i/2) * 16;
-      x.flipped = x.dx == 16
+      x.dx = i < 4 ? (i%2) * 16 : -8 + (i%2) * 32;
+      x.dy = i < 4 ? ~~(i/2) * 16 : 16;
+      x.flipped = (i%2) != 0;
       mainScene.add(c[5-i]);
     });
     self.setPalette = (index) => {
