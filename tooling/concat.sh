@@ -37,6 +37,7 @@ cat src/setup/rawSprites.js
 cat src/setup/generatedSprites.js
 cat src/engine/gameObject.js
 cat src/engine/metronome.js
+cat src/gameObjects/robot.js
 cat src/gameObjects/sprite.js
 cat src/gameObjects/items.js
 
