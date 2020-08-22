@@ -71,11 +71,18 @@ paletteRenderer.cyclePaletteIndex(1, 4, ["#fb6b1d", "#eb5b0d", "#db4b00", "#cb3b
 paletteRenderer.cyclePaletteIndex(0, 3, ["#08b23b", "#18c24b", "#28d25b", "#38e26b"]);
 paletteRenderer.cyclePaletteIndex(0, 4, ["#47f641", "#37ef31", "#27df21", "#17cf11"]);
 
-var toggleBeat = false;
+var danceFrame = 0;
 var theBeat = () => {
-  toggleBeat = !toggleBeat;
+  danceFrame++;
+  if (danceFrame > 9) {
+    danceFrame = 0;
+  }
+  var toggleBeat = danceFrame % 2 == 0;
   robot3.x += 6*(toggleBeat?-1:1); 
   robot3.setPalette(toggleBeat?0:1);
+  if (danceFrame%3 == 0)
+    robot3.flipArm(danceFrame%4 == 0)
+
 }
 console.log(robot3)
 var buffer = zzfxM(...deepMX);    // Generate the sample data
