@@ -70,3 +70,20 @@ paletteRenderer.cyclePaletteIndex(1, 3, ["#e82b3b", "#d81b2b", "#c80b1b", "#b800
 paletteRenderer.cyclePaletteIndex(1, 4, ["#fb6b1d", "#eb5b0d", "#db4b00", "#cb3b00"]);
 paletteRenderer.cyclePaletteIndex(0, 3, ["#08b23b", "#18c24b", "#28d25b", "#38e26b"]);
 paletteRenderer.cyclePaletteIndex(0, 4, ["#47f641", "#37ef31", "#27df21", "#17cf11"]);
+
+var toggleBeat = false;
+var theBeat = () => {
+  toggleBeat = !toggleBeat;
+  robot3.x += 6*(toggleBeat?-1:1); 
+  robot3.setPalette(toggleBeat?0:1);
+}
+console.log(robot3)
+var buffer = zzfxM(...deepMX);    // Generate the sample data
+
+var node = zzfxP(...buffer);
+node.loop = true;
+console.log(deepMX[1][0])
+past = Date.now();
+node.start();
+updateMetronome();
+

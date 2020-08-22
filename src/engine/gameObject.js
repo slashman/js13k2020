@@ -66,6 +66,9 @@ var Robot = props => {
     x.flipped = x.dx == 16
     mainScene.add(c[5-i]);
   });
+  self.setPalette = (index) => {
+    c.forEach(x=>x.paletteIndex=index);
+  };
   self._update = self.update;
   return self;
 };

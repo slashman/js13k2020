@@ -71,6 +71,17 @@ var blueRobot = [
     "#2890dc", // Base
     "#5ee9e9"  // Warm Base
 ];
+//TEST
+var blueRobot2 = [
+    "#FF0000", // Transparency
+    "#050320", // Outline
+    "#ffffff", // Shine
+    "#e83b3b", // Cold Light
+    "#fb6b1d", // Warm Light
+    "#1831a7", // Cold Base
+    "#2890dc", // Base
+    "#5ee9e9"  // Warm Base
+];
 
 var orangeRobot = [
     "#FF0000", // Transparency
@@ -131,11 +142,12 @@ var rosePalette = [
 
 paletteRenderer.palettes = [
     blueRobot,
-    orangeRobot,
+    blueRobot2,
     walls,
     oceanPalette,
     grassPalette,
     rosePalette,
+    orangeRobot,
 ];
 
 function hexToRgb(hex) {

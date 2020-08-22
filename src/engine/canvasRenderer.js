@@ -27,7 +27,7 @@ var draw = _ => {
 
   graphics.save(); // Do we even need to save and restore?
   // draw the buffer
-  graphics.putImageData(imageDataBuffer, 0, 0);    
+  graphics.putImageData(imageDataBuffer, 0, 0);
   graphics.restore();
 }
 

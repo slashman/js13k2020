@@ -17,8 +17,9 @@ cat src/setup/definitions.js
 
 # libs
 cat lib/utils.js
-#cat lib/jsfxr.js
-#cat lib/audio.js
+cat lib/zzfx.js
+cat lib/zzfxm.js
+#cat lib/zzfxm.min.js
 #cat lib/webgl.js
 cat lib/keyboardController.js
 
@@ -35,8 +36,11 @@ cat lib/keyboardController.js
 cat src/setup/rawSprites.js
 cat src/setup/generatedSprites.js
 cat src/engine/gameObject.js
+cat src/engine/metronome.js
 cat src/gameObjects/sprite.js
 cat src/gameObjects/items.js
+
+cat src/mx/deep.js
 #cat src/fighter.js
 #cat src/font.js
 #cat src/tiles.js
