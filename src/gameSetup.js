@@ -63,6 +63,7 @@ robot3.rc = [0, 1, 0];
 robot3.setSprites();
 robot3.bounceOffset = 3;
 mainScene.add(robot3);
+mainScene.add(sequenceVisualizer);
 
 sceneManager.add(mainScene);
 

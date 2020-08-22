@@ -63,9 +63,9 @@ var Scene = () => {
       if(!self.active) return;
       
       self.applyToChildren( gameObject => {
-        if (gameObject.x + 24 > -self.x && gameObject.x < -self.x + 310 && gameObject.visible) {
+        //if (gameObject.x + 24 > -self.x && gameObject.x < -self.x + 310 && gameObject.visible) {
           gameObject.draw();
-        }
+        //}
       })
     },
     moveToLimit: (minLimit, maxLimit) => {

@@ -40,6 +40,7 @@ cat src/engine/metronome.js
 cat src/gameObjects/robot.js
 cat src/gameObjects/sprite.js
 cat src/gameObjects/items.js
+cat src/gameObjects/sequenceVisualizer.js
 
 cat src/mx/deep.js
 #cat src/fighter.js
