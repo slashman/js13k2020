@@ -63,7 +63,8 @@ robot3.rc = [0, 1, 0];
 robot3.setSprites();
 robot3.bounceOffset = 3;
 mainScene.add(robot3);
-mainScene.add(sequenceVisualizer);
+mainScene.add(sequenceVisualizer({x: 16, instrument: 1, banned: []}));
+mainScene.add(sequenceVisualizer({x: 0, instrument: 0}));
 
 sceneManager.add(mainScene);
 
@@ -79,9 +80,9 @@ var theBeat = () => {
     danceFrame = 0;
   }
   var toggleBeat = danceFrame % 2 == 0;
-  robot3.x += 6*(toggleBeat?-1:1); 
+  //robot3.x += 6*(toggleBeat?-1:1); 
   robot3.setPalette(toggleBeat?0:1);
-  if (danceFrame%3 == 0)
+  //if (danceFrame%3 == 0)
     robot3.flipArm(danceFrame%4 == 0)
 
 }
@@ -89,9 +90,11 @@ console.log(robot3)
 var buffer = zzfxM(...deepMX);    // Generate the sample data
 
 var node = zzfxP(...buffer);
-node.loop = true;
+//node.loop = true;
 console.log(deepMX[1][0])
 past = Date.now();
 node.start();
+console.log(node);
 updateMetronome();
+
 

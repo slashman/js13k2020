@@ -1,41 +1,46 @@
 
+//var onBeat = false;
+var nextBeats = [];
 var onBeat = false;
-var sequenceVisualizer = {
-  draw: _ => {
-    for(var i=2;i<21;i++){
-      for(var j=0;j<160;j++){
-        setPixel(i, j, 0, 20, 20, 255);
+var sequenceVisualizer = props => {
+  var banned = props.banned || [];
+  return {
+    x: props.x,
+    draw: _ => {
+      for(var i=2;i<21;i++){
+        for(var j=0;j<160;j++){
+          setPixel(props.x + i, j, 0, 20, 20, 255);
+        }
       }
-    }
-    onBeat = false;
-    for (var i = 0; i < 64; i += 1) {
-      var beat = deepMX[1][sequence[indexSequence]][1][i + 2];
-      var b = (i - current_beat);
 
-      if (beat && b >= 0 && b < 24) {
-        setPixel(9, 151 - b * 2 * 3, 250, 20, 0, 255);
-        setPixel(9, 150 - b * 2 * 3, 250, 20, 0, 255);
-        setPixel(10, 151 - b * 2 * 3, 250, 20, 0, 255);
-        setPixel(10, 150 - b * 2 * 3, 250, 20, 0, 255);
-        setPixel(11, 149 - b * 2 * 3, 200, 200, 100, 255);
-        setPixel(11, 151 - b * 2 * 3, 200, 200, 100, 255);
-        setPixel(11, 150 - b * 2 * 3, 200, 200, 100, 255);
-        setPixel(11, 152 - b * 2 * 3, 200, 200, 100, 255);
-        setPixel(12, 151 - b * 2 * 3, 250, 0, 0, 255);
-        setPixel(12, 150 - b * 2 * 3, 250, 0, 0, 255);
-        setPixel(13, 150 - b * 2 * 3, 250, 0, 0, 255);
-        setPixel(13, 151 - b * 2 * 3, 250, 0, 0, 255);
+      for (var i = current_tick; i < current_tick+24 && i < fullBeatSequence[props.instrument].length; i += 1) {
+        var beat = fullBeatSequence[props.instrument][i];
+        var b = (i - current_tick);
+
+        if (beat && banned.indexOf(beat) ==-1) {
+          setPixel(props.x + 9, 151 - b * 6, 250, 20, 0, 255);
+          setPixel(props.x + 9, 150 - b * 6, 250, 20, 0, 255);
+          setPixel(props.x + 10, 151 - b * 6, 250, 20, 0, 255);
+          setPixel(props.x + 10, 150 - b * 6, 250, 20, 0, 255);
+          setPixel(props.x + 11, 149 - b * 6, 200, 200, 100, 255);
+          setPixel(props.x + 11, 151 - b * 6, 200, 200, 100, 255);
+          setPixel(props.x + 11, 150 - b * 6, 200, 200, 100, 255);
+          setPixel(props.x + 11, 152 - b * 6, 200, 200, 100, 255);
+          setPixel(props.x + 12, 151 - b * 6, 250, 0, 0, 255);
+          setPixel(props.x + 12, 150 - b * 6, 250, 0, 0, 255);
+          setPixel(props.x + 13, 150 - b * 6, 250, 0, 0, 255);
+          setPixel(props.x + 13, 151 - b * 6, 250, 0, 0, 255);
+        }
       }
-      onBeat = onBeat || b == 0 && beat;
-    }
-    for (let i = 0; i < 5; i++) {
-      setPixel(6 + i, 150, 250, onBeat ? 0 : 255, 0, 255);
-      setPixel(6 + i, 151, 250, onBeat ? 0 : 255, 0, 255);
-      setPixel(6 + i, 151, 250, onBeat ? 0 : 255, 0, 255);
-      setPixel(12 + i, 150, 250, onBeat ? 0 : 255, 0, 255);
-      setPixel(12 + i, 151, 250, onBeat ? 0 : 255, 0, 255);
-      setPixel(12 + i, 151, 250, onBeat ? 0 : 255, 0, 255);
-    }
-  },
-  update: noop
+      for (let i = 0; i < 5; i++) {
+        setPixel(props.x + 6 + i, 150, 250, onBeat ? 0 : 255, 0, 255);
+        setPixel(props.x + 6 + i, 151, 250, onBeat ? 0 : 255, 0, 255);
+        setPixel(props.x + 6 + i, 151, 250, onBeat ? 0 : 255, 0, 255);
+        setPixel(props.x + 12 + i, 150, 250, onBeat ? 0 : 255, 0, 255);
+        setPixel(props.x + 12 + i, 151, 250, onBeat ? 0 : 255, 0, 255);
+        setPixel(props.x + 12 + i, 151, 250, onBeat ? 0 : 255, 0, 255);
+      }
+    },
+    update: noop
+  }
 };

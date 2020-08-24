@@ -1,53 +1,42 @@
 
-var bpm = 125;
+var bpm = 144;
 var playingMusic = true;
-var time_signature_botton = 4;
-var beat_interval = 60 / bpm * 4 / time_signature_botton;
-var sixteenth_time = beat_interval / 16;
+//var time_signature_botton = 4;
+//var beat_interval = 60 / bpm * 4 / time_signature_botton;
+//var sixteenth_time = beat_interval / 16;
+var timeBetweenBeats = 60000/(bpm*4);
 
-var current_beat = 0;
-var current_time = 0;
-var current_tick = 0;
-
-var indexBeat = 0;
-var indexSequence = 0;
-var sequence = [1, 1, 2, 3, 4, 4]; // from the deep song, should be dynamic I think
+var current_tick = -1;
+var sequence = [0, 1, 1, 2, 3, 4, 4]; // from the deep song, should be dynamic I think
+var fullBeatSequence = [[], []];
+//var fullBeatSequenceB = [];
 
 let past = Date.now();
-var updateMetronome = () => {
-  let now = Date.now();
-  let delta = (now - past)/1000;
-  past = now;
-  if (!playingMusic) return;
-  if (playingMusic && current_time == 0 && current_tick == 0) {
-    console.log('Sync')
-  }
-  current_time += delta
-  var next_beat = ~~((current_time + delta / 2) / sixteenth_time)
-  current_tick += next_beat
-  if (current_tick >= 4) {
-    //console.log('pum!', current_tick, delta)
-    current_tick -= 4
-    current_beat += 1
-    // change pattern
-    if (current_beat >= 64) {
-      current_beat = 0;
-      indexSequence +=1;
-      // IMPROVE
-      if (indexSequence >= sequence.length) {
-        indexSequence = 0;
-      }
-    }
-    if (deepMX[1][sequence[indexSequence]][1][2 + current_beat]) {
-      theBeat();
-    }
+let startTime = null;
 
-    
-  }
-  if (next_beat >= 1) {
-    current_time = current_time - (next_beat * sixteenth_time)
+getBeatFor = (time) => {
+  return (time - startTime) / timeBetweenBeats;
+}
+
+updateMetronome = () => {
+  if (!playingMusic) return;
+  let now = Date.now();
+  if (!startTime) {
+    startTime = now ;//+ timeBetweenBeats;
+    sequence.forEach(value => {
+      fullBeatSequence[0] = fullBeatSequence[0].concat(deepMX[1][value][1].slice(2));
+      fullBeatSequence[1] = fullBeatSequence[1].concat(deepMX[1][value][2].slice(2));
+    })
+  };
+  var currentTickIndex = ~~((now - startTime) / timeBetweenBeats);
+  if (current_tick != currentTickIndex) {
+    current_tick = currentTickIndex;
+    onBeat = !!fullBeatSequence[current_tick];
+    if (onBeat) {
+      theBeat()
+    };
   }
   setTimeout(() => {
     updateMetronome();
-  }, 1);
+  }, 1)
 }
