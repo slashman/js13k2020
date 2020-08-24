@@ -45,12 +45,12 @@ for (var y = 0; y < map.length; y++) {
   }
 }
 
-var spriteTest = MainCharacter([60, 60, [3, 4], 8, 0]);
-spriteTest.rc = [0, 0, 0]; // robot config, [head, torso, wheels]
-spriteTest.setSprites();
-spriteTest.bounceOffset = 0;
-mainScene.add(spriteTest);
-mainScene.following = spriteTest;
+var player = MainCharacter([60, 60, [3, 4], 8, 0]);
+player.rc = [0, 0, 0]; // robot config, [head, torso, wheels]
+player.setSprites();
+player.bounceOffset = 0;
+mainScene.add(player);
+mainScene.following = player;
 
 var robot2 = Robot([60, 60, [3, 4], 8, 1]);
 robot2.rc = [1, 0, 0]; // robot config, [head, torso, wheels]

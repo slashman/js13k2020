@@ -51,6 +51,22 @@ var Robot = props => {
     self._update = self.update;
 
     self.flipArm(false);
+
+    self.tryBeat = key => {
+      if (key == self.lastKey) {
+        // Nope. Must be different everytime (testing)
+        return;
+      }
+      self.flipArm(key == 90);
+      
+      var value = getBeatFor(Date.now());
+      var diff = ((~~value) + 0.5 - value)*100;
+      var performance = diff*diff;
+      keyOnBeat.rawBeat = value;
+      keyOnBeat.beat = ~~value;
+      keyOnBeat.performance = performance;
+      console.log(value, fullBeatSequence[keyOnBeat.beat] ? 'ok' : `${fullBeatSequence[0][keyOnBeat.beat]} ${fullBeatSequence[1][keyOnBeat.beat]}`)
+    }
     
     return self;
   };
