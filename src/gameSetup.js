@@ -46,20 +46,20 @@ for (var y = 0; y < map.length; y++) {
 }
 
 var player = MainCharacter([60, 60, [3, 4], 8, 0]);
-player.rc = [0, 0, 0]; // robot config, [head, torso, wheels]
+player.rc = [3, 0, 0, 3]; // robot config, [head, torso, wheels] // TODO: head and sidehead are the same
 player.setSprites();
 player.bounceOffset = 0;
 mainScene.add(player);
 mainScene.following = player;
 
 var robot2 = Robot([60, 60, [3, 4], 8, 1]);
-robot2.rc = [1, 0, 0]; // robot config, [head, torso, wheels]
+robot2.rc = [4, 0, 0, 4]; // robot config, [head, torso, wheels]
 robot2.setSprites();
 robot2.bounceOffset = 1;
 mainScene.add(robot2);
 
 var robot3 = Robot([95, 65, [3, 4], 8, 0]);
-robot3.rc = [0, 1, 0];
+robot3.rc = [0, 1, 0, 0];
 robot3.setSprites();
 robot3.bounceOffset = 3;
 mainScene.add(robot3);
