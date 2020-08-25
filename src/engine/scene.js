@@ -64,8 +64,9 @@ var Scene = () => {
       
       self.applyToChildren( gameObject => {
         //if (gameObject.x + 24 > -self.x && gameObject.x < -self.x + 310 && gameObject.visible) {
+        if (gameObject.visible) { // TODO: Fix to make metronome visible
           gameObject.draw();
-        //}
+        }
       })
     },
     moveToLimit: (minLimit, maxLimit) => {

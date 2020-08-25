@@ -4,13 +4,17 @@ var partsConfig = [
     [2]
 ],
 [ // torsos
-    [3],
-    [4]
+    [17],
+    [18]
 ],
 [ // Arms
-    [5],
-    [6]
+    [9],
+    [10]
 ],
+[ // Side Heads
+    [25],
+    [26]
+]
 ];
 var Robot = props => {
     var self = GameObject(props);
@@ -36,6 +40,23 @@ var Robot = props => {
       self.arms[left ? 0 : 1] = !self.arms[left ? 0 : 1];
       self.arms.forEach((s,i) => self.components[4+i].vFlip = s);
     }
+    self.headPosition = 1; // Center;
+    self.turnHead = (dir) => {
+      self.headPosition += dir;
+      if (self.headPosition < 0) self.headPosition = 0; // TODO: Compress
+      if (self.headPosition > 2) self.headPosition = 2; // TODO: Compress
+      self.components[1].visible = self.headPosition == 1;
+      if (self.headPosition != 1) {
+        self.components[0].dx = 8;
+        self.components[0].flipped = self.headPosition == 0;
+        self.components[0].frames = partsConfig[3][self.rc[0]];
+      } else {
+        self.components[0].frames = partsConfig[0][self.rc[0]];
+        self.components[0].flipped = false;
+        self.components[0].dx = 0;
+      }
+
+    }
     self.draw = noop; // We don't draw this gameObject, it's just a container
     self.components = [...new Array(6)].map(x => GameObject([0, 0, [1], i+3, self.paletteIndex]));
     var c = self.components;
@@ -57,8 +78,6 @@ var Robot = props => {
         // Nope. Must be different everytime (testing)
         return;
       }
-      self.flipArm(key == 90);
-      
       var value = getBeatFor(Date.now());
       var diff = ((~~value) + 0.5 - value)*100;
       var performance = diff*diff;
