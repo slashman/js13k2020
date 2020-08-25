@@ -72,9 +72,10 @@ robot3.rc = [0, 1, 0, 0];
 robot3.setSprites();
 robot3.bounceOffset = 3;
 mainScene.add(robot3);
-mainScene.add(sequenceVisualizer({x: 16, instrument: 1, banned: []}));
-mainScene.add(sequenceVisualizer({x: 0, instrument: 0}));
-
+var seq = sequenceVisualizer({ x: 0, instrument: 0 });
+mainScene.add(seq);
+console.log('seq visualizer')
+console.log(seq )
 sceneManager.add(mainScene);
 
 paletteRenderer.cyclePaletteIndex(1, 3, ["#e82b3b", "#d81b2b", "#c80b1b", "#b8000b"]);
@@ -99,7 +100,7 @@ console.log(robot3)
 var buffer = zzfxM(...deepMX);    // Generate the sample data
 
 var node = zzfxP(...buffer);
-//node.loop = true;
+node.loop = true;
 console.log(deepMX[1][0])
 past = Date.now();
 node.start();

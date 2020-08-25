@@ -44,19 +44,7 @@ var Scene = () => {
         //}
       })
       self.updateData(time, dt);
-      
-      if (self.moving) {
-        self.moving = self.x > -self.targetX && self.x-320 > -self.limit[1];
-        if (self.moving) self.x -= 1;
-      } else if (self.following) {
-        self.x = -(self.following.x-150);
-        self.x = ~~self.x;
-        if (self.x > -self.limit[0]) {
-          self.x = -self.limit[0];
-        } else if (self.x <- self.limit[1]+320) {
-          self.x = -self.limit[1]+320;
-        }
-      }
+
     },
     predraw: noop,
     draw: _ => {
