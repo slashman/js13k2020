@@ -7,7 +7,7 @@ var graphics = c.getContext('2d');
 var imageDataBuffer = graphics.createImageData(W, H);
 var pixels = imageDataBuffer.data;
 
-function setPixel(x, y, r, g, b, a) {
+function setPixel(x, y, r, g, b, a = 255) {
   var index = 4 * (x + y * imageDataBuffer.width);
   pixels[index+0] = r;
   pixels[index+1] = g;
@@ -35,7 +35,7 @@ var draw = _ => {
     graphics.fillStyle = "red";
     graphics.fillText(` key on beat: ${keyOnBeat.beat}`, 0, 180);
     graphics.fillText(`current_tick: ${current_tick}`, 0, 205);
-    
+    graphics.fillText(` onBeat: ${onBeat}`, 0, 230);
     //graphics.fillText(` performance: `, 0, 230);
   }
 

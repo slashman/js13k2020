@@ -1,5 +1,5 @@
 
-var bpm = 144;
+var bpm = 125;
 var playingMusic = true;
 //var time_signature_botton = 4;
 //var beat_interval = 60 / bpm * 4 / time_signature_botton;
@@ -31,7 +31,8 @@ updateMetronome = () => {
   var currentTickIndex = ~~((now - startTime) / timeBetweenBeats);
   if (current_tick != currentTickIndex) {
     current_tick = currentTickIndex;
-    onBeat = !!fullBeatSequence[current_tick];
+    onBeat = !(current_tick%4);
+    //onBeat = !!fullBeatSequence[current_tick];
     if (onBeat) {
       theBeat()
     };
