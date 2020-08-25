@@ -22,7 +22,7 @@ var map = [
 
 var indexToSprite = [ // Maps the map above to sprite and palette indexes 
   { sprite: 7, palette: 3 },
-  { sprites: [{ sprite: 9, palette: 3 }, { sprite: 8, palette: 2 }] },
+  { sprites: [{ sprite: 16, palette: 3 }, { sprite: 32, palette: 2 }] },
   { sprite: 7, palette: 3 },
   { sprite: 7, palette: 3 }
 ];

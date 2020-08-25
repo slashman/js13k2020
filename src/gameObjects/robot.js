@@ -1,19 +1,19 @@
 var partsConfig = [
 [ // heads
-    [1],
-    [2]
+    [1], //x8
+    [2], //x8
 ],
 [ // torsos
-    [17],
-    [18]
+    [32],
+    [33]
 ],
 [ // Arms
-    [9],
-    [10]
+    [16],
+    [17]
 ],
 [ // Side Heads
-    [25],
-    [26]
+    24,
+    25
 ]
 ];
 var Robot = props => {
@@ -45,15 +45,20 @@ var Robot = props => {
       self.headPosition += dir;
       if (self.headPosition < 0) self.headPosition = 0; // TODO: Compress
       if (self.headPosition > 2) self.headPosition = 2; // TODO: Compress
-      self.components[1].visible = self.headPosition == 1;
       if (self.headPosition != 1) {
-        self.components[0].dx = 8;
-        self.components[0].flipped = self.headPosition == 0;
-        self.components[0].frames = partsConfig[3][self.rc[0]];
+        self.components[1].flipped = self.components[0].flipped = self.headPosition == 0;
+        if (self.headPosition == 0) {
+          self.components[0].frames = [partsConfig[3][self.rc[0]] * 2 + 1];
+          self.components[1].frames = [partsConfig[3][self.rc[0]] * 2];
+        } else {
+          self.components[0].frames = [partsConfig[3][self.rc[0]] * 2];
+          self.components[1].frames = [partsConfig[3][self.rc[0]] * 2 + 1];
+        }
       } else {
-        self.components[0].frames = partsConfig[0][self.rc[0]];
+        // Restore head sprites
+        self.components[0].frames = self.components[1].frames = partsConfig[0][self.rc[0]];
         self.components[0].flipped = false;
-        self.components[0].dx = 0;
+        self.components[1].flipped = true;
       }
 
     }
@@ -61,7 +66,8 @@ var Robot = props => {
     self.components = [...new Array(6)].map(x => GameObject([0, 0, [1], i+3, self.paletteIndex]));
     var c = self.components;
     c.forEach((x, i) => {
-      x.dx = i < 4 ? (i%2) * 16 : -8 + (i%2) * 32;
+      x.small = true; // Unless big head
+      x.dx = i < 4 ? (i%2) * 8 : -8 + (i%2) * 24;
       x.dy = i < 4 ? ~~(i/2) * 16 : 16;
       x.flipped = (i%2) != 0;
       mainScene.add(c[5-i]);

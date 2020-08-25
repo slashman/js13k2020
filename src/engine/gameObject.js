@@ -12,11 +12,12 @@ var GameObject = props => {
     frameRate: props[3],
     frames: props[2],
     paletteIndex: props[4],
+    small: false,
     update: dt => {
       self.frame = (self.frame + self.frameRate * dt) % self.frames.length;
     },
     draw: _ => {
-      paletteRenderer.draw(self.frames[~~self.frame], ~~self.x, ~~self.y, self.paletteIndex, self.flipped, self.vFlip);
+      paletteRenderer.draw(self.frames[~~self.frame], ~~self.x, ~~self.y, self.paletteIndex, self.flipped, self.vFlip, self.small);
     }
   };
   self._update = self.update;
