@@ -39,9 +39,9 @@ var Scene = () => {
     update: (time, dt) => {
       if (!self.active) return;
       self.applyToChildren( gameObject => {
-        if (gameObject.x + 24 > -self.x && gameObject.x < -self.x + 320) {
+        //if (gameObject.x + 24 > -self.x && gameObject.x < -self.x + 320) {
           gameObject.update(dt, time);
-        }
+        //}
       })
       self.updateData(time, dt);
       

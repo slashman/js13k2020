@@ -22,7 +22,7 @@ var map = [
 
 var indexToSprite = [ // Maps the map above to sprite and palette indexes 
   { sprite: 7, palette: 3 },
-  { sprites: [{ sprite: 16, palette: 3 }, { sprite: 32, palette: 2 }] },
+  { sprites: [{ sprite: 16, palette: 3 }, { sprite: 32, palette: 4 }] },
   { sprite: 7, palette: 3 },
   { sprite: 7, palette: 3 }
 ];
@@ -45,18 +45,27 @@ for (var y = 0; y < map.length; y++) {
   }
 }
 
+var randomY = [];
+for (var i = 0; i < 40; i++) {
+  randomY.push(rando(0, 100));
+}
+randomY.sort((a,b) => a-b);
+
+for (var i = 0; i < 40; i++) {
+  var robot = Robot([rando(0, 300), randomY[i], [], 8, rando(0,2)]);
+  robot.rc = [rando(0, 4), rando(0, 4), rando(0, 5), 4]; // robot config, [head, torso, wheels]
+  robot.setSprites();
+  robot.bounceOffset = rando(0,4);
+  robot.flipArm(rando(0,10) > 4);
+  mainScene.add(robot);
+}
+
 var player = MainCharacter([60, 60, [3, 4], 8, 0]);
-player.rc = [3, 0, 0, 3]; // robot config, [head, torso, wheels] // TODO: head and sidehead are the same
+player.rc = [0, 0, 0, 3]; // robot config, [head, torso, wheels] // TODO: head and sidehead are the same
 player.setSprites();
 player.bounceOffset = 0;
 mainScene.add(player);
 mainScene.following = player;
-
-var robot2 = Robot([60, 60, [3, 4], 8, 1]);
-robot2.rc = [4, 0, 0, 4]; // robot config, [head, torso, wheels]
-robot2.setSprites();
-robot2.bounceOffset = 1;
-mainScene.add(robot2);
 
 var robot3 = Robot([95, 65, [3, 4], 8, 0]);
 robot3.rc = [0, 1, 0, 0];

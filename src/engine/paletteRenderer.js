@@ -162,11 +162,11 @@ var rosePalette = [
 paletteRenderer.palettes = [
     blueRobot,
     blueRobot2,
+    orangeRobot,
     walls,
     oceanPalette,
     grassPalette,
     rosePalette,
-    orangeRobot,
 ];
 
 function hexToRgb(hex) {
@@ -182,5 +182,5 @@ paletteRenderer.palettes = paletteRenderer.palettes.map(palette => palette.map(h
 
 // Waterfall effect
 setInterval(function() {
-    paletteRenderer.shiftPalette(2, 1, 7, 1);
+    paletteRenderer.shiftPalette(3, 1, 7, 1);
 }, 100);
