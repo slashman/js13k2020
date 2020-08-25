@@ -115,17 +115,6 @@ var orangeRobot = [
     "#fbb954"  // Warm Base
 ];
 
-var shadowRobot = [
-    "#FF0000", // Transparency
-    "#260503", // Outline
-    "#fbff86", // Shine
-    "#e83b3b", // Cold Light
-    "#fb6b1d", // Warm Light
-    "#7a3045", // Cold Base
-    "#cd683d", // Base
-    "#fbb954"  // Warm Base
-];
-
 var oceanPalette = [
     "#064273",
     "#76b6c4",
