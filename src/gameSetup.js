@@ -105,6 +105,13 @@ var theBeat = () => {
   //enemy.setPalette(toggleBeat?0:1);
   //if (danceFrame%3 == 0)
   enemy.flipArm(danceFrame%4 == 0)
+  if (danceFrame%3 == 0) {
+    enemy.dash(danceFrame%2 == 0 ? 1 : -1)
+  }
+
+  if (danceFrame%4 == 0) {
+    enemy.turnHead(danceFrame%3 == 0 ? 1 : -1)
+  }
 
 }
 
