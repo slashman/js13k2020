@@ -1,7 +1,23 @@
+function splitSpriteData(spriteData, left) {
+    var splitSprite = [];
+    var xOffset = left ? 0 : 8;
+    for (var y = 0; y < 16; y++) {
+        for (var x = 0; x < 8; x++) {
+            splitSprite[y * 8 + x] = spriteData[y * 16 + x + xOffset];
+        }
+    }
+    return splitSprite;
+}
+
 var paletteRenderer = {
     sprites: [],
-    saveSprite: function (spriteId, spriteData) {
-        this.sprites[spriteId] = spriteData;
+    sprites8: [],
+    setSprites: function (spriteData) {
+        this.sprites = spriteData;
+        spriteData.forEach((s,i) => {
+            this.sprites8[i * 2] = splitSpriteData(s, true);
+            this.sprites8[i * 2 + 1] = splitSpriteData(s);
+        })
     },
     shiftPalette: function (paletteId, start = 0, end = 7, direction = 1) {
         var palette = this.palettes[paletteId];
@@ -25,17 +41,18 @@ var paletteRenderer = {
             this.palettes[paletteId][index] = colorCycle[cycleIndex];
         }, 200);
     },
-    draw: function (spriteId, x, y, pi, flip, vflip) {
-        this.drawRaw(this.sprites[spriteId], x, y, pi, flip, vflip);
+    draw: function (spriteId, x, y, pi, flip, vflip, small) {
+        this.drawRaw(small ? this.sprites8[spriteId] : this.sprites[spriteId], x, y, pi, flip, vflip, small);
     },
-    drawRaw: function (sprite, px, py, pi, flip, vflip) { // TODO: Just receive a sprite and use the flip and vflip attributes
+    drawRaw: function (sprite, px, py, pi, flip, vflip, small) { // TODO: Just receive a sprite and use the flip and vflip attributes
+        var w = small ? 8 : 16;
         for (var y = 0; y < 16; y++) {
-            for (var x = 0; x < 16; x++) {
-                var ry = vflip ? 15 - y : y;
+            for (var x = 0; x < w; x++) {
+                var ry = vflip ? 16 - 1 - y : y;
                 var vfo = vflip ? -10 : 0;
-                var index = sprite[ry * 16 + x];
+                var index = sprite[ry * w + x];
                 if (flip) {
-                    index = sprite[(ry + 1) * 16 - 1 - x];
+                    index = sprite[(ry + 1) * w - 1 - x];
                 }
                 if (index == 0 && pi < 3){
                     // Palette 0 considers color 0 as "transparency"
@@ -49,7 +66,7 @@ var paletteRenderer = {
     }
 }
 
-paletteRenderer.sprites = sprites; // Using global variable tsk tsk
+paletteRenderer.setSprites(sprites); // Using global variable tsk tsk
 
 
 var marioPalette = [

@@ -1,7 +1,10 @@
 var partsConfig = [
 [ // heads
-    [1],
-    [2]
+    [1], //x8
+    [2], //x8
+    [2], //16
+    [3], //16
+    [4], //16
 ],
 [ // torsos
     [32],
@@ -19,10 +22,16 @@ var partsConfig = [
     [21]
 ],
 [ // Side Heads
+    [24],
     [25],
-    [26]
+    [24],
+    [24],
+    [24]
 ]
 ];
+
+var bigHeads = [2, 3, 4];
+
 var Robot = props => {
     var self = GameObject(props);
     self.update = dt => {
@@ -35,12 +44,18 @@ var Robot = props => {
       iframe = (iframe+ self.bounceOffset) % 6;
       headOffset =     [0,1,2,3,2,1][iframe];
       torsoOffset =    [0,1,2,1,0,0][iframe]; // For now, arms have the same offset as torso
-      [self.components[0], self.components[1]].forEach(s => s.y += headOffset); // head sprites
+      [self.components[0], self.components[1], self.components[6]].forEach(s => s.y += headOffset); // head sprites
       [self.components[2], self.components[3],self.components[4],self.components[5]].forEach(s => s.y += torsoOffset) // torso and arm sprites
     }
     self.setSprites = () => {
       var f = self.rc.map((pi, i) => partsConfig[i][pi])
       self.components.forEach((c,i) => c.frames = f[~~(i/2)])
+      if (bigHeads.indexOf(self.rc[0]) != -1) {
+        self.components[0].dx = -8;
+        [self.components[0], self.components[1]].forEach(s => {
+          s.small = false;
+        });
+      }
     }
     self.arms = [false, false]; // Both down
     self.flipArm = (left) => {
@@ -52,27 +67,33 @@ var Robot = props => {
       self.headPosition += dir;
       if (self.headPosition < 0) self.headPosition = 0; // TODO: Compress
       if (self.headPosition > 2) self.headPosition = 2; // TODO: Compress
-      self.components[1].visible = self.headPosition == 1;
       if (self.headPosition != 1) {
-        self.components[0].dx = 8;
-        self.components[0].flipped = self.headPosition == 0;
-        self.components[0].frames = partsConfig[3][self.rc[0]];
+        self.components[6].visible = true;
+        [self.components[0], self.components[1]].forEach(s => s.visible = false);
+        self.components[6].flipped = self.headPosition == 0;
       } else {
-        self.components[0].frames = partsConfig[0][self.rc[0]];
-        self.components[0].flipped = false;
-        self.components[0].dx = 0;
+        self.components[6].visible = false;
+        [self.components[0], self.components[1]].forEach(s => s.visible = true);
       }
 
     }
     self.draw = noop; // We don't draw this gameObject, it's just a container
-    self.components = [...new Array(6)].map(x => GameObject([0, 0, [1], i+3, self.paletteIndex]));
+    self.components = [...new Array(7)].map(x => GameObject([0, 0, [1], i+3, self.paletteIndex]));
     var c = self.components;
     c.forEach((x, i) => {
-      x.dx = i < 4 ? (i%2) * 16 : -8 + (i%2) * 32;
+      x.small = true; // Unless big head
+      x.dx = i < 4 ? (i%2) * 8 : -8 + (i%2) * 24;
       x.dy = i < 4 ? ~~(i/2) * 16 : 16;
       x.flipped = (i%2) != 0;
-      mainScene.add(c[5-i]);
+      mainScene.add(c[6-i]);
+      if (i == 6) { // Sidehead
+        x.dy = 0;
+        x.dx = 0;
+        x.small = false;
+        x.visible = false;
+      }
     });
+    
     self.setPalette = (index) => {
       c.forEach(x=>x.paletteIndex=index);
     };

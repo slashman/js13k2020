@@ -67,9 +67,8 @@ player.bounceOffset = 0;
 mainScene.add(player);
 mainScene.following = player;
 
-
 var robot3 = Robot([95, 65, [3, 4], 8, 0]);
-robot3.rc = [0, 1, 0];
+robot3.rc = [0, 1, 0, 0];
 robot3.setSprites();
 robot3.bounceOffset = 3;
 mainScene.add(robot3);
