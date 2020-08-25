@@ -41,10 +41,10 @@ var paletteRenderer = {
             this.palettes[paletteId][index] = colorCycle[cycleIndex];
         }, 200);
     },
-    draw: function (spriteId, x, y, pi, flip, vflip, small) {
-        this.drawRaw(small ? this.sprites8[spriteId] : this.sprites[spriteId], x, y, pi, flip, vflip, small);
+    draw: function (spriteId, x, y, pi, flip, vflip, small, overrides) {
+        this.drawRaw(small ? this.sprites8[spriteId] : this.sprites[spriteId], x, y, pi, flip, vflip, small, overrides );
     },
-    drawRaw: function (sprite, px, py, pi, flip, vflip, small) { // TODO: Just receive a sprite and use the flip and vflip attributes
+    drawRaw: function (sprite, px, py, pi, flip, vflip, small, overrides) { // TODO: Just receive a gameObject and use its attributes
         var w = small ? 8 : 16;
         for (var y = 0; y < 16; y++) {
             for (var x = 0; x < w; x++) {
@@ -60,6 +60,8 @@ var paletteRenderer = {
                 }
                 var palette = this.palettes[pi];
                 var color = palette[parseInt(index, 10)];
+                if (overrides[index])
+                    color = overrides[index];
                 setPixel(x + px, y + py + vfo, color.r, color.g, color.b, 255);
             }
         }
@@ -103,6 +105,17 @@ var blueRobot2 = [
 ];
 
 var orangeRobot = [
+    "#FF0000", // Transparency
+    "#260503", // Outline
+    "#fbff86", // Shine
+    "#e83b3b", // Cold Light
+    "#fb6b1d", // Warm Light
+    "#7a3045", // Cold Base
+    "#cd683d", // Base
+    "#fbb954"  // Warm Base
+];
+
+var shadowRobot = [
     "#FF0000", // Transparency
     "#260503", // Outline
     "#fbff86", // Shine
@@ -184,3 +197,60 @@ paletteRenderer.palettes = paletteRenderer.palettes.map(palette => palette.map(h
 setInterval(function() {
     paletteRenderer.shiftPalette(3, 1, 7, 1);
 }, 100);
+
+function randomPastel(){
+    var array = hslToRgb(Math.random(), 0.7, 0.5);
+    return {
+        r: array[0], g: array[1], b: array[2]
+    }
+}
+
+/**
+ * Converts an HSL color value to RGB. Conversion formula
+ * adapted from http://en.wikipedia.org/wiki/HSL_color_space.
+ * Assumes h, s, and l are contained in the set [0, 1] and
+ * returns r, g, and b in the set [0, 255].
+ *
+ * @param   {number}  h       The hue
+ * @param   {number}  s       The saturation
+ * @param   {number}  l       The lightness
+ * @return  {Array}           The RGB representation
+ */
+function hslToRgb(h, s, l){
+    var r, g, b;
+
+    if(s == 0){
+        r = g = b = l; // achromatic
+    }else{
+        var hue2rgb = function hue2rgb(p, q, t){
+            if(t < 0) t += 1;
+            if(t > 1) t -= 1;
+            if(t < 1/6) return p + (q - p) * 6 * t;
+            if(t < 1/2) return q;
+            if(t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+            return p;
+        }
+
+        var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+        var p = 2 * l - q;
+        r = hue2rgb(p, q, h + 1/3);
+        g = hue2rgb(p, q, h);
+        b = hue2rgb(p, q, h - 1/3);
+    }
+
+    return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
+}
+
+function darker(rgb){
+    var percent = 70;
+    var r = rgb.r;
+    var g = rgb.g;
+    var b = rgb.b;
+    r = Math.floor(r - (256 - r) * percent / 100);
+    g = Math.floor(g - (256 - g) * percent / 100);
+    b = Math.floor(b - (256 - b) * percent / 100);
+    if (r < 0) r = 0;
+    if (g < 0) g = 0;
+    if (b < 0) b = 0;
+    return {r,g,b};
+  }

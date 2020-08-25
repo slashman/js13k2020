@@ -10,14 +10,14 @@ mainScene.limit = [0, 500]
 var map = [
   "11111111111111111111",
   "11111111111111111111",
-  "00000000000002000300",
-  "00000002000000000000",
-  "00030000000000020000",
+  "11000000000000000011",
+  "11000000000000000011",
+  "11000000000000000011",
+  "11000000000000000011",
+  "11000000000000000011",
+  "11000000000000000011",
   "11111111111111111111",
-  "11111111111111111111",
-  "00000001110200000000",
-  "00020001110000020000",
-  "00000001110300000000"
+  "11111111111111111111"
 ];
 
 var indexToSprite = [ // Maps the map above to sprite and palette indexes 
@@ -46,32 +46,43 @@ for (var y = 0; y < map.length; y++) {
 }
 
 var randomY = [];
-for (var i = 0; i < 40; i++) {
-  randomY.push(rando(0, 100));
+for (var i = 0; i < 30; i++) {
+  randomY.push(rando(-30, 130));
 }
 randomY.sort((a,b) => a-b);
 
-for (var i = 0; i < 40; i++) {
-  var robot = Robot([rando(0, 300), randomY[i], [], 8, rando(0,2)]);
+for (var i = 0; i < 30; i++) {
+  var rx = rando(0, 320);
+  var ry = randomY[i];
+  if (Math.abs(ry - 60) + Math.abs(rx - 100) < 90) { i--; continue;}
+  if (Math.abs(ry - 60) + Math.abs(rx - 200) < 90) { i--; continue;}
+  var robot = Robot([rx, ry, [], 8, 1]);
   robot.rc = [rando(0, 4), rando(0, 4), rando(0, 5), 4]; // robot config, [head, torso, wheels]
   robot.setSprites();
   robot.bounceOffset = rando(0,4);
   robot.flipArm(rando(0,10) > 4);
+  var warmBase = randomPastel();
+  var base = darker(warmBase);
+  var coldBase = darker(base);
+  robot.overridePalette(5, coldBase);
+  robot.overridePalette(6, base);
+  robot.overridePalette(7, warmBase);
   mainScene.add(robot);
 }
 
-var player = MainCharacter([60, 60, [3, 4], 8, 0]);
+var player = MainCharacter([100, 60, [3, 4], 8, 0]);
 player.rc = [0, 0, 0, 3]; // robot config, [head, torso, wheels] // TODO: head and sidehead are the same
 player.setSprites();
 player.bounceOffset = 0;
 mainScene.add(player);
-mainScene.following = player;
+mainScene.following = player; // TODO: Remove?
 
-var robot3 = Robot([95, 65, [3, 4], 8, 0]);
-robot3.rc = [0, 1, 0, 0];
-robot3.setSprites();
-robot3.bounceOffset = 3;
-mainScene.add(robot3);
+var enemy = Robot([200, 60, [3, 4], 8, 2]);
+enemy.rc = [rando(0, 4), rando(0, 4), rando(0, 5), 4];
+enemy.setSprites();
+enemy.bounceOffset = 3;
+mainScene.add(enemy);
+
 var seq = sequenceVisualizer({ x: 0, instrument: 0 });
 mainScene.add(seq);
 console.log('seq visualizer')
@@ -91,12 +102,12 @@ var theBeat = () => {
   }
   var toggleBeat = danceFrame % 2 == 0;
   //robot3.x += 6*(toggleBeat?-1:1); 
-  robot3.setPalette(toggleBeat?0:1);
+  //enemy.setPalette(toggleBeat?0:1);
   //if (danceFrame%3 == 0)
-    robot3.flipArm(danceFrame%4 == 0)
+  enemy.flipArm(danceFrame%4 == 0)
 
 }
-console.log(robot3)
+
 var buffer = zzfxM(...deepMX);    // Generate the sample data
 
 var node = zzfxP(...buffer);

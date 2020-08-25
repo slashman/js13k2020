@@ -114,6 +114,10 @@ var Robot = props => {
       keyOnBeat.performance = performance;
       console.log(value, fullBeatSequence[keyOnBeat.beat] ? 'ok' : `${fullBeatSequence[0][keyOnBeat.beat]} ${fullBeatSequence[1][keyOnBeat.beat]}`)
     }
+
+    self.overridePalette = function(index, color) {
+      self.components.forEach(c => c.overridePalette(index, color));
+    };
     
     return self;
   };
