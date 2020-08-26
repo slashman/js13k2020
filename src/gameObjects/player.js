@@ -10,7 +10,7 @@ var basePlayerStat = {
 
 
 var MainCharacter = props => {
-  var self = Robot(props);
+  var self = Robot(props, dancersScene);
   var nextDash = -1;
   self.checkInput = key => {
     switch (key) {

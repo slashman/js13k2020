@@ -3,9 +3,11 @@
 // initialize the game
 // setup game player, items and main scene
 
-var mainScene = Scene();
-mainScene.viewport = [0, 0, 500, 500]
-mainScene.limit = [0, 500]
+var discoScene = Scene();
+discoScene.viewport = [0, 0, 500, 500] // Maybe remove
+discoScene.limit = [0, 500] // Maybe remove
+var dancersScene = Scene();
+var uiScene = Scene();
 
 var map = [
   "11111111111111111111",
@@ -40,7 +42,7 @@ for (var y = 0; y < map.length; y++) {
     }
     spriteData.forEach(sd => {
       var obj = GameObject([(SIXTEEN * scale) * x, (SIXTEEN * scale) * y, [sd.sprite], i+3, sd.palette]);
-      mainScene.add(obj);
+      discoScene.add(obj);
     });
   }
 }
@@ -51,12 +53,14 @@ for (var i = 0; i < 30; i++) {
 }
 randomY.sort((a,b) => a-b);
 
+var dancingRobots = [];
+
 for (var i = 0; i < 30; i++) {
   var rx = rando(0, 320);
   var ry = randomY[i];
   if (Math.abs(ry - 60) + Math.abs(rx - 100) < 90) { i--; continue;}
   if (Math.abs(ry - 60) + Math.abs(rx - 200) < 90) { i--; continue;}
-  var robot = Robot([rx, ry, [], 8, 1]);
+  var robot = Robot([rx, ry, [], 8, 1], discoScene);
   robot.rc = [rando(0, 4), rando(0, 4), rando(0, 5), 4]; // robot config, [head, torso, wheels]
   robot.setSprites();
   robot.bounceOffset = rando(0,4);
@@ -67,27 +71,30 @@ for (var i = 0; i < 30; i++) {
   robot.overridePalette(5, coldBase);
   robot.overridePalette(6, base);
   robot.overridePalette(7, warmBase);
-  mainScene.add(robot);
+  dancingRobots.push(robot);
+  discoScene.add(robot);
 }
 
 var player = MainCharacter([100, 60, [3, 4], 8, 0]);
 player.rc = [0, 0, 0, 3]; // robot config, [head, torso, wheels] // TODO: head and sidehead are the same
 player.setSprites();
 player.bounceOffset = 0;
-mainScene.add(player);
-mainScene.following = player; // TODO: Remove?
+dancersScene.add(player);
+dancersScene.following = player; // TODO: Remove?
 
-var enemy = Robot([200, 60, [3, 4], 8, 2]);
+var enemy = Robot([200, 60, [3, 4], 8, 2], dancersScene);
 enemy.rc = [rando(0, 4), rando(0, 4), rando(0, 5), 4];
 enemy.setSprites();
 enemy.bounceOffset = 3;
-mainScene.add(enemy);
+dancersScene.add(enemy);
 
 var seq = sequenceVisualizer({ x: 0, instrument: 0 });
-mainScene.add(seq);
+uiScene.add(seq);
 console.log('seq visualizer')
 console.log(seq )
-sceneManager.add(mainScene);
+sceneManager.add(discoScene);
+sceneManager.add(dancersScene);
+sceneManager.add(uiScene);
 
 paletteRenderer.cyclePaletteIndex(1, 3, ["#e82b3b", "#d81b2b", "#c80b1b", "#b8000b"]);
 paletteRenderer.cyclePaletteIndex(1, 4, ["#fb6b1d", "#eb5b0d", "#db4b00", "#cb3b00"]);

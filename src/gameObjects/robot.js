@@ -32,8 +32,9 @@ var partsConfig = [
 
 var bigHeads = [2, 3, 4];
 
-var Robot = props => {
+var Robot = (props, scene) => {
     var self = GameObject(props);
+    self.scene = scene;
     var speed = 150;
     self.minX = self.x - 10;
     self.maxX = self.x + 10;
@@ -107,7 +108,7 @@ var Robot = props => {
       x.dx = i < 4 ? (i%2) * 8 : -8 + (i%2) * 24;
       x.dy = i < 4 ? ~~(i/2) * 16 : 16;
       x.flipped = (i%2) != 0;
-      mainScene.add(c[6-i]);
+      self.scene.add(c[6-i]);
       if (i == 6) { // Sidehead
         x.dy = 0;
         x.dx = 0;
