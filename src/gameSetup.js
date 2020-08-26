@@ -6,10 +6,11 @@
 var discoScene = Scene();
 discoScene.viewport = [0, 0, 500, 500] // Maybe remove
 discoScene.limit = [0, 500] // Maybe remove
+var jungleScene = Scene();
 var dancersScene = Scene();
 var uiScene = Scene();
 
-var map = [
+var discoMap = [
   "11111111111111111111",
   "11111111111111111111",
   "11000000000000000011",
@@ -22,30 +23,53 @@ var map = [
   "11111111111111111111"
 ];
 
+var jungleMap = [
+  "22222222222222222222",
+  "22222222222222222222",
+  "22222222222222222222",
+  "22322222222222222222",
+  "22422222222222232222",
+  "22522222222222242222",
+  "22222222222222252222",
+  "22222222222222222222",
+  "22222222222222222222",
+  "22222222222222222222",
+];
+
 var indexToSprite = [ // Maps the map above to sprite and palette indexes 
   { sprite: 7, palette: 3 },
   { sprites: [{ sprite: 16, palette: 3 }, { sprite: 32, palette: 4 }] },
-  { sprite: 7, palette: 3 },
-  { sprite: 7, palette: 3 }
+  { sprite: 40, palette: 5 },
+  { sprite: 33, palette: 5 },
+  { sprite: 33+8, palette: 5 },
+  { sprite: 33+16, palette: 5 }
 ];
 
 var scale = 1;
 
-for (var y = 0; y < map.length; y++) {
-  for (var x = 0; x < map[y].length; x++) {
-    var char = map[y].charAt(x);
-    var spriteData = indexToSprite[parseInt(char, 10)];
-    if (!spriteData.sprites) {
-      spriteData = [spriteData];
-    } else {
-      spriteData = spriteData.sprites;  
+function loadMap(map, scene) {
+  for (var y = 0; y < map.length; y++) {
+    for (var x = 0; x < map[y].length; x++) {
+      var char = map[y].charAt(x);
+      var spriteData = indexToSprite[parseInt(char, 10)];
+      if (!spriteData.sprites) {
+        spriteData = [spriteData];
+      } else {
+        spriteData = spriteData.sprites;  
+      }
+      spriteData.forEach(sd => {
+        var obj = GameObject([(SIXTEEN * scale) * x, (SIXTEEN * scale) * y, [sd.sprite], i+3, sd.palette]);
+        scene.add(obj);
+      });
     }
-    spriteData.forEach(sd => {
-      var obj = GameObject([(SIXTEEN * scale) * x, (SIXTEEN * scale) * y, [sd.sprite], i+3, sd.palette]);
-      discoScene.add(obj);
-    });
   }
 }
+
+loadMap(discoMap, discoScene);
+loadMap(jungleMap, jungleScene);
+
+jungleScene.active = false;
+jungleScene.brightness = 0;
 
 var randomY = [];
 for (var i = 0; i < 30; i++) {
@@ -93,6 +117,7 @@ uiScene.add(seq);
 console.log('seq visualizer')
 console.log(seq )
 sceneManager.add(discoScene);
+sceneManager.add(jungleScene);
 sceneManager.add(dancersScene);
 sceneManager.add(uiScene);
 
@@ -121,6 +146,11 @@ var theBeat = () => {
   }
 
 }
+
+setTimeout(() => discoScene.fadeOut(), 4000);
+setTimeout(() => { jungleScene.active = true; discoScene.active = false; jungleScene.fadeIn();}, 6000);
+setTimeout(() => jungleScene.fadeOut(), 8000);
+setTimeout(() => { jungleScene.active = false; discoScene.active = true; discoScene.fadeIn();}, 10000);
 
 var buffer = zzfxM(...deepMX);    // Generate the sample data
 
