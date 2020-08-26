@@ -11,11 +11,27 @@ var basePlayerStat = {
 
 var MainCharacter = props => {
   var self = Robot(props);
+  var nextDash = -1;
+  self.checkInput = key => {
+    switch (key) {
+      case inputs.SPACE:
+        self.dash(nextDash *= -1);
+        break
+      case inputs.S:
+        self.flipArm(1)
+        break
+      case inputs.L:
+        self.flipArm(0);
+        break
+      case inputs.D:
+        self.turnHead(-1);
+        break
+      case inputs.K:
+        self.turnHead(1);
+        break
+    }
+  }
   self.update = dt => {
-    if (keyMap & keys[inputs.LEFT])  self.dash(-1);
-    if (keyMap & keys[inputs.RIGHT]) self.dash(1);
-    /*if (keyMap & keys[inputs.UP])    self.v.y = -1.0;
-    if (keyMap & keys[inputs.DOWN])  self.v.y =  1.0;*/
     self._update(dt); // Robot
   }
   return self;
