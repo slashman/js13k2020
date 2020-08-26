@@ -21,6 +21,8 @@ var Scene = () => {
   var self = {
     x: 0,
     dx: 0,
+    brightness: 1,
+    fadeSpd: 0,
     active: true,
     children: [],
     following: undefined,
@@ -36,8 +38,24 @@ var Scene = () => {
     },
     applyToChildren: fn => { self.children.forEach(fn) },
     updateData: noop, // time, dt
+    updateFade: dt => {
+      if (!self.fading) {
+        return;
+      }
+      self.brightness += self.fadeSpd * dt;
+      if (self.brightness > 1) {
+        self.fading = false;
+        self.brightness = 1;
+      }
+      if (self.brightness < 0) {
+        self.fading = false;
+        self.brightness = 0;
+      }
+    },
     update: (time, dt) => {
       if (!self.active) return;
+      self.updateFade(dt)
+      
       self.applyToChildren( gameObject => {
         //if (gameObject.x + 24 > -self.x && gameObject.x < -self.x + 320) {
           gameObject.update(dt, time);
@@ -53,7 +71,7 @@ var Scene = () => {
       self.applyToChildren( gameObject => {
         //if (gameObject.x + 24 > -self.x && gameObject.x < -self.x + 310 && gameObject.visible) {
         if (gameObject.visible) { // TODO: Fix to make metronome visible
-          gameObject.draw();
+          gameObject.draw(self.brightness);
         }
       })
     },
@@ -66,6 +84,16 @@ var Scene = () => {
       }
       self.limit[0] = minLimit;
       self.limit[1] = maxLimit;
+    },
+    fadeIn: _ => {
+      self.fading = true;
+      self.fadeSpd = 1;
+      self.brightness = 0;
+    },
+    fadeOut: _ => {
+      self.fading = true;
+      self.fadeSpd = -1;
+      self.brightness = 1;
     }
   }
   return self;

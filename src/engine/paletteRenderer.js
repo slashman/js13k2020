@@ -41,10 +41,10 @@ var paletteRenderer = {
             this.palettes[paletteId][index] = colorCycle[cycleIndex];
         }, 200);
     },
-    draw: function (spriteId, x, y, pi, flip, vflip, small, overrides) {
-        this.drawRaw(small ? this.sprites8[spriteId] : this.sprites[spriteId], x, y, pi, flip, vflip, small, overrides );
+    draw: function (spriteId, x, y, pi, flip, vflip, small, overrides, brightness) {
+        this.drawRaw(small ? this.sprites8[spriteId] : this.sprites[spriteId], x, y, pi, flip, vflip, small, overrides, brightness);
     },
-    drawRaw: function (sprite, px, py, pi, flip, vflip, small, overrides) { // TODO: Just receive a gameObject and use its attributes
+    drawRaw: function (sprite, px, py, pi, flip, vflip, small, overrides, brightness) { // TODO: Just receive a gameObject and use its attributes
         var w = small ? 8 : 16;
         for (var y = 0; y < 16; y++) {
             for (var x = 0; x < w; x++) {
@@ -62,6 +62,9 @@ var paletteRenderer = {
                 var color = palette[parseInt(index, 10)];
                 if (overrides[index])
                     color = overrides[index];
+                if (brightness != 1) {
+                    color = fade(color, brightness);
+                }
                 setPixel(x + px, y + py + vfo, color.r, color.g, color.b, 255);
             }
         }
@@ -238,6 +241,20 @@ function darker(rgb){
     r = Math.floor(r - (256 - r) * percent / 100);
     g = Math.floor(g - (256 - g) * percent / 100);
     b = Math.floor(b - (256 - b) * percent / 100);
+    if (r < 0) r = 0;
+    if (g < 0) g = 0;
+    if (b < 0) b = 0;
+    return {r,g,b};
+  }
+
+
+function fade(rgb, brightness = 0.3){
+    var r = rgb.r;
+    var g = rgb.g;
+    var b = rgb.b;
+    r *= brightness;
+    g *= brightness;
+    b *= brightness;
     if (r < 0) r = 0;
     if (g < 0) g = 0;
     if (b < 0) b = 0;
