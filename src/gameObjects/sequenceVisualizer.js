@@ -4,8 +4,8 @@ var nextBeats = [];
 var onBeat = false;
 
 var fillRectPixel = (x, y, w, h, color) => {
-  for (var i = x; i < x + w && i < W; i++) {
-    for (var j = y; j < y + h && j < H; j++) {
+  for (var i = x<0?0:x; i < x + w && i < W; i++) {
+    for (var j = y<0?0:y; j < y + h && j < H; j++) {
       setPixel(i, j, ...color);
     }
   }
@@ -14,7 +14,7 @@ var dekkk;
 var sequenceVisualizer = props => {
   var banned = props.banned || [];
   var delta = 0;
-  var beatsDisplayed = 3;
+  var beatsDisplayed = 2;
   var spacing = W / (beatsDisplayed*2);
   var status = 0;
   var colors = [
@@ -24,6 +24,9 @@ var sequenceVisualizer = props => {
     [250, 0, 0],
   ];
   var line = [150, 2, 10, colors[2]];
+
+  var line2 = [152, 1, 6, colors[2]];
+
   return {
     visible: true,
     x: props.x,
@@ -53,6 +56,12 @@ var sequenceVisualizer = props => {
         var des = ~~((i + delta) * spacing) - 1;
         fillRectPixel(des, ...line);
         fillRectPixel(W - des - 2, ...line);
+        
+        var a = ~~(des + spacing * 0.5);
+        if (a < W/2) {
+          fillRectPixel(a, ...line2);
+          fillRectPixel(~~(W - des - 2 - spacing*0.5), ...line2);
+        }
       }
     }
   }

@@ -35,7 +35,7 @@ var draw = _ => {
     graphics.fillStyle = "red";
     graphics.fillText(` key on beat: ${keyOnBeat.beat}`, 0, 180);
     graphics.fillText(`current_tick: ${current_tick}`, 0, 205);
-    graphics.fillText(` onBeat: ${onBeat}`, 0, 230);
+    graphics.fillText(` performance: ${keyOnBeat.performance}`, 0, 230);
     //graphics.fillText(` performance: `, 0, 230);
   }
 

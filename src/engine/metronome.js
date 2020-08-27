@@ -15,7 +15,8 @@ let past = Date.now();
 let startTime = null;
 
 getBeatFor = (time) => {
-  return (time - startTime) / timeBetweenBeats;
+  console.log('time for beat', (time - startTime));
+  return (time - startTime) / (timeBetweenBeats);
 }
 
 updateMetronome = () => {

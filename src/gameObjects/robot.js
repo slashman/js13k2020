@@ -127,15 +127,51 @@ var Robot = (props, scene) => {
     self.tryBeat = key => {
       if (key == self.lastKey) {
         // Nope. Must be different everytime (testing)
+        // It could be the same, for example a turn head complete3
         return;
       }
       var value = getBeatFor(Date.now());
-      var diff = ((~~value) + 0.5 - value)*100;
-      var performance = diff*diff;
       keyOnBeat.rawBeat = value;
       keyOnBeat.beat = ~~value;
-      keyOnBeat.performance = performance;
-      console.log(value, fullBeatSequence[keyOnBeat.beat] ? 'ok' : `${fullBeatSequence[0][keyOnBeat.beat]} ${fullBeatSequence[1][keyOnBeat.beat]}`)
+      var diff = keyOnBeat.rawBeat - keyOnBeat.beat;
+      /*var performance = ~~(diff);
+      keyOnBeat.performance = performance<50?'perfect':performance<625?'good':performance<1250?'ok':'neh';
+      if (diff<0) {
+        keyOnBeat.performance = performance<50?'perfect':performance<625?'ok':'neh';
+        keyOnBeat.beat += 1;
+      }
+      if (keyOnBeat.beat % 2 == 1) {
+        //bad
+        console.log('miss');
+        keyOnBeat.performance = 'bad';
+      }*/
+
+      // change the approach, check the expected time, not the interval, and review the difference in time
+      // take the time to calculate how accurate was the key
+      // so an absolute value no a proportional one
+      
+      console.log('')
+      console.log('checking>>>>>>>')
+      if (diff > 0.9 ) {
+        keyOnBeat.beat += 1;
+      }
+      if(diff < 0.2) {
+        keyOnBeat.performance = 'perfect';
+      } else if(diff < 0.4) {
+        keyOnBeat.performance = 'good';
+      } else if(diff < 0.6) {
+        keyOnBeat.performance = 'bad';
+      } else {
+        keyOnBeat.performance = 'good';
+      }
+      
+      console.log('beat', keyOnBeat.beat);
+      console.log('diff', diff)
+      console.log('value', value)
+      //console.log(performance)
+      console.log(keyOnBeat.performance)
+      //console.log(keyOnBeat.rawBeat -keyOnBeat.beat, keyOnBeat.performance);
+      //console.log(value, fullBeatSequence[keyOnBeat.beat] ? 'ok' : `${fullBeatSequence[0][keyOnBeat.beat]} ${fullBeatSequence[1][keyOnBeat.beat]}`)
     }
 
     self.overridePalette = function(index, color) {
