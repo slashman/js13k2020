@@ -58,9 +58,19 @@ var sequenceVisualizer = props => {
         fillRectPixel(W - des - 2, ...line);
         
         var a = ~~(des + spacing * 0.5);
+        var b = ~~(W - des - 2 - spacing * 0.5);
         if (a < W/2) {
-          fillRectPixel(a, ...line2);
-          fillRectPixel(~~(W - des - 2 - spacing*0.5), ...line2);
+          if (player.combo >= 4) {
+            fillRectPixel(a, ...line2);
+            fillRectPixel(b, ...line2);
+          }
+          if (player.combo >= 16) {
+            fillRectPixel(a - spacing*0.25, ...line2);
+            fillRectPixel(a - spacing*0.75, ...line2);
+            fillRectPixel(b + spacing*0.25, ...line2);
+            fillRectPixel(b + spacing*0.75, ...line2);
+          }
+          
         }
       }
     }

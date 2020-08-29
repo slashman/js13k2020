@@ -34,7 +34,7 @@ var draw = _ => {
     graphics.strokeStyle = '#FFF'
     graphics.fillStyle = "red";
     graphics.fillText(` key on beat: ${keyOnBeat.beat}`, 0, 180);
-    graphics.fillText(`current_tick: ${current_tick}`, 0, 205);
+    graphics.fillText(`       combo: ${player.combo}`, 0, 205);
     graphics.fillText(` performance: ${keyOnBeat.performance}`, 0, 230);
     //graphics.fillText(` performance: `, 0, 230);
   }

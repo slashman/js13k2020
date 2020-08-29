@@ -1,5 +1,5 @@
 
-var bpm = 125;
+var bpm = 120;
 var playingMusic = true;
 //var time_signature_botton = 4;
 //var beat_interval = 60 / bpm * 4 / time_signature_botton;
@@ -16,7 +16,7 @@ let startTime = null;
 
 getBeatFor = (time) => {
   console.log('time for beat', (time - startTime));
-  return (time - startTime) / (timeBetweenBeats);
+  return (time - startTime + timeBetweenBeats/2) / (timeBetweenBeats);
 }
 
 updateMetronome = () => {

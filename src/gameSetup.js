@@ -132,7 +132,7 @@ var theBeat = () => {
   if (danceFrame > 9) {
     danceFrame = 0;
   }
-  var toggleBeat = danceFrame % 2 == 0;
+  //var toggleBeat = danceFrame % 2 == 0;
   //robot3.x += 6*(toggleBeat?-1:1); 
   //enemy.setPalette(toggleBeat?0:1);
   //if (danceFrame%3 == 0)
