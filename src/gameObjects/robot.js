@@ -2,9 +2,10 @@ var partsConfig = [
 [ // heads
     [1], //x8
     [2], //x8
+    [3], //x8
+    [8], //x8
     [2], //16
     [3], //16
-    [4], //16
 ],
 [ // torsos
     [32],
@@ -24,13 +25,14 @@ var partsConfig = [
 [ // Side Heads
     [24],
     [25],
-    [24],
-    [24],
-    [24]
+    [26],
+    [27],
+    [28],
+    [29],
 ]
 ];
 
-var bigHeads = [2, 3, 4];
+var bigHeads = [4, 5];
 
 var Robot = (props, scene) => {
   var self = GameObject(props);
@@ -64,7 +66,7 @@ var Robot = (props, scene) => {
     var iframe = ~~self.frame;
     iframe = (iframe+ self.bounceOffset) % 6;
     headOffset =     [0,1,2,3,2,1][iframe];
-    torsoOffset =    [0,1,2,1,0,0][iframe]; // For now, arms have the same offset as torso
+    torsoOffset =    [0,1,2,2,1,0][iframe]; // For now, arms have the same offset as torso
     [self.components[0], self.components[1], self.components[6]].forEach(s => s.y += headOffset); // head sprites
     [self.components[2], self.components[3],self.components[4],self.components[5]].forEach(s => s.y += torsoOffset) // torso and arm sprites
   }
@@ -83,20 +85,19 @@ var Robot = (props, scene) => {
     self.arms[left ? 0 : 1] = !self.arms[left ? 0 : 1];
     self.arms.forEach((s,i) => self.components[4+i].vFlip = s);
   }
-  self.headPosition = 1; // Center;
-  self.turnHead = (dir) => {
-    self.headPosition += dir;
-    if (self.headPosition < 0) self.headPosition = 0; // TODO: Compress
-    if (self.headPosition > 2) self.headPosition = 2; // TODO: Compress
-    if (self.headPosition != 1) {
-      self.components[6].visible = true;
-      [self.components[0], self.components[1]].forEach(s => s.visible = false);
-      self.components[6].flipped = self.headPosition == 0;
-    } else {
-      self.components[6].visible = false;
-      [self.components[0], self.components[1]].forEach(s => s.visible = true);
-    }
 
+  self.headPosition = 1; // Center;
+  var selfPalette = paletteRenderer.palettes[self.paletteIndex]
+  self.turnHead = (dir) => {
+    self.headPosition = wrap(self.headPosition + dir, 4);
+    self.components[6].visible = self.headPosition % 2 == 0;
+    self.components[6].flipped = self.headPosition === 0;
+    [self.components[0], self.components[1]].forEach(s => {
+      s.visible = !self.components[6].visible
+      self.headPosition === 3
+        ? [2,3,4,5,6,7].forEach((i) => s.paletteOverrides[i] = selfPalette[i<6?1:5])
+        : s.paletteOverrides = {};
+    });
   }
   self.dash = (dir)=> {
     self.v.x = dir;

@@ -85,7 +85,7 @@ for (var i = 0; i < 30; i++) {
   if (Math.abs(ry - 60) + Math.abs(rx - 100) < 90) { i--; continue;}
   if (Math.abs(ry - 60) + Math.abs(rx - 200) < 90) { i--; continue;}
   var robot = Robot([rx, ry, [], 8, 1], discoScene);
-  robot.rc = [rando(0, 4), rando(0, 4), rando(0, 5), 4]; // robot config, [head, torso, wheels]
+  robot.rc = [dancerHead = rando(0, 4), rando(0, 4), rando(0, 5), dancerHead]; // robot config, [head, arms, torso, sideHead]
   robot.setSprites();
   robot.bounceOffset = rando(0,4);
   robot.flipArm(rando(0,10) > 4);
@@ -100,14 +100,14 @@ for (var i = 0; i < 30; i++) {
 }
 
 var player = MainCharacter([100, 60, [3, 4], 8, 0]);
-player.rc = [0, 0, 0, 3]; // robot config, [head, torso, wheels] // TODO: head and sidehead are the same
+player.rc = [pcHead = 0, 0, 0, pcHead]; // robot config, [head, arms, torso, sideHead]
 player.setSprites();
 player.bounceOffset = 0;
 dancersScene.add(player);
 dancersScene.following = player; // TODO: Remove?
 
 var enemy = Robot([200, 60, [3, 4], 8, 2], dancersScene);
-enemy.rc = [rando(0, 4), rando(0, 4), rando(0, 5), 4];
+enemy.rc = [enemyHead = rando(0, 4), rando(0, 4), rando(0, 5), enemyHead];
 enemy.setSprites();
 enemy.bounceOffset = 3;
 dancersScene.add(enemy);

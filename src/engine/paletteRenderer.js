@@ -62,9 +62,8 @@ var paletteRenderer = {
                 var color = palette[parseInt(index, 10)];
                 if (overrides[index])
                     color = overrides[index];
-                if (brightness != 1) {
+                if (brightness != 1) 
                     color = fade(color, brightness);
-                }
                 setPixel(x + px, y + py + vfo, color.r, color.g, color.b, 255);
             }
         }

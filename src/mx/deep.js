@@ -1,3 +1,7 @@
+// To convert the songs:
+// From ZzFXM  tools  convert
+// node --experimental-modules cli.js INPUT_FILE.mod OUTPUT_FILE.js -p
+
 /*
   [ zzfx instruments ],
   [ patterns ],
