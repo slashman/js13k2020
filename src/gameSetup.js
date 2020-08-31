@@ -3,6 +3,8 @@
 // initialize the game
 // setup game player, items and main scene
 
+var gameState = 'menu';
+
 var discoScene = Scene();
 discoScene.viewport = [0, 0, 500, 500] // Maybe remove
 discoScene.limit = [0, 500] // Maybe remove
@@ -147,19 +149,30 @@ var theBeat = () => {
 
 }
 
-setTimeout(() => discoScene.fadeOut(), 4000);
-setTimeout(() => { jungleScene.active = true; discoScene.active = false; jungleScene.fadeIn();}, 6000);
-setTimeout(() => jungleScene.fadeOut(), 8000);
-setTimeout(() => { jungleScene.active = false; discoScene.active = true; discoScene.fadeIn();}, 10000);
 
 var buffer = zzfxM(...deepMX);    // Generate the sample data
-
-var node = zzfxP(...buffer);
-node.loop = true;
-console.log(deepMX[1][0])
-past = Date.now();
-node.start();
-console.log(node);
-updateMetronome();
-
+const startSong = _ => {
+  gameState = 'play';
+  startTime = null;
+  current_tick = -1;
+  player.combo = 0;
+  player.focus = 0;
+  player.score = 0;
+  player.stats = {};
+  player.maxCombo = 0;
+  var node = zzfxP(...buffer);
+  setTimeout(() => discoScene.fadeOut(), 4000);
+  setTimeout(() => { jungleScene.active = true; discoScene.active = false; jungleScene.fadeIn();}, 6000);
+  setTimeout(() => jungleScene.fadeOut(), 8000);
+  setTimeout(() => { jungleScene.active = false; discoScene.active = true; discoScene.fadeIn();}, 10000);
+  node.start();
+  playingMusic = true;
+  past = Date.now();
+  updateMetronome();
+  console.log(node);
+  node.onended = _ => {
+    playingMusic = false;
+    gameState = 'menu';
+  };
+}
 

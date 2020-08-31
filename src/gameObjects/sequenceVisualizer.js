@@ -31,15 +31,16 @@ var sequenceVisualizer = props => {
     visible: true,
     x: props.x,
     update: (dt, time) => {
+      if (!playingMusic) return;
       // startTime from metronome
       var base = timeBetweenBeats*4
       delta = ((Date.now() - startTime) % base)/base;
       if (onBeat) {
-         if (keyOnBeat.beat == current_tick){
-           status = 1;  // good!
-          } else {
-            status = 2; // miss!
-          }
+        if (keyOnBeat.beat == current_tick){
+          status = 1;  // good!
+        } else {
+          status = 2; // miss!
+        }
       } else {
         if (keyOnBeat.beat == current_tick) {
           status = 3; // bad!
@@ -49,6 +50,7 @@ var sequenceVisualizer = props => {
       }
     },
     draw: _ => {
+      if (!playingMusic) return;
       fillRectPixel(0, 150, W, 10, [0, 20, 20]);
       fillRectPixel(W*0.5-8, 147, 16, 16, colors[status]);
       fillRectPixel(W*0.5-7, 148, 14, 14, onBeat?colors[2]:colors[0]);

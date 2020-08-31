@@ -33,9 +33,12 @@ var draw = _ => {
     graphics.font = "26px Courier New";
     graphics.strokeStyle = '#FFF'
     graphics.fillStyle = "red";
-    graphics.fillText(` key on beat: ${keyOnBeat.beat}`, 0, 180);
-    graphics.fillText(`       combo: ${player.combo}`, 0, 205);
-    graphics.fillText(` performance: ${keyOnBeat.performance}`, 0, 230);
+    graphics.fillText(`score: ${player.score}`, 0, 180);
+    graphics.fillText(`combo: ${player.combo}`, 0, 205);
+    graphics.fillText(`${keyOnBeat.performance}`, 200, 180);
+    graphics.fillText(`focus: ${player.focus}`, 180, 205);
+    graphics.fillText(`maxCombo: ${player.maxCombo}`, 0, 230);
+
     //graphics.fillText(` performance: `, 0, 230);
   }
 
