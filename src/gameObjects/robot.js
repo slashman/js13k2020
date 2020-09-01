@@ -37,6 +37,10 @@ var bigHeads = [4, 5];
 var Robot = (props, scene) => {
   var self = GameObject(props);
   self.combo = 0;
+  self.score = 0;
+  self.focus = 0;
+  self.maxCombo = 0;
+  self.stats = {};
   self.scene = scene;
   var speed = 150;
   self.minX = self.x - 10;
@@ -127,32 +131,23 @@ var Robot = (props, scene) => {
   self.flipArm(false);
 
   self.tryBeat = key => {
-    if (key == self.lastKey) {
-      // Nope. Must be different everytime (testing)
-      // It could be the same, for example a turn head complete3
-      return;
-    }
     var value = getBeatFor(Date.now());
+    if ((~~value) == keyOnBeat.beat) return; // beat already hit
     keyOnBeat.rawBeat = value;
     keyOnBeat.beat = ~~value;
     var diff = keyOnBeat.rawBeat - keyOnBeat.beat - 0.5;
     
-    console.log('')
-    console.log('checking>>>>>>>')
-
     // permisive beat
     var intervals = [0.2, 0.5];
     var theBeat = keyOnBeat.beat % 4 == 0;
     if (!theBeat && self.combo < 4) {
-      console.log(`${keyOnBeat.beat} bad !combo4`, diff, diff * timeBetweenBeats);
-      keyOnBeat.performance = 'bad';
-      self.combo = 0;
+      //console.log(`${keyOnBeat.beat} bad !combo4`, diff, diff * timeBetweenBeats);
+      self.badKey();
       return;
     }
     if (keyOnBeat%2 == 1 && self.combo < 16) {
-      console.log(`${keyOnBeat.beat} bad !combo16`, diff, diff * timeBetweenBeats);
-      keyOnBeat.performance = 'bad';
-      self.combo = 0;
+      //console.log(`${keyOnBeat.beat} bad !combo16`, diff, diff * timeBetweenBeats);
+      self.badKey();
       return;
     }
     if (!theBeat) {
@@ -161,16 +156,18 @@ var Robot = (props, scene) => {
     diff = Math.abs(diff);
     if(diff < intervals[0]) {
       keyOnBeat.performance = 'perfect';
-      console.log(`${keyOnBeat.beat} perfect`, diff, diff * timeBetweenBeats);
-      self.combo += 1;
+      //console.log(`${keyOnBeat.beat} perfect`, diff, diff * timeBetweenBeats);
+      self.score += 100 + (7+self.focus)*self.combo;
+      self.addCombo();
+      self.addFocus(self.combo % 2 == 0 ? 1 : 0);
     } else if(diff < intervals[1]) {
       keyOnBeat.performance = 'good';
-      console.log(`${keyOnBeat.beat} good`, diff, diff * timeBetweenBeats)
-      self.combo += 1;
+      //console.log(`${keyOnBeat.beat} good`, diff, diff * timeBetweenBeats)
+      self.score += 50 + 5*self.combo;
+      self.addCombo();
+      self.addFocus(self.combo % 3 == 0 ? 1 : 0);
     } else {
-      keyOnBeat.performance = 'bad';
-      console.log(`${keyOnBeat.beat} bad`, diff, diff * timeBetweenBeats)
-      self.combo = 0;
+      self.badKey();
     }
     
     //console.log('beat', keyOnBeat.beat);
@@ -180,10 +177,29 @@ var Robot = (props, scene) => {
     //console.log(keyOnBeat.rawBeat -keyOnBeat.beat, keyOnBeat.performance);
     //console.log(value, fullBeatSequence[keyOnBeat.beat] ? 'ok' : `${fullBeatSequence[0][keyOnBeat.beat]} ${fullBeatSequence[1][keyOnBeat.beat]}`)
   }
-
+  
   self.overridePalette = function(index, color) {
     self.components.forEach(c => c.overridePalette(index, color));
   };
+
+  self.badKey = function() {
+    keyOnBeat.performance = 'bad';
+    self.addFocus(-2);
+  }
+
+  self.addCombo = function() {
+    self.combo +=1;
+    if (self.combo > self.maxCombo) self.maxCombo = self.combo;
+  }
+  
+  self.addFocus = function(val) {
+    self.focus += val;
+    self.focus = self.focus>5?5:self.focus;
+    if (self.focus < 0) {
+      self.focus = 0;
+      self.combo = 0;
+    }
+  }
   
   return self;
 };

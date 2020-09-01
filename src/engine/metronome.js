@@ -1,6 +1,6 @@
 
-var bpm = 120;
-var playingMusic = true;
+var bpm = 100;
+var playingMusic = false;
 //var time_signature_botton = 4;
 //var beat_interval = 60 / bpm * 4 / time_signature_botton;
 //var sixteenth_time = beat_interval / 16;
@@ -15,7 +15,6 @@ let past = Date.now();
 let startTime = null;
 
 getBeatFor = (time) => {
-  console.log('time for beat', (time - startTime));
   return (time - startTime + timeBetweenBeats/2) / (timeBetweenBeats);
 }
 
@@ -31,6 +30,8 @@ updateMetronome = () => {
   };
   var currentTickIndex = ~~((now - startTime) / timeBetweenBeats);
   if (current_tick != currentTickIndex) {
+    // check if the player miss the last beat
+    if (current_tick%4==0 && keyOnBeat.beat!=current_tick) player.addFocus(-1);
     current_tick = currentTickIndex;
     onBeat = !(current_tick%4);
     //onBeat = !!fullBeatSequence[current_tick];

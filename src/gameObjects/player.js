@@ -30,6 +30,7 @@ var MainCharacter = props => {
         self.turnHead(1);
         break
     }
+    self.stats[key] = self.stats[key] ? self.stats[key] + 1 : 1;
   }
   self.update = dt => {
     self._update(dt); // Robot
