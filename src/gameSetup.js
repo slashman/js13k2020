@@ -13,55 +13,76 @@ var dancersScene = Scene();
 var uiScene = Scene();
 
 var discoMap = [
-  "11111111111111111111",
-  "11111111111111111111",
-  "11000000000000000011",
-  "11000000000000000011",
-  "11000000000000000011",
-  "11000000000000000011",
-  "11000000000000000011",
-  "11000000000000000011",
-  "11111111111111111111",
-  "11111111111111111111"
+  "abababababababababab",
+  "babababababababababa",
+  "abababababababababab",
+  "babababababababababa",
+  "abababababababababab",
+  "babababababababababa",
+  "abababababababababab",
+  "babababababababababa",
+  "abababababababababab",
+  "babababababababababa"
 ];
 
 var jungleMap = [
-  "22222222222222222222",
-  "22222222222222222222",
-  "22222222222222222222",
-  "22322222222222222222",
-  "22422222222222232222",
-  "22522222222222242222",
-  "22222222222222252222",
-  "22222222222222222222",
-  "22222222222222222222",
-  "22222222222222222222",
+  "cccccccccccccccdcccc",
+  "cccccccccdcccccecccc",
+  "cccccccccecccccccccc",
+  "ccdccccccccccccccccc",
+  "cceccccccccccccdcccc",
+  "cccccccccccccccecccc",
+  "ccccccccccccccdccccc",
+  "ccccccdccccccceccccc",
+  "cccccceccccccccccccc",
+  "cccccccccccccccccccc",
 ];
 
-var indexToSprite = [ // Maps the map above to sprite and palette indexes 
-  { sprite: 7, palette: 3 },
-  { sprites: [{ sprite: 16, palette: 3 }, { sprite: 32, palette: 4 }] },
-  { sprite: 40, palette: 5 },
-  { sprite: 33, palette: 5 },
-  { sprite: 33+8, palette: 5 },
-  { sprite: 33+16, palette: 5 }
-];
+var gpiMap = [
+  "fffffffffhhfffffffff",
+  "ggggggggghhggggggggg",
+]
+
+var gpiBoard = {sprite: 27, small: true, palette: 9}
+
+var indexToSprite = { // Maps the map above to sprite and palette indexes 
+  a: { sprite: 32, palette: 7 },
+  b: { sprite: 33, palette: 7 },
+  c: { sprites: [{ sprite: 41, palette: 8 }, { sprite: 41+8, palette: 8 }] },
+  d: { sprite: 40, palette: 8 },
+  e: { sprite: 40+8, palette: 8 },
+  // GPI: Graphic Player Interface
+  f: { ...gpiBoard, vFlip: true },
+  g: { ...gpiBoard },
+  h: { parts: {sprites: [6,7,6+8,7+8], palette: 9, partIdx:0} },
+};
 
 var scale = 1;
 
-function loadMap(map, scene) {
+function loadMap(map, scene, offset = {x: 0, y: 0}) {
   for (var y = 0; y < map.length; y++) {
     for (var x = 0; x < map[y].length; x++) {
       var char = map[y].charAt(x);
-      var spriteData = indexToSprite[parseInt(char, 10)];
-      if (!spriteData.sprites) {
+      var spriteData = indexToSprite[char];
+      if (spriteData.parts) {
+        spriteData = [{...spriteData.parts, sprite: spriteData.parts.sprites[spriteData.parts.partIdx++]}]
+      } else if (!spriteData.sprites) {
         spriteData = [spriteData];
       } else {
         spriteData = spriteData.sprites;  
       }
       spriteData.forEach(sd => {
-        var obj = GameObject([(SIXTEEN * scale) * x, (SIXTEEN * scale) * y, [sd.sprite], i+3, sd.palette]);
+        var obj = GameObject([(SIXTEEN * scale) * (x + offset.x), (SIXTEEN * scale) * (y + offset.y), [sd.sprite], i+3, sd.palette]);
+        obj.small = sd.small || false
+        obj.vFlip = sd.vFlip || false
+        if (obj.vFlip) obj.y += 10
         scene.add(obj);
+        if (obj.small) {
+          var objComp = GameObject([obj.x+8, obj.y, obj.frames, obj.frameRate, obj.paletteIndex])
+          objComp.small = true
+          objComp.vFlip = obj.vFlip
+          scene.add(objComp)
+        }
       });
     }
   }
@@ -114,8 +135,15 @@ enemy.setSprites();
 enemy.bounceOffset = 3;
 dancersScene.add(enemy);
 
+var processorTL = GameObject([(SIXTEEN * scale) * 1, (SIXTEEN * scale) * 1, [6], 1, 9]);
+var processorTR = GameObject([(SIXTEEN * scale) * 2, (SIXTEEN * scale) * 1, [7], 1, 9]);
+var processorBL = GameObject([(SIXTEEN * scale) * 1, (SIXTEEN * scale) * 2, [6+8], 1, 9]);
+var processorBR = GameObject([(SIXTEEN * scale) * 2, (SIXTEEN * scale) * 2, [7+8], 1, 9]);
 var seq = sequenceVisualizer({ x: 0, instrument: 0 });
 uiScene.add(seq);
+loadMap(gpiMap, uiScene, {x:0, y: 8})
+
+
 console.log('seq visualizer')
 console.log(seq )
 sceneManager.add(discoScene);
@@ -127,6 +155,16 @@ paletteRenderer.cyclePaletteIndex(1, 3, ["#e82b3b", "#d81b2b", "#c80b1b", "#b800
 paletteRenderer.cyclePaletteIndex(1, 4, ["#fb6b1d", "#eb5b0d", "#db4b00", "#cb3b00"]);
 paletteRenderer.cyclePaletteIndex(0, 3, ["#08b23b", "#18c24b", "#28d25b", "#38e26b"]);
 paletteRenderer.cyclePaletteIndex(0, 4, ["#47f641", "#37ef31", "#27df21", "#17cf11"]);
+
+paletteRenderer.cyclePaletteIndex(7, 2, ["#CB71EF", "#D82DEB"]);
+paletteRenderer.cyclePaletteIndex(7, 3, ["#C7ADFF", "#CB71EF"]);
+paletteRenderer.cyclePaletteIndex(7, 4, ["#EBD1FF", "#C7ADFF", "#CB71EF", "#D82DEB"]);
+
+paletteRenderer.cyclePaletteIndex(7, 5, ["#E067B3", "#F4A4C4"]);
+paletteRenderer.cyclePaletteIndex(7, 6, ["#F4A4C4", "#FFDBDF"]);
+paletteRenderer.cyclePaletteIndex(7, 7, ["#FFF6F6", "#FFDBDF", "#F4A4C4", "#E067B3"]);
+
+paletteRenderer.cyclePaletteIndex(7, 1, ["#FFF6F6", "#FFFFFF", "#EBD1FF"]);
 
 var danceFrame = 0;
 var theBeat = () => {

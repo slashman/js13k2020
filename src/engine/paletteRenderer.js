@@ -162,6 +162,39 @@ var rosePalette = [
     "#000000"
 ];
 
+var dancefloorPalette = [
+    "#FF0000",
+    "#FFF6F6",
+    "#D82DEB",
+    "#CB71EF",
+    "#C7ADFF",
+    "#E067B3",
+    "#F4A4C4",
+    "#FFDBDF",
+]
+
+var forestPalette = [
+    "#44891A",
+    "#1B2632",
+    "#F7E26B",
+    "#493C2B",
+    "#A46422",
+    "#2F484E",
+    "#44891A",
+    "#A3CE27",
+]
+
+var boardPalette = [
+    "#221C1A",
+    "#221C1A",
+    "#FFF6F6",
+    "#FFD541",
+    "#FFFC40",
+    "#423934",
+    "#796755",
+    "#E4D2AA",
+]
+
 paletteRenderer.palettes = [
     blueRobot,
     blueRobot2,
@@ -170,6 +203,9 @@ paletteRenderer.palettes = [
     oceanPalette,
     grassPalette,
     rosePalette,
+    dancefloorPalette,
+    forestPalette,
+    boardPalette
 ];
 
 function hexToRgb(hex) {
