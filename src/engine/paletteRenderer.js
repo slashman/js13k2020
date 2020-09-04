@@ -195,6 +195,15 @@ var boardPalette = [
     "#E4D2AA",
 ]
 
+var beatLinesPalette = [
+    "#221C1A",
+    "#221C1A",
+    "#FFFFFF",
+    "#08B23B",
+    "#47F641",
+    "#47F641",
+]
+
 paletteRenderer.palettes = [
     blueRobot,
     blueRobot2,
@@ -205,7 +214,8 @@ paletteRenderer.palettes = [
     rosePalette,
     dancefloorPalette,
     forestPalette,
-    boardPalette
+    boardPalette,
+    beatLinesPalette
 ];
 
 function hexToRgb(hex) {

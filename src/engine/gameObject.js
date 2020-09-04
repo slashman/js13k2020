@@ -14,6 +14,8 @@ var GameObject = props => {
     paletteIndex: props[4],
     paletteOverrides: {},
     small: false,
+    offsetX: 0,
+    offsetY: 0,
     update: dt => {
       self.frame = (self.frame + self.frameRate * dt) % self.frames.length;
     },

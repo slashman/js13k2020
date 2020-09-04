@@ -38,12 +38,13 @@ var jungleMap = [
   "cccccccccccccccccccc",
 ];
 
+// The mirror property will be used to draw another sprite in front of the one
+// that needs to be mirrored. Something like what we do for the robotz heads.
+var gpiBoard = {sprite: 27, palette: 9, small: true, mirror: true}
 var gpiMap = [
   "fffffffffhhfffffffff",
   "ggggggggghhggggggggg",
 ]
-
-var gpiBoard = {sprite: 27, small: true, palette: 9}
 
 var indexToSprite = { // Maps the map above to sprite and palette indexes 
   a: { sprite: 32, palette: 7 },
@@ -58,6 +59,29 @@ var indexToSprite = { // Maps the map above to sprite and palette indexes
 };
 
 var scale = 1;
+
+function createComplements(obj, complements = ['tr','bl','br'], small = true) {
+  var offsets = {
+    tl: [0, 0, false], tr: [8, 0, false], bl: [0, 26, true], br: [8, 26, true]
+  }
+  var parts = []
+
+  complements.forEach(k => {
+    var p = GameObject([
+      obj.x + offsets[k][0], obj.y + offsets[k][1],
+      obj.frames, obj.frameRate,
+      obj.paletteIndex
+    ])
+    p.offsetX = offsets[k][0]
+    p.offsetY = offsets[k][1]
+    p.small = small
+    p.flipped = k === 'tr' || k === 'br'
+    p.vFlip = obj.vFlip || (k === 'bl' || k === 'br')
+    parts.push(p)
+  })
+
+  return parts
+}
 
 function loadMap(map, scene, offset = {x: 0, y: 0}) {
   for (var y = 0; y < map.length; y++) {
@@ -77,12 +101,14 @@ function loadMap(map, scene, offset = {x: 0, y: 0}) {
         obj.vFlip = sd.vFlip || false
         if (obj.vFlip) obj.y += 10
         scene.add(obj);
-        if (obj.small) {
-          var objComp = GameObject([obj.x+8, obj.y, obj.frames, obj.frameRate, obj.paletteIndex])
-          objComp.small = true
-          objComp.vFlip = obj.vFlip
-          scene.add(objComp)
+
+        // Draw a mirrored object in front of the created one (like with the
+        // heads) --------------------------------------------------------------
+        // TODO: There should be a better way to do this for sure
+        if (sd.mirror) {
+          createComplements(obj,['tr']).forEach(p => scene.add(p))
         }
+        // ---------------------------------------------------------------------
       });
     }
   }
@@ -135,27 +161,16 @@ enemy.setSprites();
 enemy.bounceOffset = 3;
 dancersScene.add(enemy);
 
-var processorTL = GameObject([(SIXTEEN * scale) * 1, (SIXTEEN * scale) * 1, [6], 1, 9]);
-var processorTR = GameObject([(SIXTEEN * scale) * 2, (SIXTEEN * scale) * 1, [7], 1, 9]);
-var processorBL = GameObject([(SIXTEEN * scale) * 1, (SIXTEEN * scale) * 2, [6+8], 1, 9]);
-var processorBR = GameObject([(SIXTEEN * scale) * 2, (SIXTEEN * scale) * 2, [7+8], 1, 9]);
-var seq = sequenceVisualizer({ x: 0, instrument: 0 });
-uiScene.add(seq);
-loadMap(gpiMap, uiScene, {x:0, y: 8})
-
-
-console.log('seq visualizer')
-console.log(seq )
 sceneManager.add(discoScene);
 sceneManager.add(jungleScene);
 sceneManager.add(dancersScene);
-sceneManager.add(uiScene);
 
 paletteRenderer.cyclePaletteIndex(1, 3, ["#e82b3b", "#d81b2b", "#c80b1b", "#b8000b"]);
 paletteRenderer.cyclePaletteIndex(1, 4, ["#fb6b1d", "#eb5b0d", "#db4b00", "#cb3b00"]);
 paletteRenderer.cyclePaletteIndex(0, 3, ["#08b23b", "#18c24b", "#28d25b", "#38e26b"]);
 paletteRenderer.cyclePaletteIndex(0, 4, ["#47f641", "#37ef31", "#27df21", "#17cf11"]);
 
+// The dance floor 💃🕺 --------------------------------------------------------
 paletteRenderer.cyclePaletteIndex(7, 2, ["#CB71EF", "#D82DEB"]);
 paletteRenderer.cyclePaletteIndex(7, 3, ["#C7ADFF", "#CB71EF"]);
 paletteRenderer.cyclePaletteIndex(7, 4, ["#EBD1FF", "#C7ADFF", "#CB71EF", "#D82DEB"]);
@@ -165,6 +180,10 @@ paletteRenderer.cyclePaletteIndex(7, 6, ["#F4A4C4", "#FFDBDF"]);
 paletteRenderer.cyclePaletteIndex(7, 7, ["#FFF6F6", "#FFDBDF", "#F4A4C4", "#E067B3"]);
 
 paletteRenderer.cyclePaletteIndex(7, 1, ["#FFF6F6", "#FFFFFF", "#EBD1FF"]);
+
+// The GPI ---------------------------------------------------------------------
+paletteRenderer.cyclePaletteIndex(9, 2, ["#FFF6F6", "#49E7EC", "#90006C", "#47F641", "#FF4F69"]);
+paletteRenderer.cyclePaletteIndex(10, 5, ["#08b23b", "#18c24b", "#28d25b", "#38e26b"]);
 
 var danceFrame = 0;
 var theBeat = () => {
