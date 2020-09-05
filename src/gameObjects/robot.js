@@ -74,10 +74,10 @@ var Robot = (props, scene) => {
     [self.components[0], self.components[1], self.components[6]].forEach(s => s.y += headOffset); // head sprites
     [self.components[2], self.components[3],self.components[4],self.components[5]].forEach(s => s.y += torsoOffset) // torso and arm sprites
   }
-  self.setSprites = () => {
-    var f = self.rc.map((pi, i) => partsConfig[i][pi])
+  self.setSprites = (rc) => {
+    var f = rc.map((pi, i) => partsConfig[i][pi])
     self.components.forEach((c,i) => c.frames = f[~~(i/2)])
-    if (bigHeads.indexOf(self.rc[0]) != -1) {
+    if (bigHeads.indexOf(rc[0]) != -1) {
       self.components[0].dx = -8;
       [self.components[0], self.components[1]].forEach(s => {
         s.small = false;

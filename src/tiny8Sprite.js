@@ -1,5 +1,5 @@
 var CHAR_OFFSET = 200;
-var scale = 1;
+var SCALE = 1;
 var palettes = [
 [ // Mario
     "#FFFFFF",
@@ -43,7 +43,7 @@ function drawRawSprite(sprite, px, py, pi) {
             var palette = palettes[pi];
             var color = palette[parseInt(index, 10)];
             c.fillStyle = color;
-            c.fillRect((x + px) * scale, (y + py) * scale, scale, scale);
+            c.fillRect((x + px) * SCALE, (y + py) * SCALE, SCALE, SCALE);
         }
     }
 }

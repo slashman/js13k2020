@@ -3,11 +3,17 @@
 // initialize the game
 // setup game player, items and main scene
 
-var gameState = 'menu';
+/**
+ * GAME STATE possible values
+ * intro = 0
+ * enemy intro = 1
+ * play - song = 2
+ * results = 3
+ * end = 4
+*/
+var gameState = 0;
 
 var discoScene = Scene();
-discoScene.viewport = [0, 0, 500, 500] // Maybe remove
-discoScene.limit = [0, 500] // Maybe remove
 var jungleScene = Scene();
 var dancersScene = Scene();
 
@@ -57,8 +63,6 @@ var indexToSprite = { // Maps the map above to sprite and palette indexes
   h: { parts: {sprites: [6,7,6+8,7+8], palette: 9, partIdx:0} },
 };
 
-var scale = 1;
-
 function createComplements(obj, complements = ['tr','bl','br'], small = true) {
   var offsets = {
     tl: [0, 0, false], tr: [8, 0, false], bl: [0, 26, true], br: [8, 26, true]
@@ -95,7 +99,7 @@ function loadMap(map, scene, offset = {x: 0, y: 0}) {
         spriteData = spriteData.sprites;  
       }
       spriteData.forEach(sd => {
-        var obj = GameObject([(SIXTEEN * scale) * (x + offset.x), (SIXTEEN * scale) * (y + offset.y), [sd.sprite], i+3, sd.palette]);
+        var obj = GameObject([SIXTEEN * (x + offset.x), SIXTEEN * (y + offset.y), [sd.sprite], i+3, sd.palette]);
         obj.small = sd.small || false
         obj.vFlip = sd.vFlip || false
         if (obj.vFlip) obj.y += 10
@@ -133,8 +137,8 @@ for (var i = 0; i < 30; i++) {
   if (Math.abs(ry - 60) + Math.abs(rx - 100) < 90) { i--; continue;}
   if (Math.abs(ry - 60) + Math.abs(rx - 200) < 90) { i--; continue;}
   var robot = Robot([rx, ry, [], 8, 1], discoScene);
-  robot.rc = [dancerHead = rando(0, 4), rando(0, 4), rando(0, 5), dancerHead]; // robot config, [head, arms, torso, sideHead]
-  robot.setSprites();
+  //robot.rc =; // robot config, [head, arms, torso, sideHead]
+  robot.setSprites([dancerHead = rando(0, 4), rando(0, 4), rando(0, 5), dancerHead]);
   robot.bounceOffset = rando(0,4);
   robot.flipArm(rando(0,10) > 4);
   var warmBase = randomPastel();
@@ -148,15 +152,14 @@ for (var i = 0; i < 30; i++) {
 }
 
 var player = MainCharacter([100, 60, [3, 4], 8, 0]);
-player.rc = [pcHead = 0, 0, 0, pcHead]; // robot config, [head, arms, torso, sideHead]
-player.setSprites();
+//player.rc = ; // robot config, [head, arms, torso, sideHead]
+player.setSprites([pcHead = 0, 0, 0, pcHead]);
 player.bounceOffset = 0;
 dancersScene.add(player);
 dancersScene.following = player; // TODO: Remove?
 
 var enemy = Robot([200, 60, [3, 4], 8, 2], dancersScene);
-enemy.rc = [enemyHead = rando(0, 4), rando(0, 4), rando(0, 5), enemyHead];
-enemy.setSprites();
+enemy.setSprites([enemyHead = rando(0, 4), rando(0, 4), rando(0, 5), enemyHead]);
 enemy.bounceOffset = 3;
 dancersScene.add(enemy);
 
@@ -210,9 +213,24 @@ var theTick = (tick) => {
 }
 
 
+var currentLevel = 99;
 var buffer = zzfxM(...deepMX);    // Generate the sample data
+level = LEVELS[0];
 const startSong = _ => {
-  gameState = 'play';
+  currentLevel = wrap(currentLevel + 1, 4);
+  level = LEVELS[currentLevel];
+  console.log(level);
+  console.log('loading level...');
+  console.log(deepMX);
+  enemy.setSprites(level.robot);
+  deepMX[2] = level.sequence;
+  deepMX[3] = level.bpm;
+  bpm = level.bpm;
+  timeBetweenBeats = 60000/(level.bpm*4);
+  console.log(deepMX);
+  buffer = zzfxM(...deepMX);
+  console.log('level loaded');
+  gameState = 2;
   startTime = null;
   current_tick = -1;
   player.combo = 0;
@@ -232,7 +250,8 @@ const startSong = _ => {
   console.log(node);
   node.onended = _ => {
     playingMusic = false;
-    gameState = 'menu';
+    gameState = 0;
   };
+
 }
 

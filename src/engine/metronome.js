@@ -7,7 +7,7 @@ var playingMusic = false;
 var timeBetweenBeats = 60000/(bpm*4);
 
 var current_tick = -1;
-var sequence = [0, 1, 1, 2, 3]; // from the deep song, should be dynamic I think
+//var sequence = [0, 1, 1, 2, 3, 4, 4]; // from the deep song, should be dynamic I think
 var fullBeatSequence = [[], []];
 //var fullBeatSequenceB = [];
 
@@ -23,7 +23,7 @@ updateMetronome = () => {
   let now = Date.now();
   if (!startTime) {
     startTime = now ;//+ timeBetweenBeats;
-    sequence.forEach(value => {
+    level.sequence.forEach(value => {
       fullBeatSequence[0] = fullBeatSequence[0].concat(deepMX[1][value][1].slice(2));
       fullBeatSequence[1] = fullBeatSequence[1].concat(deepMX[1][value][2].slice(2));
     })

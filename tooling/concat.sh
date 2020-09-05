@@ -35,6 +35,7 @@ cat lib/keyboardController.js
 # game engine declaration
 cat src/setup/rawSprites.js
 cat src/setup/generatedSprites.js
+cat src/setup/levels.js
 cat src/engine/gameObject.js
 cat src/engine/metronome.js
 cat src/gameObjects/robot.js
