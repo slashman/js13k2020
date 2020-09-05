@@ -10,7 +10,6 @@ discoScene.viewport = [0, 0, 500, 500] // Maybe remove
 discoScene.limit = [0, 500] // Maybe remove
 var jungleScene = Scene();
 var dancersScene = Scene();
-var uiScene = Scene();
 
 var discoMap = [
   "abababababababababab",
@@ -171,19 +170,19 @@ paletteRenderer.cyclePaletteIndex(0, 3, ["#08b23b", "#18c24b", "#28d25b", "#38e2
 paletteRenderer.cyclePaletteIndex(0, 4, ["#47f641", "#37ef31", "#27df21", "#17cf11"]);
 
 // The dance floor 💃🕺 --------------------------------------------------------
-paletteRenderer.cyclePaletteIndex(7, 2, ["#CB71EF", "#D82DEB"]);
-paletteRenderer.cyclePaletteIndex(7, 3, ["#C7ADFF", "#CB71EF"]);
-paletteRenderer.cyclePaletteIndex(7, 4, ["#EBD1FF", "#C7ADFF", "#CB71EF", "#D82DEB"]);
+paletteRenderer.beatPalette(7, 2, ["#CB71EF", "#D82DEB"]);
+paletteRenderer.tickPalette(7, 3, ["#C7ADFF", "#CB71EF"]);
+paletteRenderer.beatPalette(7, 4, ["#EBD1FF", "#C7ADFF", "#CB71EF", "#D82DEB"]);
 
-paletteRenderer.cyclePaletteIndex(7, 5, ["#E067B3", "#F4A4C4"]);
-paletteRenderer.cyclePaletteIndex(7, 6, ["#F4A4C4", "#FFDBDF"]);
-paletteRenderer.cyclePaletteIndex(7, 7, ["#FFF6F6", "#FFDBDF", "#F4A4C4", "#E067B3"]);
+paletteRenderer.beatPalette(7, 5, ["#E067B3", "#F4A4C4"]);
+paletteRenderer.tickPalette(7, 6, ["#F4A4C4", "#FFDBDF"]);
+paletteRenderer.tickPalette(7, 7, ["#FFF6F6", "#FFDBDF", "#F4A4C4", "#E067B3"]);
 
-paletteRenderer.cyclePaletteIndex(7, 1, ["#FFF6F6", "#FFFFFF", "#EBD1FF"]);
+paletteRenderer.beatPalette(7, 1, ["#FFF6F6", "#FFFFFF", "#EBD1FF"]);
 
 // The GPI ---------------------------------------------------------------------
-paletteRenderer.cyclePaletteIndex(9, 2, ["#FFF6F6", "#49E7EC", "#90006C", "#47F641", "#FF4F69"]);
-paletteRenderer.cyclePaletteIndex(10, 5, ["#08b23b", "#18c24b", "#28d25b", "#38e26b"]);
+paletteRenderer.beatPalette(9, 2, ["#FFF6F6", "#49E7EC", "#90006C", "#47F641", "#FF4F69"]);
+paletteRenderer.beatPalette(10, 5, ["#08b23b", "#18c24b", "#28d25b", "#38e26b"]);
 
 var danceFrame = 0;
 var theBeat = () => {
@@ -203,7 +202,11 @@ var theBeat = () => {
   if (danceFrame%4 == 0) {
     enemy.turnHead(danceFrame%3 == 0 ? 1 : -1)
   }
-
+  paletteRenderer.onMetronomeBeat();
+}
+var theTick = (tick) => {
+  hudScene.onMetronomeTick(tick);
+  paletteRenderer.onMetronomeTick();
 }
 
 

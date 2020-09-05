@@ -3,12 +3,14 @@
 // The HUD
 // ░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░
 var hudScene = Scene();
-var seq = sequenceVisualizer({ x: 0, instrument: 0, scene: hudScene });
+var BOARD_Y = 8;
+var seq = sequenceVisualizer({ x: 0, y: BOARD_Y, instrument: 0, scene: hudScene });
 
 // Put game objects in the scene
-loadMap(gpiMap, hudScene, {x:0, y: 8});
+loadMap(gpiMap, hudScene, {x:0, y: BOARD_Y});
 seq.addBeatLinesToScene();
 hudScene.add(seq);
+hudScene.onMetronomeTick = (tick) => seq.updateLines(tick)
 
 // Load the scene in the game
 sceneManager.add(hudScene);

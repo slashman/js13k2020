@@ -94,7 +94,8 @@ var Scene = () => {
       self.fading = true;
       self.fadeSpd = -1;
       self.brightness = 1;
-    }
+    },
+    onMetronomeTick: noop, // tick
   }
   return self;
 }

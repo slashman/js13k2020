@@ -12,6 +12,8 @@ function splitSpriteData(spriteData, left) {
 var paletteRenderer = {
     sprites: [],
     sprites8: [],
+    beatPalettes: [],
+    tickPalettes: [],
     setSprites: function (spriteData) {
         this.sprites = spriteData;
         spriteData.forEach((s,i) => {
@@ -41,6 +43,38 @@ var paletteRenderer = {
             this.palettes[paletteId][index] = colorCycle[cycleIndex];
         }, 200);
     },
+    registerMetroPalette: function(target, paletteId, index, colorCycle) {
+        target.push({
+            paletteId,
+            index,
+            colorCycle: colorCycle.map(hex => hexToRgb(hex)),
+            cycleIndex: 0,
+            dir: 1
+        })
+    },
+    tickPalette: function (paletteId, index, colorCycle) {
+        this.registerMetroPalette(this.tickPalettes, ...arguments)
+    },
+    beatPalette: function (paletteId, index, colorCycle) {
+        this.registerMetroPalette(this.beatPalettes, ...arguments)
+    },
+    metronomeCycle: function(target) {
+        target.forEach((p) => {
+            p.cycleIndex += p.dir;
+            if (p.cycleIndex === p.colorCycle.length - 1) {
+                p.dir = -1;
+            } else if (p.cycleIndex === 0) {
+                p.dir = 1;
+            }
+            this.palettes[p.paletteId][p.index] = p.colorCycle[p.cycleIndex];
+        })
+    },
+    onMetronomeTick: function () {
+        this.metronomeCycle(this.tickPalettes)
+    },
+    onMetronomeBeat: function () {
+        this.metronomeCycle(this.beatPalettes)
+    },
     draw: function (spriteId, x, y, pi, flip, vflip, small, overrides, brightness) {
         this.drawRaw(small ? this.sprites8[spriteId] : this.sprites[spriteId], x, y, pi, flip, vflip, small, overrides, brightness);
     },
@@ -54,7 +88,7 @@ var paletteRenderer = {
                 if (flip) {
                     index = sprite[(ry + 1) * w - 1 - x];
                 }
-                if (index == 0 && pi < 3){
+                if (index == 0 && this.palettesWithTransparecy.includes(pi)){
                     // Palette 0 considers color 0 as "transparency"
                     continue;
                 }
@@ -84,139 +118,21 @@ var marioPalette = [
     "#257953"
 ];
 
-var blueRobot = [
-    "#FF0000", // Transparency
-    "#050320", // Outline
-    "#ffffff", // Shine
-    "#08b23b", // Cold Light
-    "#47f641", // Warm Light
-    "#1831a7", // Cold Base
-    "#2890dc", // Base
-    "#5ee9e9"  // Warm Base
-];
-//TEST
-var blueRobot2 = [
-    "#FF0000", // Transparency
-    "#050320", // Outline
-    "#ffffff", // Shine
-    "#e83b3b", // Cold Light
-    "#fb6b1d", // Warm Light
-    "#1831a7", // Cold Base
-    "#2890dc", // Base
-    "#5ee9e9"  // Warm Base
-];
-
-var orangeRobot = [
-    "#FF0000", // Transparency
-    "#260503", // Outline
-    "#fbff86", // Shine
-    "#e83b3b", // Cold Light
-    "#fb6b1d", // Warm Light
-    "#7a3045", // Cold Base
-    "#cd683d", // Base
-    "#fbb954"  // Warm Base
-];
-
-var oceanPalette = [
-    "#064273",
-    "#76b6c4",
-    "#7fcdff",
-    "#1da2d8",
-    "#def3f6",
-    "#def3f6",
-    "#1da2d8",
-    "#064273"
-];
-
-var grassPalette = [
-    "#00a400",
-    "#00a400",
-    "#006f00",
-    "#004600",
-    "#007000",
-    "#006f00",
-    "#004600",
-    "#007000"
-];
-
-var walls = [
-    "#2e2e2e", // Background
-    "#e82b3b",
-    "#c80b1b",
-    "#a80000",
-    "#880000",
-    "#a80000",
-    "#c80b1b",
-    "#e82b3b"
-];
-
-var rosePalette = [
-    "#346f00",
-    "#2a4600",
-    "#e84723",
-    "#a33b24",
-
-    "#000000", // else it breaks
-    "#000000",
-    "#000000",
-    "#000000"
-];
-
-var dancefloorPalette = [
-    "#FF0000",
-    "#FFF6F6",
-    "#D82DEB",
-    "#CB71EF",
-    "#C7ADFF",
-    "#E067B3",
-    "#F4A4C4",
-    "#FFDBDF",
-]
-
-var forestPalette = [
-    "#44891A",
-    "#1B2632",
-    "#F7E26B",
-    "#493C2B",
-    "#A46422",
-    "#2F484E",
-    "#44891A",
-    "#A3CE27",
-]
-
-var boardPalette = [
-    "#221C1A",
-    "#221C1A",
-    "#FFF6F6",
-    "#FFD541",
-    "#FFFC40",
-    "#423934",
-    "#796755",
-    "#E4D2AA",
-]
-
-var beatLinesPalette = [
-    "#221C1A",
-    "#221C1A",
-    "#FFFFFF",
-    "#08B23B",
-    "#47F641",
-    "#47F641",
-]
-
 paletteRenderer.palettes = [
-    blueRobot,
-    blueRobot2,
-    orangeRobot,
-    walls,
-    oceanPalette,
-    grassPalette,
-    rosePalette,
-    dancefloorPalette,
-    forestPalette,
-    boardPalette,
-    beatLinesPalette
+    // Transparency // Outline // Shine // Cold Light // Warm Light // Cold Base // Base // Warm Base
+    /*0*/  ["#FF0000", "#050320", "#ffffff", "#08b23b", "#47f641", "#1831a7", "#2890dc", "#5ee9e9"],
+    /*1*/  ["#FF0000", "#050320", "#ffffff", "#e83b3b", "#fb6b1d", "#1831a7", "#2890dc", "#5ee9e9"],
+    /*2*/  ["#FF0000", "#260503", "#fbff86", "#e83b3b", "#fb6b1d", "#7a3045", "#cd683d", "#fbb954"],
+    /*3*/  ["#064273", "#76b6c4", "#7fcdff", "#1da2d8", "#def3f6", "#def3f6", "#1da2d8", "#064273"],
+    /*4*/  ["#00a400", "#00a400", "#006f00", "#004600", "#007000", "#006f00", "#004600", "#007000"],
+    /*5*/  ["#2e2e2e", "#e82b3b", "#c80b1b", "#a80000", "#880000", "#a80000", "#c80b1b", "#e82b3b"],
+    /*6*/  ["#346f00", "#2a4600", "#e84723", "#a33b24", "#000000", "#000000", "#000000", "#000000"],
+    /*7*/  ["#FF0000", "#FFF6F6", "#D82DEB", "#CB71EF", "#C7ADFF", "#E067B3", "#F4A4C4", "#FFDBDF"],
+    /*8*/  ["#44891A", "#1B2632", "#F7E26B", "#493C2B", "#A46422", "#2F484E", "#44891A", "#A3CE27"],
+    /*9*/  ["#221C1A", "#221C1A", "#FFF6F6", "#FFD541", "#FFFC40", "#423934", "#796755", "#E4D2AA"],
+    /*10*/ ["#FF0000", "#221C1A", "#FFFFFF", "#08B23B", "#47F641", "#47F641"],
 ];
+paletteRenderer.palettesWithTransparecy = [0,1,2,10]
 
 function hexToRgb(hex) {
     var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);

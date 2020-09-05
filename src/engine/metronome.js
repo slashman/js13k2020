@@ -1,5 +1,5 @@
 
-var bpm = 100;
+var bpm = 120;
 var playingMusic = false;
 //var time_signature_botton = 4;
 //var beat_interval = 60 / bpm * 4 / time_signature_botton;
@@ -36,8 +36,9 @@ updateMetronome = () => {
     onBeat = !(current_tick%4);
     //onBeat = !!fullBeatSequence[current_tick];
     if (onBeat) {
-      theBeat()
+      theBeat();
     };
+    theTick(current_tick);
   }
   setTimeout(() => {
     updateMetronome();
