@@ -44,11 +44,12 @@ var draw = _ => {
       if (subState == 0) {
         text = ['3', '2', '1', 'DANCE!'][~~(current_tick / 4)];
       }else if(subState == 2) {
-        text = 'well done!';
+        text = win?'YOU WIN':'YOU LOSE';
       }
-    } else if(gameState==0) {
+    } else if (gameState==0) {
       text = 'PRESS ENTER';
     }
+    graphics.textAlign ='center';
     graphics.fillText(text, 160, 120);
 
     //graphics.fillText(` performance: `, 0, 230);

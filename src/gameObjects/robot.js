@@ -157,13 +157,13 @@ var Robot = (props, scene) => {
     if(diff < intervals[0]) {
       keyOnBeat.performance = 'perfect';
       //console.log(`${keyOnBeat.beat} perfect`, diff, diff * timeBetweenBeats);
-      self.score += 100 + (7+self.focus)*self.combo;
+      self.score += level.bpm + (7+self.focus)*self.combo;
       self.addCombo();
       self.addFocus(self.combo % 2 == 0 ? 1 : 0);
     } else if(diff < intervals[1]) {
       keyOnBeat.performance = 'good';
       //console.log(`${keyOnBeat.beat} good`, diff, diff * timeBetweenBeats)
-      self.score += 50 + 5*self.combo;
+      self.score += level.bpm*0.5 + 5*self.combo;
       self.addCombo();
       self.addFocus(self.combo % 3 == 0 ? 1 : 0);
     } else {

@@ -232,6 +232,7 @@ var currentLevel = 99;
 var buffer = zzfxM(...deepMX);    // Generate the sample data
 level = LEVELS[0];
 var song;
+var win = false;
 
 const loadLevel = levelIndex => {
   if (levelIndex != currentLevel) {
@@ -272,10 +273,13 @@ const startSong = _ => {
 
   song.onended = _ => {
     subState = 2;
+    win = player.score >= level.score;
     //gameState = 0;
+    /*
     setTimeout(() => {
       gameState = 0;
     }, 1500);
+    */
   };
 
 }
