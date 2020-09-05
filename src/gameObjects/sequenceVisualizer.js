@@ -31,7 +31,7 @@ var sequenceVisualizer = props => {
   // The beat lines have 6 states
   [...lineIndexes, ...lineIndexes.reverse()].forEach((si, idx) => {
     // Top left of the beat line
-    var tl = GameObject([-8, (SIXTEEN * scale) * props.y, [si], 1, 10])
+    var tl = GameObject([-8, SIXTEEN  * props.y, [si], 1, 10])
     tl.flipped = idx > 5
     tl.small = true
     tl.visible = false
@@ -50,7 +50,7 @@ var sequenceVisualizer = props => {
     currentLine: 0,
     prevLine: 0,
     update: (dt, time) => {
-      if (!playingMusic) return;
+      if (gameState != 2 || subState == 2) return;
       // startTime from metronome
       var base = timeBetweenBeats*4
       delta = ((Date.now() - startTime) % base)/base;
@@ -68,9 +68,9 @@ var sequenceVisualizer = props => {
         }
       }
     },
-    draw: function() {
+    draw: _ => {
       beatLines.forEach(gp => gp.forEach(l => l.visible = false))
-      if (!playingMusic) return;
+      if (gameState!=2 || subState == 2) return;
       for (var i = 0; i < beatsDisplayed; i++) {
         var des = ~~((i + delta) * spacing) - 1;
         var currentSegment = parseInt((des*100/(W/2)), 10);

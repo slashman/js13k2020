@@ -29,15 +29,27 @@ var draw = _ => {
   // draw the buffer
   graphics.putImageData(imageDataBuffer, 0, 0);
   
+  
   if (DEBUG) {
-    graphics.font = "26px Courier New";
+    graphics.font = "16px Lucida Console";
     graphics.strokeStyle = '#FFF'
     graphics.fillStyle = "red";
-    graphics.fillText(`score: ${player.score}`, 0, 180);
-    graphics.fillText(`combo: ${player.combo}`, 0, 205);
+    graphics.fillText(`SCORE: ${player.score}`, 0, 180);
+    graphics.fillText(`COMBO: ${player.combo}`, 0, 205);
     graphics.fillText(`${keyOnBeat.performance}`, 200, 180);
-    graphics.fillText(`focus: ${player.focus}`, 180, 205);
-    graphics.fillText(`maxCombo: ${player.maxCombo}`, 0, 230);
+    graphics.fillText(`FOCUS: ${player.focus}`, 180, 205);
+    graphics.fillText(`MAX COMBO: ${player.maxCombo}`, 0, 230);
+    var text = '';
+    if (gameState==2){
+      if (subState == 0) {
+        text = ['3', '2', '1', 'DANCE!'][~~(current_tick / 4)];
+      }else if(subState == 2) {
+        text = 'well done!';
+      }
+    } else if(gameState==0) {
+      text = 'PRESS ENTER';
+    }
+    graphics.fillText(text, 160, 120);
 
     //graphics.fillText(` performance: `, 0, 230);
   }

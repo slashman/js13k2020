@@ -13,6 +13,14 @@
 */
 var gameState = 0;
 
+/**
+ * GAME SUB STATE
+ * countdown: 0
+ * playing song: 1
+ * end song: 2
+*/
+var subState = 0;
+
 var discoScene = Scene();
 var jungleScene = Scene();
 var dancersScene = Scene();
@@ -189,6 +197,13 @@ paletteRenderer.beatPalette(10, 5, ["#08b23b", "#18c24b", "#28d25b", "#38e26b"])
 
 var danceFrame = 0;
 var theBeat = () => {
+  if (subState == 0) {
+    console.log(current_tick);
+    if (current_tick == 16) {
+      startSong();
+    }
+    return;
+  }
   danceFrame++;
   if (danceFrame > 9) {
     danceFrame = 0;
@@ -216,21 +231,22 @@ var theTick = (tick) => {
 var currentLevel = 99;
 var buffer = zzfxM(...deepMX);    // Generate the sample data
 level = LEVELS[0];
-const startSong = _ => {
-  currentLevel = wrap(currentLevel + 1, 4);
-  level = LEVELS[currentLevel];
-  console.log(level);
-  console.log('loading level...');
-  console.log(deepMX);
-  enemy.setSprites(level.robot);
-  deepMX[2] = level.sequence;
-  deepMX[3] = level.bpm;
-  bpm = level.bpm;
-  timeBetweenBeats = 60000/(level.bpm*4);
-  console.log(deepMX);
-  buffer = zzfxM(...deepMX);
-  console.log('level loaded');
+var song;
+
+const loadLevel = levelIndex => {
+  if (levelIndex != currentLevel) {
+    currentLevel = levelIndex;
+    level = LEVELS[currentLevel];
+    enemy.setSprites(level.robot);
+    deepMX[2] = level.sequence;
+    deepMX[3] = level.bpm;
+    bpm = level.bpm;
+    timeBetweenBeats = 60000 / (level.bpm * 4);
+    buffer = zzfxM(...deepMX);
+  }
+
   gameState = 2;
+  subState = 0;
   startTime = null;
   current_tick = -1;
   player.combo = 0;
@@ -238,19 +254,28 @@ const startSong = _ => {
   player.score = 0;
   player.stats = {};
   player.maxCombo = 0;
-  var node = zzfxP(...buffer);
+  song = zzfxP(...buffer);
+  updateMetronome();
+}
+
+const startSong = _ => {
+  
+  subState = 1;
   setTimeout(() => discoScene.fadeOut(), 4000);
   setTimeout(() => { jungleScene.active = true; discoScene.active = false; jungleScene.fadeIn();}, 6000);
   setTimeout(() => jungleScene.fadeOut(), 8000);
-  setTimeout(() => { jungleScene.active = false; discoScene.active = true; discoScene.fadeIn();}, 10000);
-  node.start();
-  playingMusic = true;
-  past = Date.now();
+  setTimeout(() => { jungleScene.active = false; discoScene.active = true; discoScene.fadeIn();}, 10000);  
+  
+  song.start();
+  current_tick = -1;
   updateMetronome();
-  console.log(node);
-  node.onended = _ => {
-    playingMusic = false;
-    gameState = 0;
+
+  song.onended = _ => {
+    subState = 2;
+    //gameState = 0;
+    setTimeout(() => {
+      gameState = 0;
+    }, 1500);
   };
 
 }

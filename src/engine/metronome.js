@@ -1,6 +1,5 @@
 
-var bpm = 120;
-var playingMusic = false;
+var bpm = 100;
 //var time_signature_botton = 4;
 //var beat_interval = 60 / bpm * 4 / time_signature_botton;
 //var sixteenth_time = beat_interval / 16;
@@ -11,7 +10,6 @@ var current_tick = -1;
 var fullBeatSequence = [[], []];
 //var fullBeatSequenceB = [];
 
-let past = Date.now();
 let startTime = null;
 
 getBeatFor = (time) => {
@@ -19,7 +17,7 @@ getBeatFor = (time) => {
 }
 
 updateMetronome = () => {
-  if (!playingMusic) return;
+  if (gameState != 2 || subState == 2) return;
   let now = Date.now();
   if (!startTime) {
     startTime = now ;//+ timeBetweenBeats;
