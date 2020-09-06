@@ -18,7 +18,7 @@ for (var i=0; i<LEVELS.length; i++) {
 const enemyIntro = _ => {
   enemyScene.active = true;
   enemyScene.brightness = 0;
-  theEnemies[currentLevel].setPalette(3);
+  theEnemies[currentLevel].setPalette(2);
   enemyScene.fadeIn();
 }
 
