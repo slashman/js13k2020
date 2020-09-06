@@ -107,17 +107,6 @@ var paletteRenderer = {
 paletteRenderer.setSprites(sprites); // Using global variable tsk tsk
 
 
-var marioPalette = [
-    "#e8c498",
-    "#ff0000",
-    "#3b324a",
-    "#6e8ece",
-    "#0000ff",
-    "#5bc4dc",
-    "#d47564",
-    "#257953"
-];
-
 paletteRenderer.palettes = [
     // Transparency // Outline // Shine // Cold Light // Warm Light // Cold Base // Base // Warm Base
     /*0*/  ["#FF0000", "#050320", "#ffffff", "#08b23b", "#47f641", "#1831a7", "#2890dc", "#5ee9e9"],
@@ -131,8 +120,9 @@ paletteRenderer.palettes = [
     /*8*/  ["#44891A", "#1B2632", "#F7E26B", "#493C2B", "#A46422", "#2F484E", "#44891A", "#A3CE27"],
     /*9*/  ["#221C1A", "#221C1A", "#FFF6F6", "#FFD541", "#FFFC40", "#423934", "#796755", "#E4D2AA"],
     /*10*/ ["#FF0000", "#221C1A", "#FFFFFF", "#08B23B", "#47F641", "#47F641"],
+    /*11*/ ["#000000", "#000000", "#111111", "#000000", "#111111", "#000000", "#111111", "#000000"]
 ];
-paletteRenderer.palettesWithTransparecy = [0,1,2,10]
+paletteRenderer.palettesWithTransparecy = [0,1,2,10, 11]
 
 function hexToRgb(hex) {
     var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);

@@ -61,10 +61,12 @@ cat src/engine/paletteRenderer.js
 cat src/engine/scene.js
 
 # game mechanics
+cat src/scenes/danceBattle.js
+cat src/scenes/gameHud.js
+cat src/scenes/enemyIntro.js
 cat src/gameSetup.js
 # additional scenes
 # cat src/scenes/main.js
-cat src/scenes/gameHud.js
 #cat src/scenes/levelUpScene.js
 
 # main game loop

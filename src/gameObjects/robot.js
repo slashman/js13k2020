@@ -128,7 +128,7 @@ var Robot = (props, scene) => {
   };
   self._update = self.update;
 
-  self.flipArm(false);
+  //self.flipArm(false);
 
   self.tryBeat = key => {
     var value = getBeatFor(Date.now());
