@@ -18,6 +18,7 @@ var gpiMap = [
   "ggggggggghhggggggggg",
 ];
 
+// Creates a number sprite from 0 to 9
 var createNumber = (baseStroke, baseFill, x, val, y = NUMBERS_Y) => {
   var num = GameObject([x, y, [43,44,45,46,47,60,61,62,63,61], 0, 12]);
   num.small = true;
@@ -26,6 +27,7 @@ var createNumber = (baseStroke, baseFill, x, val, y = NUMBERS_Y) => {
   return num;
 }
 
+// Fake Game Object that creates a number that can grow based on its number of digits
 var GUINumber = ({x, y = NUMBERS_Y, visible = true, stroke, fill, playerProp, initial = '0'}) => {
   var initialNumbers = initial.split('').map((n,i) => {
     var num = createNumber(stroke, fill, x, parseInt(n), y);
@@ -104,32 +106,17 @@ hudScene.update = (time, dt) => {
   GUI100.update();
   GUI200.update();
 
+  // Move numbers based on the one that is on the left (the combo counter)
   guiComboSeparator.x = SIXTEEN/2 * (2 + GUICombo.numbers.length - 1);
   GUIMaxCombo.x = SIXTEEN/2 * (2 + GUICombo.numbers.length);
+  
+  // Update the position of the score number based on its length
   GUIScore.x = W - SIXTEEN - (SIXTEEN/2 * (GUIScore.numbers.length - 1));
 
-  // TODO: 👇 improve this 👇
-  switch(keyOnBeat.performance) {
-    case 'bad':
-      GUI404.visible = true;
-      GUI100.visible = false;
-      GUI200.visible = false;
-      break;
-    case 'good':
-      GUI100.visible = true;
-      GUI404.visible = false;
-      GUI200.visible = false;
-      break;
-    case 'perfect':
-      GUI200.visible = true;
-      GUI404.visible = false;
-      GUI100.visible = false;
-      break;
-    default:
-      GUI200.visible = false;
-      GUI404.visible = false;
-      GUI100.visible = false;
-  }
+  // Set the performance feedback visible
+  GUI404.visible = keyOnBeat.performance === 'bad';
+  GUI100.visible = keyOnBeat.performance === 'good';
+  GUI200.visible = keyOnBeat.performance === 'perfect';
 
   hudScene.applyToChildren( gameObject => {
     //if (gameObject.x + 24 > -self.x && gameObject.x < -self.x + 320) {
