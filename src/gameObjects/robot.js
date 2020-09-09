@@ -47,6 +47,8 @@ var Robot = (props, scene) => {
   self.maxX = self.x + 10;
   self.v = {x:0.0, y:0.0};
 
+  self.sequence = [];
+
   self.update = dt => {
 
     // Movement
@@ -159,12 +161,14 @@ var Robot = (props, scene) => {
       //console.log(`${keyOnBeat.beat} perfect`, diff, diff * timeBetweenBeats);
       self.score += level.bpm + (7+self.focus)*self.combo;
       self.addCombo();
+      self.sequence.push(key);
       self.addFocus(self.combo % 2 == 0 ? 1 : 0);
     } else if(diff < intervals[1]) {
       keyOnBeat.performance = 'good';
       //console.log(`${keyOnBeat.beat} good`, diff, diff * timeBetweenBeats)
       self.score += level.bpm*0.5 + 5*self.combo;
       self.addCombo();
+      self.sequence.push(key);
       self.addFocus(self.combo % 3 == 0 ? 1 : 0);
     } else {
       self.badKey();
@@ -184,6 +188,7 @@ var Robot = (props, scene) => {
 
   self.badKey = function() {
     keyOnBeat.performance = 'bad';
+    self.sequence = [];
     self.addFocus(-2);
   }
 
