@@ -126,7 +126,7 @@ var Robot = (props, scene) => {
   });
   
   self.setPalette = (index) => {
-    c.forEach(x=>x.paletteIndex=index);
+    c.forEach(x => x.paletteIndex=index);
   };
   self._update = self.update;
 
@@ -159,16 +159,16 @@ var Robot = (props, scene) => {
     if(diff < intervals[0]) {
       keyOnBeat.performance = 'perfect';
       //console.log(`${keyOnBeat.beat} perfect`, diff, diff * timeBetweenBeats);
-      self.score += level.bpm + (7+self.focus)*self.combo;
+      //self.score += level.bpm + (7+self.focus)*self.combo;
       self.addCombo();
-      self.sequence.push(key);
+      self.addKey(key);
       self.addFocus(self.combo % 2 == 0 ? 1 : 0);
     } else if(diff < intervals[1]) {
       keyOnBeat.performance = 'good';
       //console.log(`${keyOnBeat.beat} good`, diff, diff * timeBetweenBeats)
-      self.score += level.bpm*0.5 + 5*self.combo;
+      //self.score += level.bpm*0.5 + 5*self.combo;
       self.addCombo();
-      self.sequence.push(key);
+      self.addKey(key);
       self.addFocus(self.combo % 3 == 0 ? 1 : 0);
     } else {
       self.badKey();
@@ -185,6 +185,15 @@ var Robot = (props, scene) => {
   self.overridePalette = function(index, color) {
     self.components.forEach(c => c.overridePalette(index, color));
   };
+
+  self.addKey = function(key) {
+    self.sequence.push(key);
+    if (self.sequence.length == 4) {
+      console.log('send command');
+      self.score += checkStep(self.sequence);
+      self.sequence = [];
+    }
+  }
 
   self.badKey = function() {
     keyOnBeat.performance = 'bad';

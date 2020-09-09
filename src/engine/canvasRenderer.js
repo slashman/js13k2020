@@ -34,11 +34,12 @@ var draw = _ => {
     graphics.font = "16px Lucida Console";
     graphics.strokeStyle = '#FFF'
     graphics.fillStyle = "red";
-    graphics.fillText(`SCORE: ${player.score}`, 0, 180);
-    graphics.fillText(`COMBO: ${player.combo}`, 0, 205);
-    graphics.fillText(`${keyOnBeat.performance}`, 200, 180);
-    graphics.fillText(`FOCUS: ${player.focus}`, 180, 205);
-    graphics.fillText(`MAX COMBO: ${player.maxCombo}`, 0, 230);
+    //graphics.fillText(`SCORE: ${player.score}`, 0, 180);
+    //graphics.fillText(`COMBO: ${player.combo}`, 0, 205);
+    //graphics.fillText(`${keyOnBeat.performance}`, 200, 180);
+    //graphics.fillText(`FOCUS: ${player.focus}`, 180, 205);
+    //graphics.fillText(`MAX COMBO: ${player.maxCombo}`, 0, 230);
+    graphics.fillText(`S: ${player.sequence}`, 0, 230);
     var text = '';
     if (gameState==2) {
       graphics.fillStyle = "black";

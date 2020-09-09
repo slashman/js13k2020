@@ -59,6 +59,7 @@ var GUINumber = ({x, y = NUMBERS_Y, visible = true, stroke, fill, playerProp, in
         // Update the frames for each number
         numArray.forEach((n,i) => {
           var num = parseInt(n);
+          if (!self.numbers[i]) return
           self.numbers[i].frame = num;
           self.numbers[i].flipped = num === 9;
           self.numbers[i].vFlip = num === 9;

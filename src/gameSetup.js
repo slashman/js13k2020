@@ -101,6 +101,7 @@ const handleEnterAction = _ => {
       break;
     case 2:
       if (subState==2) {
+        console.log('what to do? win', win);
         if (win) {
           discoOut();
           displayEnemyScene();
