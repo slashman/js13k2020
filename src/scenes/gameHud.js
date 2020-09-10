@@ -2,7 +2,7 @@
 // src/gameHud.js
 // The HUD
 // ░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░
-var BOARD_Y = 8;
+var BOARD_Y = 7;
 var NUMBERS_Y = SIXTEEN/2*2;
 var CODES_Y = (BOARD_Y+6)*SIXTEEN/2;
 var CODES_X = W/2 - (SIXTEEN*3/4);

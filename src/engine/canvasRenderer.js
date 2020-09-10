@@ -9,10 +9,10 @@ var pixels = imageDataBuffer.data;
 
 function setPixel(x, y, r, g, b, a = 255) {
   var index = 4 * (x + y * imageDataBuffer.width);
-  pixels[index+0] = r;
-  pixels[index+1] = g;
-  pixels[index+2] = b;
-  pixels[index+3] = a;
+  pixels[index] = r;
+  pixels[index + 1] = g;
+  pixels[index + 2] = b;
+  pixels[index + 3] = a;
 }
 
 function clearPixels() {
@@ -44,15 +44,15 @@ var draw = _ => {
     if (gameState==2) {
       graphics.fillStyle = "black";
       if (subState == 0) {
-        text = ['3', '2', '1', 'DANCE!'][~~(current_tick / 4)];
-      }else if(subState == 2) {
+       text = ['3', '2', '1', 'DANCE!'][~~(current_tick / 4)];
+      } else if(subState == 2) {
         text = win?'YOU WIN':'YOU LOSE';
       }
     } else if (gameState!=2) {
       text = 'PRESS ENTER';
     }
     graphics.textAlign ='center';
-    graphics.fillText(text, 160, 120);
+    graphics.fillText(text, 192/2, 120);
 
     //graphics.fillText(` performance: `, 0, 230);
   }
@@ -74,41 +74,35 @@ var indexToSprite = { // Maps the map above to sprite and palette indexes
   h: { parts: { sprites: [6, 7, 6 + 8, 7 + 8], palette: 9, partIdx: 0 } },
 };
 
-function createComplements(obj, complements = ['tr', 'bl', 'br'], small = true) {
+var createComplements = (obj, complements = ['tr', 'bl', 'br'], small = true) => {
   var offsets = {
     tl: [0, 0, false], tr: [8, 0, false], bl: [0, 26, true], br: [8, 26, true]
-  }
-  var parts = []
+  };
 
-  complements.forEach(k => {
+  return complements.map(k => {
     var p = GameObject([
       obj.x + offsets[k][0], obj.y + offsets[k][1],
       obj.frames, obj.frameRate,
       obj.paletteIndex
-    ])
-    p.offsetX = offsets[k][0]
-    p.offsetY = offsets[k][1]
-    p.small = small
-    p.flipped = k === 'tr' || k === 'br'
-    p.vFlip = obj.vFlip || (k === 'bl' || k === 'br')
-    parts.push(p)
-  })
-
-  return parts
+    ]);
+    p.offsetX = offsets[k][0];
+    p.offsetY = offsets[k][1];
+    p.small = small;
+    p.flipped = k === 'tr' || k === 'br';
+    p.vFlip = obj.vFlip || (k === 'bl' || k === 'br');
+    return p;
+  });
 }
 
-function loadMap(map, scene, offset = { x: 0, y: 0 }) {
+var loadMap = (map, scene, offset = { x: 0, y: 0 }) =>{
   for (var y = 0; y < map.length; y++) {
     for (var x = 0; x < map[y].length; x++) {
       var char = map[y].charAt(x);
       var spriteData = indexToSprite[char];
-      if (spriteData.parts) {
-        spriteData = [{ ...spriteData.parts, sprite: spriteData.parts.sprites[spriteData.parts.partIdx++] }]
-      } else if (!spriteData.sprites) {
-        spriteData = [spriteData];
-      } else {
-        spriteData = spriteData.sprites;
-      }
+      if (spriteData.parts) spriteData = [{ ...spriteData.parts, sprite: spriteData.parts.sprites[spriteData.parts.partIdx++] }]
+      else if (!spriteData.sprites) spriteData = [spriteData];
+      else spriteData = spriteData.sprites;
+      
       spriteData.forEach(sd => {
         var obj = GameObject([SIXTEEN * (x + offset.x), SIXTEEN * (y + offset.y), [sd.sprite], i + 3, sd.palette]);
         obj.small = sd.small || false
@@ -119,9 +113,7 @@ function loadMap(map, scene, offset = { x: 0, y: 0 }) {
         // Draw a mirrored object in front of the created one (like with the
         // heads) --------------------------------------------------------------
         // TODO: There should be a better way to do this for sure
-        if (sd.mirror) {
-          createComplements(obj, ['tr']).forEach(p => scene.add(p))
-        }
+        if (sd.mirror) createComplements(obj, ['tr']).forEach(p => scene.add(p));
         // ---------------------------------------------------------------------
       });
     }

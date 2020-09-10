@@ -105,7 +105,7 @@ var Robot = (props, scene) => {
         : s.paletteOverrides = {};
     });
   }
-  self.dash = (dir)=> {
+  self.dash = dir => {
     self.v.x = dir;
   };
   self.draw = noop; // We don't draw this gameObject, it's just a container
@@ -125,8 +125,8 @@ var Robot = (props, scene) => {
     }
   });
   
-  self.setPalette = (index) => {
-    c.forEach(x => x.paletteIndex=index);
+  self.setPalette = index => {
+    c.forEach(x => x.paletteIndex = index);
   };
   self._update = self.update;
 
@@ -204,6 +204,7 @@ var Robot = (props, scene) => {
   self.addCombo = function() {
     self.combo +=1;
     if (self.combo > self.maxCombo) self.maxCombo = self.combo;
+    //zzfx(...lazer);
   }
   
   self.addFocus = function(val) {

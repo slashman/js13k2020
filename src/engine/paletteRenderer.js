@@ -1,111 +1,103 @@
-function splitSpriteData(spriteData, left) {
-    var splitSprite = [];
-    var xOffset = left ? 0 : 8;
-    for (var y = 0; y < 16; y++) {
-        for (var x = 0; x < 8; x++) {
-            splitSprite[y * 8 + x] = spriteData[y * 16 + x + xOffset];
-        }
+
+var splitSpriteData = (spriteData, left) =>{
+  var splitSprite = [];
+  var xOffset = left ? 0 : 8;
+  for (var y = 0; y < 16; y++) {
+    for (var x = 0; x < 8; x++) {
+      splitSprite[y * 8 + x] = spriteData[y * 16 + x + xOffset];
     }
-    return splitSprite;
+  }
+  return splitSprite;
 }
 
 var paletteRenderer = {
-    sprites: [],
-    sprites8: [],
-    beatPalettes: [],
-    tickPalettes: [],
-    setSprites: function (spriteData) {
-        this.sprites = spriteData;
-        spriteData.forEach((s,i) => {
-            this.sprites8[i * 2] = splitSpriteData(s, true);
-            this.sprites8[i * 2 + 1] = splitSpriteData(s);
-        })
-    },
-    shiftPalette: function (paletteId, start = 0, end = 7, direction = 1) {
-        var palette = this.palettes[paletteId];
-        var lastColor = palette[end];
-        for (var i = 0; i < end - start; i++) {
-            palette[end - i] = palette[end - 1 - i];
-        }
-        palette[start] = lastColor;
-    },
-    cyclePaletteIndex: function (paletteId, index, colorCycle) {
-        var cycleIndex = 0;
-        var dir = 1;
-        colorCycle = colorCycle.map(hex => hexToRgb(hex));
-        return setInterval(() => {
-            cycleIndex += dir;
-            if (cycleIndex == colorCycle.length - 1) {
-                dir = -1;
-            } else if (cycleIndex == 0) {
-                dir = 1;
-            }
-            this.palettes[paletteId][index] = colorCycle[cycleIndex];
-        }, 200);
-    },
-    registerMetroPalette: function(target, paletteId, index, colorCycle) {
-        target.push({
-            paletteId,
-            index,
-            colorCycle: colorCycle.map(hex => hexToRgb(hex)),
-            cycleIndex: 0,
-            dir: 1
-        })
-    },
-    tickPalette: function (paletteId, index, colorCycle) {
-        this.registerMetroPalette(this.tickPalettes, ...arguments)
-    },
-    beatPalette: function (paletteId, index, colorCycle) {
-        this.registerMetroPalette(this.beatPalettes, ...arguments)
-    },
-    metronomeCycle: function(target) {
-        target.forEach((p) => {
-            p.cycleIndex += p.dir;
-            if (p.cycleIndex === p.colorCycle.length - 1) {
-                p.dir = -1;
-            } else if (p.cycleIndex === 0) {
-                p.dir = 1;
-            }
-            this.palettes[p.paletteId][p.index] = p.colorCycle[p.cycleIndex];
-        })
-    },
-    onMetronomeTick: function () {
-        this.metronomeCycle(this.tickPalettes)
-    },
-    onMetronomeBeat: function () {
-        this.metronomeCycle(this.beatPalettes)
-    },
-    draw: function (spriteId, x, y, pi, flip, vflip, small, overrides, brightness) {
-        this.drawRaw(small ? this.sprites8[spriteId] : this.sprites[spriteId], x, y, pi, flip, vflip, small, overrides, brightness);
-    },
-    drawRaw: function (sprite, px, py, pi, flip, vflip, small, overrides, brightness) { // TODO: Just receive a gameObject and use its attributes
-        var w = small ? 8 : 16;
-        for (var y = 0; y < 16; y++) {
-            for (var x = 0; x < w; x++) {
-                var ry = vflip ? 16 - 1 - y : y;
-                var vfo = vflip ? -10 : 0;
-                var index = sprite[ry * w + x];
-                if (flip) {
-                    index = sprite[(ry + 1) * w - 1 - x];
-                }
-                if (index == 0 && this.palettesWithTransparecy.includes(pi)){
-                    // Palette 0 considers color 0 as "transparency"
-                    continue;
-                }
-                var palette = this.palettes[pi];
-                var color = palette[parseInt(index, 10)];
-                if (!color) {
-                  console.log(pi, palette, index)
-                }
-                
-                if (overrides[index])
-                    color = overrides[index];
-                if (brightness != 1) 
-                    color = fade(color, brightness);
-                setPixel(x + px, y + py + vfo, color.r, color.g, color.b, 255);
-            }
-        }
+  sprites: [],
+  sprites8: [],
+  beatPalettes: [],
+  tickPalettes: [],
+  setSprites: function (spriteData) {
+    this.sprites = spriteData;
+    spriteData.forEach((s,i) => {
+      this.sprites8[i * 2] = splitSpriteData(s, true);
+      this.sprites8[i * 2 + 1] = splitSpriteData(s);
+    })
+  },
+  shiftPalette: function (paletteId, start = 0, end = 7, direction = 1) {
+    var palette = this.palettes[paletteId];
+    var lastColor = palette[end];
+    for (var i = 0; i < end - start; i++) {
+      palette[end - i] = palette[end - 1 - i];
     }
+    palette[start] = lastColor;
+  },
+  cyclePaletteIndex: function (paletteId, index, colorCycle) {
+    var cycleIndex = 0;
+    var dir = 1;
+    colorCycle = colorCycle.map(hex => hexToRgb(hex));
+    return setInterval(() => {
+      cycleIndex += dir;
+      if (cycleIndex == colorCycle.length - 1) {
+        dir = -1;
+      } else if (cycleIndex == 0) {
+        dir = 1;
+      }
+      this.palettes[paletteId][index] = colorCycle[cycleIndex];
+    }, 200);
+  },
+  registerMetroPalette: function(target, paletteId, index, colorCycle) {
+    target.push({
+      paletteId,
+      index,
+      colorCycle: colorCycle.map(hex => hexToRgb(hex)),
+      cycleIndex: 0,
+      dir: 1
+    })
+  },
+  tickPalette: function () {
+    this.registerMetroPalette(this.tickPalettes, ...arguments)
+  },
+  beatPalette: function () {
+    this.registerMetroPalette(this.beatPalettes, ...arguments)
+  },
+  metronomeCycle: function (target) {
+    target.forEach(p => {
+      p.cycleIndex += p.dir;
+      if (p.cycleIndex == p.colorCycle.length - 1) {
+        p.dir = -1;
+      } else if (p.cycleIndex == 0) {
+        p.dir = 1;
+      }
+      this.palettes[p.paletteId][p.index] = p.colorCycle[p.cycleIndex];
+    })
+  },
+  onMetronomeTick: function () {
+    this.metronomeCycle(this.tickPalettes)
+  },
+  onMetronomeBeat: function () {
+    this.metronomeCycle(this.beatPalettes)
+  },
+  draw: function (spriteId, x, y, pi, flip, vflip, small, overrides, brightness) {
+    this.drawRaw(small ? this.sprites8[spriteId] : this.sprites[spriteId], x, y, pi, flip, vflip, small, overrides, brightness);
+  },
+  drawRaw: function (sprite, px, py, pi, flip, vflip, small, overrides, brightness) { // TODO: Just receive a gameObject and use its attributes
+    var w = small ? 8 : 16;
+    for (var y = 0; y < 16; y++) {
+      for (var x = 0; x < w; x++) {
+        var ry = vflip ? 16 - 1 - y : y;
+        var vfo = vflip ? -10 : 0;
+        var index = sprite[ry * w + x];
+        if (flip) index = sprite[(ry + 1) * w - 1 - x];
+        
+        // Palette 0 considers color 0 as "transparency"
+        if (index == 0 && this.palettesWithTransparecy.includes(pi)) continue;
+        var color = this.palettes[pi][parseInt(index, 10)];
+        
+        if (overrides[index]) color = overrides[index];
+        if (brightness != 1) color = fade(color, brightness);
+        setPixel(x + px, y + py + vfo, color.r, color.g, color.b, 255);
+      }
+    }
+  }
 }
 
 paletteRenderer.setSprites(sprites); // Using global variable tsk tsk
@@ -137,11 +129,12 @@ paletteRenderer.palettes = [
 ];
 paletteRenderer.palettesWithTransparecy = [0,1,2,10,11,12]
 
-function hexToRgb(hex) {
+var parseColor = val => parseInt(val, 32)*8;
+var hexToRgb = hex => {
   return hex ? {
-    r: parseInt(hex[0], 32)*8,
-    g: parseInt(hex[1], 32)*8,
-    b: parseInt(hex[2], 32)*8
+    r: parseColor(hex[0]),
+    g: parseColor(hex[1]),
+    b: parseColor(hex[2])
   } : {r: 0, g: 0, b: 0};
 }
 
@@ -154,15 +147,15 @@ paletteRenderer.palettes = paletteRenderer.palettes.map(palette => {
 });
 
 // Waterfall effect
-setInterval(function() {
-    paletteRenderer.shiftPalette(3, 1, 7, 1);
+setInterval(_ => {
+  paletteRenderer.shiftPalette(3, 1, 7, 1);
 }, 100);
 
-function randomPastel(){
-    var array = hslToRgb(Math.random(), 0.7, 0.5);
-    return {
-        r: array[0], g: array[1], b: array[2]
-    }
+var randomPastel = _ => {
+  var array = hslToRgb(Math.random(), 0.7, 0.5);
+  return {
+    r: array[0], g: array[1], b: array[2]
+  }
 }
 
 /**
@@ -176,55 +169,48 @@ function randomPastel(){
  * @param   {number}  l       The lightness
  * @return  {Array}           The RGB representation
  */
-function hslToRgb(h, s, l){
-    var r, g, b;
+var hslToRgb = (h, s, l) => {
+  var r, g, b;
 
-    if(s == 0){
-        r = g = b = l; // achromatic
-    }else{
-        var hue2rgb = function hue2rgb(p, q, t){
-            if(t < 0) t += 1;
-            if(t > 1) t -= 1;
-            if(t < 1/6) return p + (q - p) * 6 * t;
-            if(t < 1/2) return q;
-            if(t < 2/3) return p + (q - p) * (2/3 - t) * 6;
-            return p;
-        }
-
-        var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
-        var p = 2 * l - q;
-        r = hue2rgb(p, q, h + 1/3);
-        g = hue2rgb(p, q, h);
-        b = hue2rgb(p, q, h - 1/3);
+  if (s == 0) {
+    r = g = b = l; // achromatic
+  } else {
+    var hue2rgb = (p, q, t) => {
+      if(t < 0) t += 1;
+      if(t > 1) t -= 1;
+      if(t < 1/6) return p + (q - p) * 6 * t;
+      if(t < 1/2) return q;
+      if(t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+      return p;
     }
 
-    return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
+    var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+    var p = 2 * l - q;
+    r = hue2rgb(p, q, h + 1/3);
+    g = hue2rgb(p, q, h);
+    b = hue2rgb(p, q, h - 1/3);
+  }
+
+  return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
 }
 
-function darker(rgb){
-    var percent = 70;
-    var r = rgb.r;
-    var g = rgb.g;
-    var b = rgb.b;
-    r = Math.floor(r - (256 - r) * percent / 100);
-    g = Math.floor(g - (256 - g) * percent / 100);
-    b = Math.floor(b - (256 - b) * percent / 100);
-    if (r < 0) r = 0;
-    if (g < 0) g = 0;
-    if (b < 0) b = 0;
-    return {r,g,b};
-  }
+var normalizeColor = ({r, g, b}) => {
+  if (r < 0) r = 0;
+  if (g < 0) g = 0;
+  if (b < 0) b = 0;
+  return { r, g, b };
+}
+
+var darker = ({r, g, b}) => {
+  var percent = 70;
+  r = ~~(r - (256 - r) * percent / 100);
+  g = ~~(g - (256 - g) * percent / 100);
+  b = ~~(b - (256 - b) * percent / 100);
+  
+  return normalizeColor({r , g, b});
+}
 
 
-function fade(rgb, brightness = 0.3){
-    var r = rgb.r;
-    var g = rgb.g;
-    var b = rgb.b;
-    r *= brightness;
-    g *= brightness;
-    b *= brightness;
-    if (r < 0) r = 0;
-    if (g < 0) g = 0;
-    if (b < 0) b = 0;
-    return {r,g,b};
-  }
+var fade = ({r, g, b}, brightness = 0.3) => {
+  return normalizeColor({ r: r*brightness, g: g*brightness, b: b*brightness });
+}

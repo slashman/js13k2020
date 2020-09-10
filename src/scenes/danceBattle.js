@@ -4,29 +4,27 @@ var jungleScene = Scene();
 var dancersScene = Scene();
 
 var discoMap = [
-  "abababababababababab",
-  "babababababababababa",
-  "abababababababababab",
-  "babababababababababa",
-  "abababababababababab",
-  "babababababababababa",
-  "abababababababababab",
-  "babababababababababa",
-  "abababababababababab",
-  "babababababababababa"
+  "abababababab",
+  "babababababa",
+  "abababababab",
+  "babababababa",
+  "abababababab",
+  "babababababa",
+  "abababababab",
+  "babababababa",
+  "abababababab"
 ];
 
 var jungleMap = [
-  "cccccccccccccccdcccc",
-  "cccccccccdcccccecccc",
-  "cccccccccecccccccccc",
-  "ccdccccccccccccccccc",
-  "cceccccccccccccdcccc",
-  "cccccccccccccccecccc",
-  "ccccccccccccccdccccc",
-  "ccccccdccccccceccccc",
-  "cccccceccccccccccccc",
-  "cccccccccccccccccccc",
+  "ccccccccdccc",
+  "ccccdccceccc",
+  "cccceccccccc",
+  "cdcccccccccc",
+  "ceccccccdccc",
+  "cccccccceccc",
+  "ccccccdccccc",
+  "ccdccceccccc",
+  "cceccccccccc"
 ];
 
 loadMap(discoMap, discoScene);
@@ -38,14 +36,14 @@ jungleScene.brightness = 0;
 
 var randomY = [];
 for (var i = 0; i < 30; i++) {
-  randomY.push(rando(-30, 130));
+  randomY.push(rando(-16, 130));
 }
 randomY.sort((a, b) => a - b);
 
 var dancingRobots = [];
 
-for (var i = 0; i < 30; i++) {
-  var rx = rando(0, 320);
+for (var i = 0; i < 12; i++) {
+  var rx = rando(0, 192);
   var ry = randomY[i];
   if (Math.abs(ry - 60) + Math.abs(rx - 100) < 90) { i--; continue; }
   if (Math.abs(ry - 60) + Math.abs(rx - 200) < 90) { i--; continue; }
@@ -64,7 +62,7 @@ for (var i = 0; i < 30; i++) {
   discoScene.add(robot);
 }
 
-var player = MainCharacter([100, 60, [3, 4], 8, 0]);
+var player = MainCharacter([50, 50, [3, 4], 8, 0]);
 
 
 
@@ -74,7 +72,7 @@ player.bounceOffset = 0;
 dancersScene.add(player);
 dancersScene.following = player; // TODO: Remove?
 
-var enemy = Robot([200, 60, [3, 4], 8, 2], dancersScene);
+var enemy = Robot([142, 50, [3, 4], 8, 2], dancersScene);
 enemy.setSprites([enemyHead = rando(0, 4), rando(0, 4), rando(0, 5), enemyHead]);
 enemy.bounceOffset = 3;
 dancersScene.add(enemy);

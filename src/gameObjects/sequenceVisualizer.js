@@ -10,9 +10,8 @@ var fillRectPixel = (x, y, w, h, color) => {
     }
   }
 }
-var dekkk;
+
 var sequenceVisualizer = props => {
-  var banned = props.banned || [];
   var delta = 0;
   var beatsDisplayed = 2;
   var spacing = W / (beatsDisplayed*2);
@@ -49,12 +48,12 @@ var sequenceVisualizer = props => {
     scene: props.scene,
     currentLine: 0,
     prevLine: 0,
-    update: (dt, time) => {
+    update: _ => {
       if (gameState != 2 || subState == 2) return;
       // startTime from metronome
       var base = timeBetweenBeats*4
       delta = ((Date.now() - startTime) % base)/base;
-      if (onBeat) {
+      /*if (onBeat) {
         if (keyOnBeat.beat == current_tick){
           status = 1;  // good!
         } else {
@@ -66,7 +65,8 @@ var sequenceVisualizer = props => {
         } else {
           status = 0; // normal
         }
-      }
+      }*/
+      status = onBeat ? (keyOnBeat.beat == current_tick ? 1 : 2) : (keyOnBeat.beat == current_tick ? 3: 0);
     },
     draw: _ => {
       beatLines.forEach(gp => gp.forEach(l => l.visible = false))

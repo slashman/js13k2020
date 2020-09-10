@@ -5,7 +5,7 @@ var enemyScene = Scene();
 loadMap(discoMap, enemyScene);
 var theEnemies = [];
 for (var i=0; i<LEVELS.length; i++) {
-  var localEnemy = Robot([(W / LEVELS.length) * (i + 0.5), 60, [], 8, 11], enemyScene);
+  var localEnemy = Robot([i*36 + 16, 60, [], 8, 11], enemyScene);
   localEnemy.setSprites(LEVELS[i].robot);
   localEnemy.bounceOffset = 0;
   enemyScene.add(localEnemy);
