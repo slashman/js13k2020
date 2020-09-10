@@ -83,25 +83,25 @@ sceneManager.add(discoScene);
 sceneManager.add(jungleScene);
 sceneManager.add(dancersScene);
 
-paletteRenderer.cyclePaletteIndex(1, 3, ["#e82b3b", "#d81b2b", "#c80b1b", "#b8000b"]);
-paletteRenderer.cyclePaletteIndex(1, 4, ["#fb6b1d", "#eb5b0d", "#db4b00", "#cb3b00"]);
-paletteRenderer.cyclePaletteIndex(0, 3, ["#08b23b", "#18c24b", "#28d25b", "#38e26b"]);
-paletteRenderer.cyclePaletteIndex(0, 4, ["#47f641", "#37ef31", "#27df21", "#17cf11"]);
+paletteRenderer.cyclePaletteIndex(1, 3, ['t57', 'r35', 'p13', 'n01']);
+paletteRenderer.cyclePaletteIndex(1, 4, ['vd3', 'tb1', 'r90', 'p70']);
+paletteRenderer.cyclePaletteIndex(0, 3, ['1m7', '3o9', '5qb', '7sd']);
+paletteRenderer.cyclePaletteIndex(0, 4, ['8u8', '6t6', '4r4', '2p2']);
 
 // The dance floor 💃🕺 --------------------------------------------------------
-paletteRenderer.beatPalette(7, 2, ["#CB71EF", "#D82DEB"]);
-paletteRenderer.tickPalette(7, 3, ["#C7ADFF", "#CB71EF"]);
-paletteRenderer.beatPalette(7, 4, ["#EBD1FF", "#C7ADFF", "#CB71EF", "#D82DEB"]);
+paletteRenderer.beatPalette(7, 2, ['pet', 'r5t']);
+paletteRenderer.tickPalette(7, 3, ['olv', 'pet']);
+paletteRenderer.beatPalette(7, 4, ['tqv', 'olv', 'pet', 'r5t']);
 
-paletteRenderer.beatPalette(7, 5, ["#E067B3", "#F4A4C4"]);
-paletteRenderer.tickPalette(7, 6, ["#F4A4C4", "#FFDBDF"]);
-paletteRenderer.tickPalette(7, 7, ["#FFF6F6", "#FFDBDF", "#F4A4C4", "#E067B3"]);
+paletteRenderer.beatPalette(7, 5, ['scm', 'uko']);
+paletteRenderer.tickPalette(7, 6, ['uko', 'vrr']);
+paletteRenderer.tickPalette(7, 7, ['vuu', 'vrr', 'uko', 'scm']);
 
-paletteRenderer.beatPalette(7, 1, ["#FFF6F6", "#FFFFFF", "#EBD1FF"]);
+paletteRenderer.beatPalette(7, 1, ['vuu', 'vvv', 'tqv']);
 
 // The GPI ---------------------------------------------------------------------
-paletteRenderer.beatPalette(9, 2, ["#FFF6F6", "#49E7EC", "#90006C", "#47F641", "#FF4F69"]);
-paletteRenderer.beatPalette(10, 5, ["#08b23b", "#18c24b", "#28d25b", "#38e26b"]);
+paletteRenderer.beatPalette(9, 2, ['vuu', '9st', 'i0d', '8u8', 'v9d']);
+paletteRenderer.beatPalette(10, 5, ['1m7', '3o9', '5qb', '7sd']);
 
 
 var danceFrame = 0;

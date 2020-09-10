@@ -75,17 +75,17 @@ var GUINumber = ({x, y = NUMBERS_Y, visible = true, stroke, fill, playerProp, in
   return self;
 };
 
-var GUICombo = GUINumber({x:SIXTEEN/2, stroke:'#000000', fill:'#FFFFFF', playerProp:'combo'});
-var GUIMaxCombo = GUINumber({x:SIXTEEN/2 * 3, stroke:'#000000', fill:'#FFDA45', playerProp:'maxCombo'});
+var GUICombo = GUINumber({x:SIXTEEN/2, fill:'vvv', playerProp:'combo'});
+var GUIMaxCombo = GUINumber({x:SIXTEEN/2 * 3, fill:'vr8', playerProp:'maxCombo'});
 var GUIScore = GUINumber({x:W - SIXTEEN, playerProp:'score'});
-var GUI404 = GUINumber({x:CODES_X, y: CODES_Y, stroke: '#25000D', fill: '#E214A8', initial: '404', visible: false});
+var GUI404 = GUINumber({x:CODES_X, y: CODES_Y, stroke: '401', fill: 's2l', initial: '404', visible: false});
 var GUI100 = GUINumber({x:CODES_X, y: CODES_Y, initial: '100', visible: false});
-var GUI200 = GUINumber({x:CODES_X, y: CODES_Y, stroke: '#293F21', fill: '#C4F129', initial: '200', visible: false});
+var GUI200 = GUINumber({x:CODES_X, y: CODES_Y, stroke: '574', fill: 'ou5', initial: '200', visible: false});
 
 var guiComboSeparator = GameObject([SIXTEEN/2 * 2, NUMBERS_Y, [78], 0, 12]);
 guiComboSeparator.small = true;
-guiComboSeparator.overridePalette(6, hexToRgb('#000000'));
-guiComboSeparator.overridePalette(7, hexToRgb('#FFFFFF'));
+guiComboSeparator.overridePalette(6, hexToRgb());
+guiComboSeparator.overridePalette(7, hexToRgb('vvv'));
 
 hudScene.add(guiComboSeparator);
 

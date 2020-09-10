@@ -94,6 +94,10 @@ var paletteRenderer = {
                 }
                 var palette = this.palettes[pi];
                 var color = palette[parseInt(index, 10)];
+                if (!color) {
+                  console.log(pi, palette, index)
+                }
+                
                 if (overrides[index])
                     color = overrides[index];
                 if (brightness != 1) 
@@ -109,32 +113,45 @@ paletteRenderer.setSprites(sprites); // Using global variable tsk tsk
 
 paletteRenderer.palettes = [
     // Transparency // Outline // Shine // Cold Light // Warm Light // Cold Base // Base // Warm Base
-    /*0*/  ["#FF0000", "#050320", "#ffffff", "#08b23b", "#47f641", "#1831a7", "#2890dc", "#5ee9e9"],
-    /*1*/  ["#FF0000", "#050320", "#ffffff", "#e83b3b", "#fb6b1d", "#1831a7", "#2890dc", "#5ee9e9"],
-    /*2*/  ["#FF0000", "#260503", "#fbff86", "#e83b3b", "#fb6b1d", "#7a3045", "#cd683d", "#fbb954"],
-    /*3*/  ["#064273", "#76b6c4", "#7fcdff", "#1da2d8", "#def3f6", "#def3f6", "#1da2d8", "#064273"],
-    /*4*/  ["#00a400", "#00a400", "#006f00", "#004600", "#007000", "#006f00", "#004600", "#007000"],
-    /*5*/  ["#2e2e2e", "#e82b3b", "#c80b1b", "#a80000", "#880000", "#a80000", "#c80b1b", "#e82b3b"],
-    /*6*/  ["#346f00", "#2a4600", "#e84723", "#a33b24", "#000000", "#000000", "#000000", "#000000"],
-    /*7*/  ["#FF0000", "#FFF6F6", "#D82DEB", "#CB71EF", "#C7ADFF", "#E067B3", "#F4A4C4", "#FFDBDF"],
-    /*8*/  ["#44891A", "#1B2632", "#F7E26B", "#493C2B", "#A46422", "#2F484E", "#44891A", "#A3CE27"],
-    /*9*/  ["#221C1A", "#221C1A", "#FFF6F6", "#FFD541", "#FFFC40", "#423934", "#796755", "#E4D2AA"],
-    /*10*/ ["#FF0000", "#221C1A", "#FFFFFF", "#08B23B", "#47F641", "#47F641"],
-    /*11*/ ["#000000", "#000000", "#111111", "#000000", "#111111", "#000000", "#111111", "#000000"],
-    /*12*/ ["#FF0000", "#000000", "#25000D", "#E214A8", "#293F21", "#C4F129", "#115E33", "#15C2A5"], /* numbers */
+    /*0*/  ['v00', '004', 'vvv', '1m7', '8u8', '36k', '5ir', 'btt'],
+    /*1*/  ['v00', '004', 'vvv', 't77', 'vd3', '36k', '5ir', 'btt'],
+    /*2*/  ['v00', '400', 'vvg', 't77', 'vd3', 'f68', 'pd7', 'vna'],
+    /*3*/  ['08e', 'emo', 'fpv', '3kr', 'ruu', 'ruu', '3kr', '08e'],
+    /*4*/  ['0k0', '0k0', '0d0', '080', '0e0', '0d0', '080', '0e0'],
+    /*5*/  ['555', 't57', 'p13', 'l00', 'h00', 'l00', 'p13', 't57'],
+    //6    ['#346f00", "#2a4600", "#e84723", "#a33b24", "#000000", "#000000", "#000000", "#000000'],
+           ['6d0', '580', 't84', 'k74',,,,],
+    //7    ['#FF0000", "#FFF6F6", "#D82DEB", "#CB71EF", "#C7ADFF", "#E067B3", "#F4A4C4", "#FFDBDF'],
+           ['v00', 'vuu', 'r5t', 'pet', 'olv', 'scm', 'uko', 'vrr'],
+    //8    ["#44891A", "#1B2632", "#F7E26B", "#493C2B", "#A46422", "#2F484E", "#44891A", "#A3CE27"],
+           ['8h3', '346', 'usd', '975', 'kc4', '599', '8h3', 'kp4'],
+    //9    ["#221C1A", "#221C1A", "#FFF6F6", "#FFD541", "#FFFC40", "#423934", "#796755", "#E4D2AA"],
+           ['433', '433', 'vuu', 'vq8', 'vv8', '876', 'fca', 'sql'],
+    //10   ["#FF0000", "#221C1A", "#FFFFFF", "#08B23B", "#47F641", "#47F641"],
+           ['v00', '433', 'vvv', '1m7', '8u8', '8u8'],
+    //11   ["#000000", "#000000", "#111111", "#000000", "#111111", "#000000", "#111111", "#000000"],
+           [,, '222',, '222',, '222',, ],
+    //12   ["#FF0000", "#000000", "#25000D", "#E214A8", "#293F21", "#C4F129", "#115E33", "#15C2A5"],
+           /* numbers */
+           ['v00',, '401', 's2l', '574', 'ou5', '2b6', '2ok']
 ];
 paletteRenderer.palettesWithTransparecy = [0,1,2,10,11,12]
 
 function hexToRgb(hex) {
-    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    return result ? {
-        r: parseInt(result[1], 16),
-        g: parseInt(result[2], 16),
-        b: parseInt(result[3], 16)
-    } : null;
+  return hex ? {
+    r: parseInt(hex[0], 32)*8,
+    g: parseInt(hex[1], 32)*8,
+    b: parseInt(hex[2], 32)*8
+  } : {r: 0, g: 0, b: 0};
 }
 
-paletteRenderer.palettes = paletteRenderer.palettes.map(palette => palette.map(hex => hexToRgb(hex)));
+paletteRenderer.palettes = paletteRenderer.palettes.map(palette => {
+  let newArray = [];
+  for (let index = 0; index < palette.length; index++) {
+    newArray.push(hexToRgb(palette[index]));
+  }
+  return newArray;
+});
 
 // Waterfall effect
 setInterval(function() {
