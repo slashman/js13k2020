@@ -94,7 +94,7 @@ var paletteRenderer = {
         
         if (overrides[index]) color = overrides[index];
         if (brightness != 1) color = fade(color, brightness);
-        setPixel(x + px, y + py + vfo, color.r, color.g, color.b, 255);
+        setPixel(x + px, y + py + vfo, color.r, color.g, color.b, 255*brightness);
       }
     }
   }

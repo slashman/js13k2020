@@ -9,10 +9,12 @@ var pixels = imageDataBuffer.data;
 
 function setPixel(x, y, r, g, b, a = 255) {
   var index = 4 * (x + y * imageDataBuffer.width);
-  pixels[index] = r;
-  pixels[index + 1] = g;
-  pixels[index + 2] = b;
-  pixels[index + 3] = a;
+  a = a/255;
+  var [aa, cc] = [a, 1 - a];
+  pixels[index] = aa*r + cc*pixels[index];
+  pixels[index + 1] = aa*g + cc*pixels[index+1];
+  pixels[index + 2] = aa*b + cc*pixels[index+2];
+  pixels[index + 3] = 255;
 }
 
 function clearPixels() {
@@ -22,7 +24,8 @@ function clearPixels() {
 }
 
 var draw = _ => {
-  // clearPixels(); // We don't need to do this if there's a full background, which there should always be?
+  clearPixels(); // We don't need to do this if there's a full background, which there should always be?
+  //graphics.clearRect(0, 0, W, H);
   sceneManager.draw();
 
   graphics.save(); // Do we even need to save and restore?

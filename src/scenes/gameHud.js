@@ -5,7 +5,7 @@
 var BOARD_Y = 7;
 var NUMBERS_Y = SIXTEEN/2*2;
 var CODES_Y = (BOARD_Y - 1)*SIXTEEN;
-var CODES_X = W/2 - (SIXTEEN*3/4);
+var CODES_X = W/2 - 12;
 
 var hudScene = Scene();
 var seq = sequenceVisualizer({ x: 0, y: BOARD_Y, instrument: 0, scene: hudScene });
@@ -28,50 +28,49 @@ var createNumber = (baseStroke, baseFill, x, val, y = NUMBERS_Y) => {
 }
 
 // Fake Game Object that creates a number that can grow based on its number of digits
-var GUINumber = ({x, y = NUMBERS_Y, visible = true, stroke, fill, playerProp, initial = '0'}) => {
+var GUINumber = ({x, y = NUMBERS_Y, visible = true, stroke, fill, playerProp, initial = '0', b=1}) => {
   var initialNumbers = initial.split('').map((n,i) => {
-    var num = createNumber(stroke, fill, x, parseInt(n), y);
+    var num = createNumber(stroke, fill, 0, parseInt(n), 0);
     num.x += SIXTEEN/2 * i;
     num.visible = visible;
-    hudScene.add(num);
+    //hudScene.add(num);
     return num;
-  })
-  var self = {
-    x: x,
-    y: y,
-    numbers: [...initialNumbers],
-    prop: playerProp,
-    visible: visible,
-    update: () => {
-      if (self.prop) {
-        var num = null;
-        var numArray = `${player[self.prop]}`.split('');
-  
-        if (numArray.length > self.numbers.length) {
-          num = createNumber(stroke, fill, self.x);
-          // num.x += self.x * self.numbers.length;
-          self.numbers.push(num);
-          hudScene.add(num);
-        } else if (numArray.length < self.numbers.length) {
-          hudScene.remove(self.numbers.pop());
-        }
-  
-        // Update the frames for each number
-        numArray.forEach((n,i) => {
-          var num = parseInt(n);
-          if (!self.numbers[i]) return
-          self.numbers[i].frame = num;
-          self.numbers[i].flipped = num === 9;
-          self.numbers[i].vFlip = num === 9;
-          self.numbers[i].y = num === 9 ? self.y + 10 : self.y;
-          self.numbers[i].x = self.x + (SIXTEEN/2 * i);
-        });
-      } else {
-        self.numbers.forEach((n) => n.visible = self.visible);
-      }
-    }
-  }
+  });
+  var self = GameObject([x, y]);
+  self.numbers = [...initialNumbers];
+  self.prop= playerProp;
+  self.visible= visible;
+  self.b= b,
+  self.draw = _ => self.numbers.forEach(n => n.draw(self.b, self.x, self.y));
+  self.update = _ => {
+    if (self.prop) {
+      var num = null;
+      var numArray = `${player[self.prop]}`.split('');
 
+      if (numArray.length > self.numbers.length) {
+        num = createNumber(stroke, fill, self.x);
+        // num.x += self.x * self.numbers.length;
+        self.numbers.push(num);
+        //hudScene.add(num);
+      } else if (numArray.length < self.numbers.length) {
+        //hudScene.remove(self.numbers.pop());
+      }
+
+      // Update the frames for each number
+      numArray.forEach((n,i) => {
+        var num = parseInt(n);
+        if (!self.numbers[i]) return
+        self.numbers[i].frame = num;
+        self.numbers[i].flipped = num === 9;
+        self.numbers[i].vFlip = num === 9;
+        self.numbers[i].y = num === 9 ? 10 : 0;
+        self.numbers[i].x = (SIXTEEN/2 * i);
+      });
+    } else {
+      self.numbers.forEach(n => n.visible = self.visible);
+    }
+  };
+  hudScene.add(self);
   return self;
 };
                   //  a,b,c, d, e, f, g, h, i, j, k, l,  m,  n,  o,  p,q,  r,  s,  t,  u,v,  w,x,  y
@@ -87,19 +86,20 @@ var GUIString = ({x, y, stroke, fill, text='ade'}) => {
   let self = GameObject([x, y]);
   self.parts = text.split('').map((letter, i) => {
     let frame = letter.charCodeAt(0) - 97;
-    return letterIndexes[frame] && createLetter(stroke, fill, x + i * 7, y, frame);
+    return letterIndexes[frame] && createLetter(stroke, fill, i * 7, 0, frame);
   });
   self.update = _ => {};
-  self.draw = b => self.parts.forEach(letter => letter&&letter.draw(b));
+  self.b = 1.0;
+  self.draw = b => self.parts.forEach(letter => letter&&letter.draw(self.b, self.x, self.y));
   return self;
 }
 
 var GUICombo = GUINumber({x:SIXTEEN/2, fill:'vvv', playerProp:'combo'});
 var GUIMaxCombo = GUINumber({x:SIXTEEN/2 * 3, fill:'vr8', playerProp:'maxCombo'});
 var GUIScore = GUINumber({x:W - SIXTEEN, playerProp:'score'});
-var GUI404 = GUINumber({x:CODES_X, y: CODES_Y, stroke: '401', fill: 's2l', initial: '404', visible: false});
-var GUI100 = GUINumber({x:CODES_X, y: CODES_Y, initial: '100', visible: false});
-var GUI200 = GUINumber({x:CODES_X, y: CODES_Y, stroke: '574', fill: 'ou5', initial: '200', visible: false});
+var GUI404 = GUINumber({x:CODES_X, y: CODES_Y, stroke: '401', fill: 's2l', initial: '404', b: 0});
+var GUI100 = GUINumber({x:CODES_X, y: CODES_Y, initial: '100', b: 0});
+var GUI200 = GUINumber({x:CODES_X, y: CODES_Y, stroke: '574', fill: 'ou5', initial: '200', b: 0});
 
 var guiComboSeparator = GameObject([SIXTEEN/2 * 2, NUMBERS_Y, [78], 0, 12]);
 guiComboSeparator.small = true;
@@ -107,6 +107,15 @@ guiComboSeparator.overridePalette(6, hexToRgb());
 guiComboSeparator.overridePalette(7, hexToRgb('vvv'));
 
 hudScene.add(guiComboSeparator);
+
+const GUI_CODE_EFFECT = (GUICode, targetY) => {
+  GUICode.b = 1;
+  GUICode.y = CODES_Y;
+  setTimeout(_ => {
+    addAnimation(GUICode, 'b', 1, 0, 300);
+    addAnimation(GUICode, 'y', CODES_Y, CODES_Y + targetY, 300);
+  }, 60);
+}
 
 // Put game objects in the scene
 loadMap(gpiMap, hudScene, {x:0, y: BOARD_Y});
@@ -133,11 +142,6 @@ hudScene.update = (time, dt) => {
   // Update the position of the score number based on its length
   GUIScore.x = W - SIXTEEN - (SIXTEEN/2 * (GUIScore.numbers.length - 1));
 
-  // Set the performance feedback visible
-  GUI404.visible = keyOnBeat.performance === 'bad';
-  GUI100.visible = keyOnBeat.performance === 'good';
-  GUI200.visible = keyOnBeat.performance === 'perfect';
-
   hudScene.applyToChildren( gameObject => {
     //if (gameObject.x + 24 > -self.x && gameObject.x < -self.x + 320) {
       gameObject.update(dt, time);
@@ -147,7 +151,14 @@ hudScene.update = (time, dt) => {
 };
 
 let gameTitle = GUIString({ x: 44, y: 20, fill: 'v0v', stroke: '000', text: 'rythm not found' });
+gameTitle.b = 0;
 let pressEnter = GUIString({ x: 56, y: 70, fill: 'vvv', stroke: '332', text: 'press enter' });
+setTimeout(() => {
+  addAnimation(gameTitle, 'b', 0, 1, 300, undefined, true)
+  addAnimation(gameTitle, 'y', 20, 30, 300, undefined, true)
+  addAnimation(pressEnter, 'b', 0.2, 1, 500, undefined, true)
+}, 1000);
+
 hudScene.add(gameTitle);
 hudScene.add(pressEnter);
 // Load the scene in the game

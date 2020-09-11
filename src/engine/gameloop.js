@@ -15,6 +15,8 @@ var loop = time => {
   // resetMatrix();
   // updateBackgroud(refreshRatio);
   sceneManager.update(time, refreshRatio);
+
+  updateAnimations(dt);
   
   draw();
 //  drawPostProcessing(~~(time));
