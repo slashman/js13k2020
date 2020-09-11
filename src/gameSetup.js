@@ -102,6 +102,7 @@ const handleEnterAction = _ => {
       if (subState==2) {
         console.log('what to do? win', win);
         if (win) {
+          pressEnter.visible = false;
           discoOut();
           displayEnemyScene();
         }

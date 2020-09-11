@@ -4,7 +4,7 @@
 // ░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░
 var BOARD_Y = 7;
 var NUMBERS_Y = SIXTEEN/2*2;
-var CODES_Y = (BOARD_Y+6)*SIXTEEN/2;
+var CODES_Y = (BOARD_Y - 1)*SIXTEEN;
 var CODES_X = W/2 - (SIXTEEN*3/4);
 
 var hudScene = Scene();
@@ -14,8 +14,8 @@ var numObjects = [];
 // The mirror property will be used to draw another sprite in front of the one
 // that needs to be mirrored. Something like what we do for the robotz heads.
 var gpiMap = [
-  "fffffffffhhfffffffff",
-  "ggggggggghhggggggggg",
+  "fffffhhfffff",
+  "ggggghhggggg",
 ];
 
 // Creates a number sprite from 0 to 9
@@ -74,6 +74,25 @@ var GUINumber = ({x, y = NUMBERS_Y, visible = true, stroke, fill, playerProp, in
 
   return self;
 };
+                  //  a,b,c, d, e, f, g, h, i, j, k, l,  m,  n,  o,  p,q,  r,  s,  t,  u,v,  w,x,  y
+var letterIndexes = [72, , ,73,74,75,76,88,89,90,91,92,104,105,106,107, , 108,120,121,122, ,123, ,124];
+var createLetter = (baseStroke, baseFill, x, y, frame) => {
+  var letterObj = GameObject([x, y, letterIndexes, 0, 0]);
+  letterObj.small = true;
+  letterObj.frame = frame;
+  if (baseStroke) letterObj.paletteOverrides = { 1: hexToRgb(baseStroke), 2: hexToRgb(baseFill) };
+  return letterObj;
+}
+var GUIString = ({x, y, stroke, fill, text='ade'}) => {
+  let self = GameObject([x, y]);
+  self.parts = text.split('').map((letter, i) => {
+    let frame = letter.charCodeAt(0) - 97;
+    return letterIndexes[frame] && createLetter(stroke, fill, x + i * 7, y, frame);
+  });
+  self.update = _ => {};
+  self.draw = b => self.parts.forEach(letter => letter&&letter.draw(b));
+  return self;
+}
 
 var GUICombo = GUINumber({x:SIXTEEN/2, fill:'vvv', playerProp:'combo'});
 var GUIMaxCombo = GUINumber({x:SIXTEEN/2 * 3, fill:'vr8', playerProp:'maxCombo'});
@@ -127,6 +146,10 @@ hudScene.update = (time, dt) => {
   hudScene.updateData(time, dt);
 };
 
+let gameTitle = GUIString({ x: 44, y: 20, fill: 'v0v', stroke: '000', text: 'rythm not found' });
+let pressEnter = GUIString({ x: 56, y: 70, fill: 'vvv', stroke: '332', text: 'press enter' });
+hudScene.add(gameTitle);
+hudScene.add(pressEnter);
 // Load the scene in the game
 sceneManager.add(hudScene);
 

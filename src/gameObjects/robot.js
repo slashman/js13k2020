@@ -2,9 +2,9 @@ var partsConfig = [
 [ // heads
     [1], //x8
     [2], //x8
-    [3], //x8
+    [3], //x
     [8], //x8
-    [2], //16
+    [2], //x16
     [3], //16
 ],
 [ // torsos
@@ -71,7 +71,7 @@ var Robot = (props, scene) => {
     self.frame = (self.frame + self.frameRate * dt) % 6;
     var iframe = ~~self.frame;
     iframe = (iframe+ self.bounceOffset) % 6;
-    headOffset =     [0,1,2,3,2,1][iframe];
+    headOffset  =    [0,1,2,3,2,1][iframe];
     torsoOffset =    [0,1,2,2,1,0][iframe]; // For now, arms have the same offset as torso
     [self.components[0], self.components[1], self.components[6]].forEach(s => s.y += headOffset); // head sprites
     [self.components[2], self.components[3],self.components[4],self.components[5]].forEach(s => s.y += torsoOffset) // torso and arm sprites
@@ -81,9 +81,7 @@ var Robot = (props, scene) => {
     self.components.forEach((c,i) => c.frames = f[~~(i/2)])
     if (bigHeads.indexOf(rc[0]) != -1) {
       self.components[0].dx = -8;
-      [self.components[0], self.components[1]].forEach(s => {
-        s.small = false;
-      });
+      [self.components[0], self.components[1]].forEach(s => s.small = false);
     }
   }
   self.arms = [false, false]; // Both down
@@ -173,13 +171,7 @@ var Robot = (props, scene) => {
     } else {
       self.badKey();
     }
-    
-    //console.log('beat', keyOnBeat.beat);
-    //console.log('value', value)
-    //console.log(performance)
-    //console.log(keyOnBeat.performance)
-    //console.log(keyOnBeat.rawBeat -keyOnBeat.beat, keyOnBeat.performance);
-    //console.log(value, fullBeatSequence[keyOnBeat.beat] ? 'ok' : `${fullBeatSequence[0][keyOnBeat.beat]} ${fullBeatSequence[1][keyOnBeat.beat]}`)
+
   }
   
   self.overridePalette = function(index, color) {

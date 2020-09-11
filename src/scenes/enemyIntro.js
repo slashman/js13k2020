@@ -20,11 +20,13 @@ const enemyIntro = _ => {
   enemyScene.brightness = 0;
   theEnemies[currentLevel].setPalette(2);
   enemyScene.fadeIn();
+  pressEnter.visible = true;
 }
 
 const enemyOut = _ => {
   enemyScene.fadeOut();
   enemyScene.active = false;
+  pressEnter.visible = false;
   discoIntro();
   setTimeout(() => {
     loadLevel();

@@ -33,12 +33,7 @@ var draw = _ => {
   if (DEBUG) {
     graphics.font = "16px Lucida Console";
     graphics.strokeStyle = '#FFF'
-    graphics.fillStyle = "red";
-    //graphics.fillText(`SCORE: ${player.score}`, 0, 180);
-    //graphics.fillText(`COMBO: ${player.combo}`, 0, 205);
-    //graphics.fillText(`${keyOnBeat.performance}`, 200, 180);
-    //graphics.fillText(`FOCUS: ${player.focus}`, 180, 205);
-    //graphics.fillText(`MAX COMBO: ${player.maxCombo}`, 0, 230);
+    graphics.fillStyle = 'red';
     graphics.fillText(`S: ${player.sequence}`, 0, 230);
     var text = '';
     if (gameState==2) {
@@ -48,8 +43,6 @@ var draw = _ => {
       } else if(subState == 2) {
         text = win?'YOU WIN':'YOU LOSE';
       }
-    } else if (gameState!=2) {
-      text = 'PRESS ENTER';
     }
     graphics.textAlign ='center';
     graphics.fillText(text, 192/2, 120);
@@ -74,10 +67,14 @@ var indexToSprite = { // Maps the map above to sprite and palette indexes
   h: { parts: { sprites: [6, 7, 6 + 8, 7 + 8], palette: 9, partIdx: 0 } },
 };
 
-var createComplements = (obj, complements = ['tr', 'bl', 'br'], small = true) => {
-  var offsets = {
-    tl: [0, 0, false], tr: [8, 0, false], bl: [0, 26, true], br: [8, 26, true]
-  };
+// tl = 0
+// tr = 1
+// bl = 2
+// br = 3
+var createComplements = (obj, complements = [1, 2, 3], small = true) => {
+  var offsets = [
+    [0, 0], [8, 0], [0, 26], [8, 26]
+  ];
 
   return complements.map(k => {
     var p = GameObject([
@@ -88,8 +85,8 @@ var createComplements = (obj, complements = ['tr', 'bl', 'br'], small = true) =>
     p.offsetX = offsets[k][0];
     p.offsetY = offsets[k][1];
     p.small = small;
-    p.flipped = k === 'tr' || k === 'br';
-    p.vFlip = obj.vFlip || (k === 'bl' || k === 'br');
+    p.flipped = k != 3;
+    p.vFlip = obj.vFlip || k != 1;
     return p;
   });
 }
@@ -113,7 +110,7 @@ var loadMap = (map, scene, offset = { x: 0, y: 0 }) =>{
         // Draw a mirrored object in front of the created one (like with the
         // heads) --------------------------------------------------------------
         // TODO: There should be a better way to do this for sure
-        if (sd.mirror) createComplements(obj, ['tr']).forEach(p => scene.add(p));
+        if (sd.mirror) createComplements(obj, [1]).forEach(p => scene.add(p));
         // ---------------------------------------------------------------------
       });
     }

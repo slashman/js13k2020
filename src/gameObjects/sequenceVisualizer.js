@@ -15,15 +15,14 @@ var sequenceVisualizer = props => {
   var delta = 0;
   var beatsDisplayed = 2;
   var spacing = W / (beatsDisplayed*2);
-  var status = 0;
+  //var status = 0;
   var colors = [
     [10, 10, 10],
     [0, 255, 255],
     [0, 160, 100],
     [250, 0, 0],
   ];
-  var line = [150, 2, 10, colors[2]];
-  var line2 = [152, 1, 6, colors[2]];
+  var line2 = [128, 1, 4, colors[2]];
   var lineIndexes = [127,126,125,125-16,125-32,125-48];
   var beatLines = [];
 
@@ -34,7 +33,7 @@ var sequenceVisualizer = props => {
     tl.flipped = idx > 5
     tl.small = true
     tl.visible = false
-    var comp = createComplements(tl, ['bl']).pop()
+    var comp = createComplements(tl, [2]).pop()
     comp.flipped = idx <= 5
     comp.visible = false
     beatLines.push([tl, comp])
@@ -66,7 +65,7 @@ var sequenceVisualizer = props => {
           status = 0; // normal
         }
       }*/
-      status = onBeat ? (keyOnBeat.beat == current_tick ? 1 : 2) : (keyOnBeat.beat == current_tick ? 3: 0);
+      //status = onBeat ? (keyOnBeat.beat == current_tick ? 1 : 2) : (keyOnBeat.beat == current_tick ? 3: 0);
     },
     draw: _ => {
       beatLines.forEach(gp => gp.forEach(l => l.visible = false))
