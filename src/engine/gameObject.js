@@ -16,15 +16,9 @@ var GameObject = props => {
     small: false,
     offsetX: 0,
     offsetY: 0,
-    update: dt => {
-      self.frame = (self.frame + self.frameRate * dt) % self.frames.length;
-    },
-    draw: (b, offsetX=0, offsetY=0) => { // brightness
-      paletteRenderer.draw(self.frames[~~self.frame], ~~(self.x + offsetX), ~~(self.y+ offsetY), self.paletteIndex, self.flipped, self.vFlip, self.small, self.paletteOverrides, b);
-    },
-    overridePalette: (index, color) => {
-      self.paletteOverrides[index] = color;
-    }
+    update: dt => self.frame = (self.frame + self.frameRate * dt) % self.frames.length,
+    draw: (b, offsetX=0, offsetY=0) => paletteRenderer.draw(self.frames[~~self.frame], ~~(self.x + offsetX), ~~(self.y+ offsetY), self.paletteIndex, self.flipped, self.vFlip, self.small, self.paletteOverrides, b),
+    overridePalette: (index, color) => self.paletteOverrides[index] = color
   };
   self._update = self.update;
   return self;

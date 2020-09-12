@@ -88,7 +88,7 @@ var GUIString = ({x, y, stroke, fill, text='ade'}) => {
     let frame = letter.charCodeAt(0) - 97;
     return letterIndexes[frame] && createLetter(stroke, fill, i * 7, 0, frame);
   });
-  self.update = _ => {};
+  self.update = noop;
   self.b = 1.0;
   self.draw = b => self.parts.forEach(letter => letter&&letter.draw(self.b, self.x, self.y));
   return self;
@@ -126,28 +126,12 @@ hudScene.add(seq);
 hudScene.onMetronomeTick = (tick) => seq.updateLines(tick)
 hudScene.update = (time, dt) => {
   if (!hudScene.active) return;
-  hudScene.updateFade(dt);
-
-  GUICombo.update();
-  GUIMaxCombo.update();
-  GUIScore.update();
-  GUI404.update();
-  GUI100.update();
-  GUI200.update();
-
   // Move numbers based on the one that is on the left (the combo counter)
   guiComboSeparator.x = SIXTEEN/2 * (2 + GUICombo.numbers.length - 1);
   GUIMaxCombo.x = SIXTEEN/2 * (2 + GUICombo.numbers.length);
-  
   // Update the position of the score number based on its length
   GUIScore.x = W - SIXTEEN - (SIXTEEN/2 * (GUIScore.numbers.length - 1));
-
-  hudScene.applyToChildren( gameObject => {
-    //if (gameObject.x + 24 > -self.x && gameObject.x < -self.x + 320) {
-      gameObject.update(dt, time);
-    //}
-  })
-  hudScene.updateData(time, dt);
+  hudScene.applyToChildren(gameObject => gameObject.update(dt, time));
 };
 
 let gameTitle = GUIString({ x: 44, y: 20, fill: 'v0v', stroke: '000', text: 'rythm not found' });
