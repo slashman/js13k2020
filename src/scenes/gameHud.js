@@ -54,18 +54,19 @@ var GUI200 = GUIString(CODES_X, CODES_Y, `${HEY_CHAR}200`, 'ou5', '574', 0);
 // ---- [ LETTERS AND NUMBERS ] ------------------------------------------------
 
 // ---- [ SPEAKERS ] -----------------------------------------------------------
-var speakerCfg = {parts: [arrayFromTo(22,26),arrayFromTo(38,42)], palette: 13}
-var LeftSpeaker = MechaGameObject({x: 0, y: 5*SIXTEEN/2, ...speakerCfg});
-var RightSpeaker = MechaGameObject({x: 0, y: 5*SIXTEEN/2, ...speakerCfg, mirrored: true});
+var speakerCfg = [[arrayFromTo(22,26),arrayFromTo(38,42)], 13];
+var LeftSpeaker = MechaGameObject(0, 5*SIXTEEN/2, ...speakerCfg);
+var RightSpeaker = MechaGameObject(0, 5*SIXTEEN/2, ...speakerCfg, 1, noop, true);
 RightSpeaker.x = W - RightSpeaker.width;
 LeftSpeaker.y += LeftSpeaker.height;
 RightSpeaker.y += RightSpeaker.height;
 console.log('h:', LeftSpeaker.height);
 
 // ---- [ PROGRESS BAR ] -------------------------------------------------------
-var progressCfg = {
-  parts: [[11,12,12,12,13,14,15]], palette: 9,
-  drawBehind: function () {
+var progressCfg = [
+  [[11,12,12,12,13,14,15]], 9,
+  1,
+  function () {
     const _x = this.x+(!this.flipped?4:20);
     const _y = this.y+6;
     // The white background of the progress bar
@@ -80,9 +81,9 @@ var progressCfg = {
       fillRectPixel(_x+PROGRESS_WIDTH-rightProgress, _y, rightProgress, 7, [251, 107, 29]);
     }
   }
-};
-var PlayerProgress = MechaGameObject({x: 5*SIXTEEN/2, y: 0, ...progressCfg});
-var EnemyProgress = MechaGameObject({x: 5*SIXTEEN/2, y: 0, ...progressCfg, mirrored: true});
+];
+var PlayerProgress = MechaGameObject(5*SIXTEEN/2, 0, ...progressCfg);
+var EnemyProgress = MechaGameObject(5*SIXTEEN/2, 0, ...progressCfg, true);
 EnemyProgress.x += EnemyProgress.width;
 PlayerProgress.y -= 100;
 EnemyProgress.y -= 100;
@@ -91,7 +92,7 @@ EnemyProgress.y -= 100;
 loadMap(gpiMap, hudScene, {x:0, y: BOARD_Y});
 seq.addBeatLinesToScene();
 hudScene.add(seq);
-var DPU = MechaGameObject({x: 10*SIXTEEN/2, y: 7*SIXTEEN/2, parts: [arrayFromTo(100,103),arrayFromTo(116,119)], palette: 9});
+var DPU = MechaGameObject(10*SIXTEEN/2, 7*SIXTEEN/2, [arrayFromTo(100,103),arrayFromTo(116,119)], 9);
 
 const GUI_CODE_EFFECT = (GUICode, targetY) => {
   GUICode.b = 1;

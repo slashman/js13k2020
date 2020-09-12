@@ -24,13 +24,13 @@ var GameObject = props => {
   return self;
 };
 
-var createPart = ({x, y, mechaIndexes, frame, palette}) => {
+var createPart = (x, y, mechaIndexes, frame, palette) => {
   const partObj = GameObject([x, y, mechaIndexes, 0, palette]);
   partObj.small = true;
   partObj.frame = frame;
   return partObj;
 };
-var MechaGameObject = ({x, y, parts, palette, mirrored = false, b = 1, drawBehind = () => {}}) => {
+var MechaGameObject = (x, y, parts, palette, b = 1, drawBehind = noop, mirrored = false) => {
   const self = GameObject([x, y]);
   self.dfltX = x;
   self.dfltY = y;
@@ -41,9 +41,7 @@ var MechaGameObject = ({x, y, parts, palette, mirrored = false, b = 1, drawBehin
     self.width = section.length * SIXTEEN / 2;
     var spritesheet = [...section];
     if (mirrored) spritesheet.reverse();
-    spritesheet.forEach((_, i) => {
-      self.parts.push(createPart({x: i*8, y: y+(j*SIXTEEN), mechaIndexes: spritesheet, frame: i, palette}));
-    })
+    spritesheet.forEach((_, i) => self.parts.push(createPart(i*8, y+(j*SIXTEEN), spritesheet, i, palette)))
   })
   self.width
   self.update = noop;
