@@ -82,12 +82,18 @@ var createLetter = (baseStroke, baseFill, x, y, frame) => {
   if (baseStroke) letterObj.paletteOverrides = { 1: hexToRgb(baseStroke), 2: hexToRgb(baseFill) };
   return letterObj;
 }
-var GUIString = ({x, y, stroke, fill, text='ade'}) => {
+var GUIString = ({x, y, stroke, fill, text='ade', centered = true}) => {
   let self = GameObject([x, y]);
-  self.parts = text.split('').map((letter, i) => {
-    let frame = letter.charCodeAt(0) - 97;
-    return letterIndexes[frame] && createLetter(stroke, fill, i * 7, 0, frame);
-  });
+  self.setText = text => {
+    var letters = text.split('');
+    var tx = centered ? W / 2 - (7 * (letters.length - 1)) : x;
+    self.parts = letters.map((letter, i) => {
+      let frame = letter.charCodeAt(0) - 97;
+      return letterIndexes[frame] && createLetter(stroke, fill, tx + i * 7, y, frame);
+    });
+    
+  };
+  self.setText(text);
   self.update = _ => {};
   self.b = 1.0;
   self.draw = b => self.parts.forEach(letter => letter&&letter.draw(self.b, self.x, self.y));
@@ -150,7 +156,8 @@ hudScene.update = (time, dt) => {
   hudScene.updateData(time, dt);
 };
 
-let gameTitle = GUIString({ x: 44, y: 20, fill: 'v0v', stroke: '000', text: 'rythm not found' });
+
+let gameTitle = GUIString({ x: 44, y: 20, fill: 'v0v', stroke: '000', text: 'rhythm not found', centered: true });
 gameTitle.b = 0;
 let pressEnter = GUIString({ x: 56, y: 70, fill: 'vvv', stroke: '332', text: 'press enter' });
 setTimeout(() => {

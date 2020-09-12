@@ -34,6 +34,29 @@ var partsConfig = [
 
 var bigHeads = [4, 5];
 
+var robotPoses = [
+  {
+    id: 'E', // Egyptian 1  ^<v
+    arms: [true, false], 
+    headPosition: 0
+  },
+  {
+    id: 'F', // Egyptian 2 v>^
+    arms: [false, true],
+    headPosition: 2
+  },
+  {
+    id: 'A', // Egyptian back 1 v<^
+    arms: [false, true],
+    headPosition: 0
+  },
+  {
+    id: 'B', // Egyptian back 2 ^>v
+    arms: [true, false],
+    headPosition: 2
+  }
+]
+
 var Robot = (props, scene) => {
   var self = GameObject(props);
   self.combo = 0;
@@ -92,8 +115,15 @@ var Robot = (props, scene) => {
 
   self.headPosition = 1; // Center;
   var selfPalette = paletteRenderer.palettes[self.paletteIndex]
-  self.turnHead = (dir) => {
+  self.setHead = p => {
+    self.headPosition = p;
+    self.updateHead();
+  };
+  self.turnHead = dir => {
     self.headPosition = wrap(self.headPosition + dir, 4);
+    self.updateHead();
+  };
+  self.updateHead = _ => {
     self.components[6].visible = self.headPosition % 2 == 0;
     self.components[6].flipped = self.headPosition === 0;
     [self.components[0], self.components[1]].forEach(s => {
@@ -185,12 +215,17 @@ var Robot = (props, scene) => {
   };
 
   self.addKey = function(key) {
-    self.sequence.push(key);
-    if (self.sequence.length == 4) {
-      console.log('send command');
+    self.sequence.push([key, self.pose()]);
+    if (self.sequence.length > 0) {
       self.score += checkStep(self.sequence);
-      self.sequence = [];
     }
+  }
+
+  self.pose = _ => {
+    var pose = robotPoses.find(p => {
+      return p.arms[0] == self.arms[0] && p.arms[1] == self.arms[1] && p.headPosition == self.headPosition
+    });
+    return pose ? pose.id : '*';
   }
 
   self.badKey = function() {
