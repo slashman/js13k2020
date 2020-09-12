@@ -6,3 +6,4 @@ var SIXTEEN = 16;
 
 var noop = _ => 0;
 var u;
+var inputLocked = true;

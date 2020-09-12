@@ -41,7 +41,7 @@ var GUIString = (x, y, text, fill, stroke, b=1) => {
   self.setText(text);
   self.update = noop;
   self.b = b;
-  self.draw = b => self.parts.forEach(letter => letter && letter.draw(self.b, self.x, self.y));
+  self.draw = b => self.visible && self.parts.forEach(letter => letter && letter.draw(self.b, self.x, self.y));
   hudScene.add(self);
   return self;
 }
@@ -68,13 +68,18 @@ hudScene.add(seq);
 hudScene.onMetronomeTick = (tick) => seq.updateLines(tick)
 
 let gameTitle = GUIString(CODES_X, 20, 'rythm not found', 'v0v', '000', 0);
-let pressEnter = GUIString(CODES_X, 70, 'press enter', 'vvv','332', 0);
+let pressEnter = GUIString(CODES_X, 80, 'press enter', 'vvv','332', 0);
+pressEnter.visible = false;
 let countdownLabel = GUIString(CODES_X, H/2-8, '3', u, u, 0);
+let unlockPressEnter = _ => {
+  inputLocked = false;
+  pressEnter.visible = true;
+};
+
 setTimeout(_ => {
   addAnimation(gameTitle, 'b', 0, 1, 500);
-  addAnimation(gameTitle, 'y', 20, 30, 500, u, false, _=> {
-    addAnimation(pressEnter, 'b', 0.2, 1, 500, u, true);
-  });
+  addAnimation(gameTitle, 'y', 20, 30, 500, u, false, unlockPressEnter);
+  addAnimation(pressEnter, 'b', 0.2, 1, 500, u, true);
 }, 1000);
 
 // Load the scene in the game

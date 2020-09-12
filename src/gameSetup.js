@@ -40,6 +40,7 @@ const loadLevel = levelIndex => {
   player.score = 0;
   player.stats = {};
   player.maxCombo = 0;
+  pressEnter.visible = false;
   updateMetronome();
 }
 
@@ -61,6 +62,8 @@ const startSong = _ => {
     win = player.score >= level.score;
     addAnimation(countdownLabel, 'b', 0, 1, 350);
     countdownLabel.setText(win ? 'you win' : 'you lose');
+    inputLocked = true;
+    setTimeout(unlockPressEnter, 1000);
   };
 
 }
@@ -100,13 +103,11 @@ const handleEnterAction = _ => {
       break;
     case 2:
       if (subState==2) {
-        console.log('what to do? win', win);
         if (win) {
           pressEnter.visible = false;
           discoOut();
           displayEnemyScene();
-        }
-        else loadLevel();
+        } else loadLevel();
       }
   }
 }

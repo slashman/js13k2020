@@ -21,6 +21,8 @@ const enemyIntro = _ => {
   theEnemies[currentLevel].setPalette(2);
   enemyScene.fadeIn();
   pressEnter.visible = true;
+  inputLocked = true;
+  setTimeout(unlockPressEnter, 1000);
 }
 
 const enemyOut = _ => {
@@ -28,7 +30,9 @@ const enemyOut = _ => {
   enemyScene.active = false;
   pressEnter.visible = false;
   discoIntro();
+  inputLocked = true;
   setTimeout(() => {
+    inputLocked = false;
     loadLevel();
   }, 1000);
 }

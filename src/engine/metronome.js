@@ -29,7 +29,7 @@ updateMetronome = () => {
   var currentTickIndex = ~~((now - startTime) / timeBetweenBeats);
   if (current_tick != currentTickIndex) {
     // check if the player miss the last beat
-    if (current_tick%4==0 && keyOnBeat.beat!=current_tick) player.addFocus(-1);
+    if (current_tick%4==0 && keyOnBeat.b!=current_tick) player.addFocus(-1);
     current_tick = currentTickIndex;
     onBeat = !(current_tick%4);
     //onBeat = !!fullBeatSequence[current_tick];
