@@ -5,7 +5,7 @@
 var BOARD_Y = 7;
 var NUMBERS_Y = SIXTEEN/2*2;
 var CODES_Y = (BOARD_Y - 1)*SIXTEEN;
-var CODES_X = W/2 - 12;
+var CODES_X = W/2;
 
 var hudScene = Scene();
 var seq = sequenceVisualizer({ x: 0, y: BOARD_Y, instrument: 0, scene: hudScene });
@@ -18,95 +18,37 @@ var gpiMap = [
   "ggggghhggggg",
 ];
 
-// Creates a number sprite from 0 to 9
-var createNumber = (baseStroke, baseFill, x, val, y = NUMBERS_Y) => {
-  var num = GameObject([x, y, [43,44,45,46,47,60,61,62,63,61], 0, 12]);
-  num.small = true;
-  if (val) num.frame = val;
-  if (baseStroke) num.paletteOverrides = { 6: hexToRgb(baseStroke), 7: hexToRgb(baseFill) };
-  return num;
-}
+var abc = '0123456789adefghijklmnoprstuwy';
+var abcIndexes = [43, 44, 45, 46, 47, 60, 61, 62, 63, 61,72, 73, 74, 75, 76, 88, 89, 90, 91, 92, 104, 105, 106, 107, 108, 120, 121, 122, 123, 124];
 
-// Fake Game Object that creates a number that can grow based on its number of digits
-var GUINumber = ({x, y = NUMBERS_Y, visible = true, stroke, fill, playerProp, initial = '0', b=1}) => {
-  var initialNumbers = initial.split('').map((n,i) => {
-    var num = createNumber(stroke, fill, 0, parseInt(n), 0);
-    num.x += SIXTEEN/2 * i;
-    num.visible = visible;
-    //hudScene.add(num);
-    return num;
-  });
-  var self = GameObject([x, y]);
-  self.numbers = [...initialNumbers];
-  self.prop= playerProp;
-  self.visible= visible;
-  self.b= b,
-  self.draw = _ => self.numbers.forEach(n => n.draw(self.b, self.x, self.y));
-  self.update = _ => {
-    if (self.prop) {
-      var num = null;
-      var numArray = `${player[self.prop]}`.split('');
-
-      if (numArray.length > self.numbers.length) {
-        num = createNumber(stroke, fill, self.x);
-        // num.x += self.x * self.numbers.length;
-        self.numbers.push(num);
-        //hudScene.add(num);
-      } else if (numArray.length < self.numbers.length) {
-        //hudScene.remove(self.numbers.pop());
-      }
-
-      // Update the frames for each number
-      numArray.forEach((n,i) => {
-        var num = parseInt(n);
-        if (!self.numbers[i]) return
-        self.numbers[i].frame = num;
-        self.numbers[i].flipped = num === 9;
-        self.numbers[i].vFlip = num === 9;
-        self.numbers[i].y = num === 9 ? 10 : 0;
-        self.numbers[i].x = (SIXTEEN/2 * i);
-      });
-    } else {
-      self.numbers.forEach(n => n.visible = self.visible);
-    }
-  };
-  hudScene.add(self);
-  return self;
-};
-                  //  a,b,c, d, e, f, g, h, i, j, k, l,  m,  n,  o,  p,q,  r,  s,  t,  u,v,  w,x,  y
-var letterIndexes = [72, , ,73,74,75,76,88,89,90,91,92,104,105,106,107, , 108,120,121,122, ,123, ,124];
-var createLetter = (baseStroke, baseFill, x, y, frame) => {
-  var letterObj = GameObject([x, y, letterIndexes, 0, 0]);
+var createLetter = (baseStroke, baseFill, x, frame) => {
+  var letterObj = GameObject([x, 0, abcIndexes, 0, 0]);
   letterObj.small = true;
   letterObj.frame = frame;
   if (baseStroke) letterObj.paletteOverrides = { 1: hexToRgb(baseStroke), 2: hexToRgb(baseFill) };
   return letterObj;
 }
-var GUIString = ({x, y, stroke, fill, text='ade'}) => {
+var GUIString = (x, y, text, fill, stroke, b=1) => {
   let self = GameObject([x, y]);
-  self.parts = text.split('').map((letter, i) => {
-    let frame = letter.charCodeAt(0) - 97;
-    return letterIndexes[frame] && createLetter(stroke, fill, i * 7, 0, frame);
-  });
+  self.setText = text => {
+    var letters = text.split('');
+    self.x = x - 4 * letters.length;
+    self.parts = letters.map((letter, i) => {
+      let frame = abc.indexOf(letter);
+      return frame != -1 && createLetter(stroke, fill, i * 8, frame);
+    });
+  };
+  self.setText(text);
   self.update = noop;
-  self.b = 1.0;
-  self.draw = b => self.parts.forEach(letter => letter&&letter.draw(self.b, self.x, self.y));
+  self.b = b;
+  self.draw = b => self.parts.forEach(letter => letter && letter.draw(self.b, self.x, self.y));
+  hudScene.add(self);
   return self;
 }
 
-var GUICombo = GUINumber({x:SIXTEEN/2, fill:'vvv', playerProp:'combo'});
-var GUIMaxCombo = GUINumber({x:SIXTEEN/2 * 3, fill:'vr8', playerProp:'maxCombo'});
-var GUIScore = GUINumber({x:W - SIXTEEN, playerProp:'score'});
-var GUI404 = GUINumber({x:CODES_X, y: CODES_Y, stroke: '401', fill: 's2l', initial: '404', b: 0});
-var GUI100 = GUINumber({x:CODES_X, y: CODES_Y, initial: '100', b: 0});
-var GUI200 = GUINumber({x:CODES_X, y: CODES_Y, stroke: '574', fill: 'ou5', initial: '200', b: 0});
-
-var guiComboSeparator = GameObject([SIXTEEN/2 * 2, NUMBERS_Y, [78], 0, 12]);
-guiComboSeparator.small = true;
-guiComboSeparator.overridePalette(6, hexToRgb());
-guiComboSeparator.overridePalette(7, hexToRgb('vvv'));
-
-hudScene.add(guiComboSeparator);
+var GUI404 = GUIString(CODES_X, CODES_Y, '404', '401', 's2l', 0);
+var GUI100 = GUIString(CODES_X, CODES_Y, '100', u, u, 0);
+var GUI200 = GUIString(CODES_X, CODES_Y, '200', '574', 'ou5', 0);
 
 const GUI_CODE_EFFECT = (GUICode, targetY) => {
   GUICode.b = 1;
@@ -124,27 +66,17 @@ hudScene.add(seq);
 
 // Function overrides ----------------------------------------------------------
 hudScene.onMetronomeTick = (tick) => seq.updateLines(tick)
-hudScene.update = (time, dt) => {
-  if (!hudScene.active) return;
-  // Move numbers based on the one that is on the left (the combo counter)
-  guiComboSeparator.x = SIXTEEN/2 * (2 + GUICombo.numbers.length - 1);
-  GUIMaxCombo.x = SIXTEEN/2 * (2 + GUICombo.numbers.length);
-  // Update the position of the score number based on its length
-  GUIScore.x = W - SIXTEEN - (SIXTEEN/2 * (GUIScore.numbers.length - 1));
-  hudScene.applyToChildren(gameObject => gameObject.update(dt, time));
-};
 
-let gameTitle = GUIString({ x: 44, y: 20, fill: 'v0v', stroke: '000', text: 'rythm not found' });
-gameTitle.b = 0;
-let pressEnter = GUIString({ x: 56, y: 70, fill: 'vvv', stroke: '332', text: 'press enter' });
-setTimeout(() => {
-  addAnimation(gameTitle, 'b', 0, 1, 300, undefined, true)
-  addAnimation(gameTitle, 'y', 20, 30, 300, undefined, true)
-  addAnimation(pressEnter, 'b', 0.2, 1, 500, undefined, true)
+let gameTitle = GUIString(CODES_X, 20, 'rythm not found', 'v0v', '000', 0);
+let pressEnter = GUIString(CODES_X, 70, 'press enter', 'vvv','332', 0);
+let countdownLabel = GUIString(CODES_X, H/2-8, '3', u, u, 0);
+setTimeout(_ => {
+  addAnimation(gameTitle, 'b', 0, 1, 500);
+  addAnimation(gameTitle, 'y', 20, 30, 500, u, false, _=> {
+    addAnimation(pressEnter, 'b', 0.2, 1, 500, u, true);
+  });
 }, 1000);
 
-hudScene.add(gameTitle);
-hudScene.add(pressEnter);
 // Load the scene in the game
 sceneManager.add(hudScene);
 

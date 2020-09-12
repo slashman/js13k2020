@@ -51,20 +51,16 @@ const startSong = _ => {
   setTimeout( jungleScene.fadeOut, 8000);
   setTimeout( _ => { jungleScene.active = false; discoScene.active = true; discoScene.fadeIn();}, 10000);  
   
+  // song start
   song = zzfxP(...buffer);
-  //song.start();
   current_tick = -1;
   updateMetronome();
 
   song.onended = _ => {
     subState = 2;
     win = player.score >= level.score;
-    //gameState = 0;
-    /*
-    setTimeout(() => {
-      gameState = 0;
-    }, 1500);
-    */
+    addAnimation(countdownLabel, 'b', 0, 1, 350);
+    countdownLabel.setText(win ? 'you win' : 'you lose');
   };
 
 }
@@ -86,6 +82,7 @@ const displayEnemyScene = _ => {
 const startGame = _ => {
   //gameState = 1;
   displayEnemyScene();
+  hudScene.remove(gameTitle);
 }
 
 const enterSfx = [, , 610, .13, .37, .84, 2, 1.47, , , 204, .09, .1, , , , , .79, .02];

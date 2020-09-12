@@ -105,8 +105,10 @@ paletteRenderer.beatPalette(10, 5, ['1m7', '3o9', '5qb', '7sd']);
 var danceFrame = 0;
 var theBeat = () => {
   if (subState == 0) {
-    console.log(current_tick);
+    var text = ['3', '2', '1', 'danse',''][~~(current_tick / 4)];
+    countdownLabel.setText(text);
     if (current_tick == 16) {
+      addAnimation(countdownLabel, 'b', 1, 0, 100);
       startSong();
     }
     return;
@@ -139,6 +141,7 @@ const discoIntro = _ => {
   dancersScene.active = true;
   dancersScene.fadeIn();
   discoScene.fadeIn();
+  addAnimation(countdownLabel, 'b', 0, 1, 100);
 }
 
 const discoOut = _ => {

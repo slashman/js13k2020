@@ -32,27 +32,6 @@ var draw = _ => {
   // draw the buffer
   graphics.putImageData(imageDataBuffer, 0, 0);
   
-  
-  if (DEBUG) {
-    graphics.font = "16px Lucida Console";
-    graphics.strokeStyle = '#FFF'
-    graphics.fillStyle = 'red';
-    graphics.fillText(`S: ${player.sequence}`, 0, 230);
-    var text = '';
-    if (gameState==2) {
-      graphics.fillStyle = "black";
-      if (subState == 0) {
-       text = ['3', '2', '1', 'DANCE!'][~~(current_tick / 4)];
-      } else if(subState == 2) {
-        text = win?'YOU WIN':'YOU LOSE';
-      }
-    }
-    graphics.textAlign ='center';
-    graphics.fillText(text, 192/2, 120);
-
-    //graphics.fillText(` performance: `, 0, 230);
-  }
-
   graphics.restore();
 }
 

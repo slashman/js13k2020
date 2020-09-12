@@ -123,12 +123,8 @@ var Robot = (props, scene) => {
     }
   });
   
-  self.setPalette = index => {
-    c.forEach(x => x.paletteIndex = index);
-  };
+  self.setPalette = index => c.forEach(x => x.paletteIndex = index);
   self._update = self.update;
-
-  //self.flipArm(false);
 
   self.tryBeat = key => {
     var value = getBeatFor(Date.now());
