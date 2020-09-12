@@ -42,9 +42,6 @@ var Robot = (props, scene) => {
   self.maxCombo = 0;
   self.stats = {};
   self.scene = scene;
-  var speed = 150;
-  self.minX = self.x - 10;
-  self.maxX = self.x + 10;
   self.v = {x:0.0, y:0.0};
 
   self.sequence = [];
@@ -52,18 +49,6 @@ var Robot = (props, scene) => {
   self.update = dt => {
 
     // Movement
-    v = normalize(self.v); // What's this for?
-    self.x += v.x*dt*speed;
-    self.y += v.y*dt*speed;
-    if (self.x < self.minX) { // TODO: Micronize
-      self.v.x = 0;
-      self.x = self.minX;
-    }
-    if (self.x > self.maxX) { // TODO: Micronize
-      self.v.x = 0;
-      self.x = self.maxX;
-    }
-
     self.components.forEach(c => { 
       c.x = self.x + c.dx;
       c.y = self.y + c.dy;
@@ -104,7 +89,8 @@ var Robot = (props, scene) => {
     });
   }
   self.dash = dir => {
-    self.v.x = dir;
+    addAnimation(self, 'x', self.x, self.x+dir*10, 100);
+    //self.v.x = dir;
   };
   self.draw = noop; // We don't draw this gameObject, it's just a container
   self.components = [...new Array(7)].map(x => GameObject([0, 0, [1], i+3, self.paletteIndex]));

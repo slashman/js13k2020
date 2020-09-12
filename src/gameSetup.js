@@ -62,8 +62,7 @@ const startSong = _ => {
     win = player.score >= level.score;
     addAnimation(countdownLabel, 'b', 0, 1, 350);
     countdownLabel.setText(win ? 'you win' : 'you lose');
-    inputLocked = true;
-    setTimeout(unlockPressEnter, 1000);
+    setTimeout(_ => setPressEnter(false), 1000);
   };
 
 }

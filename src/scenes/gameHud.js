@@ -71,14 +71,14 @@ let gameTitle = GUIString(CODES_X, 20, 'rythm not found', 'v0v', '000', 0);
 let pressEnter = GUIString(CODES_X, 80, 'press enter', 'vvv','332', 0);
 pressEnter.visible = false;
 let countdownLabel = GUIString(CODES_X, H/2-8, '3', u, u, 0);
-let unlockPressEnter = _ => {
-  inputLocked = false;
-  pressEnter.visible = true;
+let setPressEnter = lock => {
+  inputLocked = lock;
+  pressEnter.visible = !lock;
 };
 
 setTimeout(_ => {
   addAnimation(gameTitle, 'b', 0, 1, 500);
-  addAnimation(gameTitle, 'y', 20, 30, 500, u, false, unlockPressEnter);
+  addAnimation(gameTitle, 'y', 20, 30, 500).onEnd(_ => setPressEnter(false));
   addAnimation(pressEnter, 'b', 0.2, 1, 500, u, true);
 }, 1000);
 
