@@ -58,8 +58,8 @@ var speakerCfg = [[arrange(22,26),arrange(38,42)], 13];
 var LeftSpeaker = MechaGameObject(0, 5*SIXTEEN/2, ...speakerCfg);
 var RightSpeaker = MechaGameObject(0, 5*SIXTEEN/2, ...speakerCfg, 1, noop, true);
 RightSpeaker.x = W - RightSpeaker.width;
-LeftSpeaker.y += LeftSpeaker.height;
-RightSpeaker.y += RightSpeaker.height;
+// LeftSpeaker.y += LeftSpeaker.height;
+// RightSpeaker.y += RightSpeaker.height;
 
 // ---- [ PROGRESS BAR ] -------------------------------------------------------
 var progressCfg = [
@@ -72,7 +72,7 @@ var progressCfg = [
     fillRectPixel(_x, _y, PROGRESS_WIDTH, 7, [255, 255, 255]);
     // The progress of the player
     if (!this.flipped) {
-      const leftProgress = PROGRESS_WIDTH * player.score / level.score;
+      const leftProgress = PROGRESS_WIDTH * Math.min(player.score, level.score) / level.score;
       fillRectPixel(_x, _y, leftProgress, 7, [15, 146, 240]);
     }
     else {
@@ -134,6 +134,15 @@ setTimeout(_ => {
 
 // Load the scene in the game
 sceneManager.add(hudScene);
+
+paletteRenderer.beatPalette(9, 2, ['vuu', '9st', 'i0d', '8u8', 'v9d']);
+paletteRenderer.beatPalette(10, 5, ['1m7', '3o9', '5qb', '7sd']);
+// speaker leds
+setInterval(_ => {
+  paletteRenderer.shiftPalette(13, 2, 4, 1);
+}, 100);
+paletteRenderer.cyclePaletteIndex(13, 7, ['him', 'opr']);
+// paletteRenderer.cyclePaletteIndex(13, 6, ['him', '66b', 'him', 'opr']);
 
 console.log('seq visualizer');
 console.log(seq);

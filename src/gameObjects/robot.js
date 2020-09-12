@@ -170,6 +170,7 @@ var Robot = (props, scene) => {
 
   self.badKey = function() {
     GUI_CODE_EFFECT(GUI404, 5);
+    shakeIt(DPU, 1, 500);
     //keyOnBeat.p = 'bad';
     zzfx(...[.6, 0.8, 0, .03, .14, .22, 4, 1.93, -53.9, .2, u, .02, -0.01, -0.2, -0.1, u, u, .8, .03, .01]);
     self.sequence = [];

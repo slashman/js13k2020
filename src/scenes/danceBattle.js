@@ -98,17 +98,6 @@ paletteRenderer.tickPalette(7, 7, ['vuu', 'vrr', 'uko', 'scm']);
 
 paletteRenderer.beatPalette(7, 1, ['vuu', 'vvv', 'tqv']);
 
-// The GPI ---------------------------------------------------------------------
-paletteRenderer.beatPalette(9, 2, ['vuu', '9st', 'i0d', '8u8', 'v9d']);
-paletteRenderer.beatPalette(10, 5, ['1m7', '3o9', '5qb', '7sd']);
-// speaker leds
-setInterval(_ => {
-  paletteRenderer.shiftPalette(13, 2, 4, 1);
-}, 100);
-// paletteRenderer.cyclePaletteIndex(13, 2, ['3o9', '101', '101']);
-// paletteRenderer.cyclePaletteIndex(13, 3, ['101', '3o9', '101']);
-// paletteRenderer.cyclePaletteIndex(13, 4, ['101', '101', '3o9']);
-
 
 var danceFrame = 0;
 var theBeat = _ => {
