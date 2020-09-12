@@ -156,6 +156,8 @@ var Robot = (props, scene) => {
     diff = Math.abs(diff);
     if(diff < intervals[0]) {
       keyOnBeat.performance = 'perfect';
+      console.log(key);
+      zzfx(...[.6, 0.3, 759-key, , .01, .12, , 1.5, , , , , , , , , .05, .92, .01, .19]);
       GUI_CODE_EFFECT(GUI200, -16);
       
       //console.log(`${keyOnBeat.beat} perfect`, diff, diff * timeBetweenBeats);
@@ -165,6 +167,7 @@ var Robot = (props, scene) => {
       self.addFocus(self.combo % 2 == 0 ? 1 : 0);
     } else if(diff < intervals[1]) {
       keyOnBeat.performance = 'good';
+      zzfx(...[.5, 0.3, 761-key, , .01, .12, , 1.5, , , , , , , , , .05, .92, .01, .19])
       GUI_CODE_EFFECT(GUI100, -10);
       //console.log(`${keyOnBeat.beat} good`, diff, diff * timeBetweenBeats)
       //self.score += level.bpm*0.5 + 5*self.combo;
@@ -193,6 +196,7 @@ var Robot = (props, scene) => {
   self.badKey = function() {
     GUI_CODE_EFFECT(GUI404, 5);
     keyOnBeat.performance = 'bad';
+    zzfx(...[.5, , 226, .03, , .15, 4, .68, , .5, , , , , , , , .59, .07]);
     self.sequence = [];
     self.addFocus(-2);
   }

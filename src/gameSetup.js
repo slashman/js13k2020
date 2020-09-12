@@ -40,7 +40,6 @@ const loadLevel = levelIndex => {
   player.score = 0;
   player.stats = {};
   player.maxCombo = 0;
-  song = zzfxP(...buffer);
   updateMetronome();
 }
 
@@ -52,7 +51,8 @@ const startSong = _ => {
   setTimeout( jungleScene.fadeOut, 8000);
   setTimeout( _ => { jungleScene.active = false; discoScene.active = true; discoScene.fadeIn();}, 10000);  
   
-  song.start();
+  song = zzfxP(...buffer);
+  //song.start();
   current_tick = -1;
   updateMetronome();
 
@@ -88,14 +88,17 @@ const startGame = _ => {
   displayEnemyScene();
 }
 
+const enterSfx = [, , 610, .13, .37, .84, 2, 1.47, , , 204, .09, .1, , , , , .79, .02];
 
 const handleEnterAction = _ => {
   console.log(gameState);
   switch (gameState) {
     case 0:
+      zzfx(...enterSfx);
       startGame();
       break;
     case 1:
+      zzfx(...enterSfx);
       enemyOut();
       break;
     case 2:
