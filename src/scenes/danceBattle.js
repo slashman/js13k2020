@@ -16,15 +16,15 @@ var discoMap = [
 ];
 
 var jungleMap = [
-  "ccccccccdccc",
-  "ccccdccceccc",
-  "cccceccccccc",
-  "cdcccccccccc",
-  "ceccccccdccc",
-  "cccccccceccc",
-  "ccccccdccccc",
-  "ccdccceccccc",
-  "cceccccccccc"
+  "cccccccccccc",
+  "cccccccccccc",
+  "cccccccccccc",
+  "cccccccccccc",
+  "cccccccccccc",
+  "cccccccccccc",
+  "cccccccccccc",
+  "cccccccccccc",
+  "cccccccccccc"
 ];
 
 loadMap(discoMap, discoScene);
@@ -62,9 +62,7 @@ for (var i = 0; i < 12; i++) {
   discoScene.add(robot);
 }
 
-var player = MainCharacter([50, 50, [3, 4], 8, 0]);
-
-
+var player = MainCharacter([EIGHT*7, THIRTYTWO, [3, 4], 8, 0]);
 
 //player.rc = ; // robot config, [head, arms, torso, sideHead]
 player.setSprites([pcHead = 0, 0, 0, pcHead]);
@@ -72,7 +70,7 @@ player.bounceOffset = 0;
 dancersScene.add(player);
 dancersScene.following = player; // TODO: Remove?
 
-var enemy = Robot([142, 50, [3, 4], 8, 2], dancersScene);
+var enemy = Robot([W-EIGHT*7-SIXTEEN, THIRTYTWO, [3, 4], 8, 2], dancersScene);
 enemy.setSprites([enemyHead = rando(0, 4), rando(0, 4), rando(0, 5), enemyHead]);
 enemy.bounceOffset = 3;
 dancersScene.add(enemy);
@@ -102,7 +100,7 @@ paletteRenderer.beatPalette(7, 1, ['vuu', 'vvv', 'tqv']);
 var danceFrame = 0;
 var theBeat = _ => {
   if (subState == 0) {
-    countdownLabel.setText(['3', '2', '1', 'danse', ''][~~(current_tick / 4)]);
+    countdownLabel.setText(['3', '2', '1', 'dance', ''][~~(current_tick / 4)]);
     current_tick == 16 && addAnimation(countdownLabel, 'b', 1, 0, 100)&&startSong();
     return;
   }

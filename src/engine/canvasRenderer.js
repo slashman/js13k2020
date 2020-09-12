@@ -37,17 +37,14 @@ var draw = _ => {
 
 // The mirror property will be used to draw another sprite in front of the one
 // that needs to be mirrored. Something like what we do for the robotz heads.
-var gpiBoard = { sprite: 27, palette: 9, small: true, mirror: true }
+var gpiBoard = { sprite: 43, palette: 9, small: true, mirror: true }
 var indexToSprite = { // Maps the map above to sprite and palette indexes 
-  a: { sprite: 32, palette: 7 },
-  b: { sprite: 33, palette: 7 },
-  c: { sprites: [{ sprite: 41, palette: 8 }, { sprite: 41 + 8, palette: 8 }] },
-  d: { sprite: 40, palette: 8 },
-  e: { sprite: 40 + 8, palette: 8 },
+  a: { sprite: 56, palette: 7 },
+  b: { sprite: 57, palette: 7 },
+  c: { sprites: [{ sprite: 62, palette: 8 }, { sprite: 63, palette: 8 }] },
   // GPI: Graphic Player Interface
   f: { ...gpiBoard, vFlip: true },
   g: { ...gpiBoard },
-  h: { parts: { sprites: [6, 7, 6 + 8, 7 + 8], palette: 9, partIdx: 0 } },
 };
 
 // tl = 0

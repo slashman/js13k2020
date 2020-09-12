@@ -23,7 +23,7 @@ var sequenceVisualizer = props => {
     [250, 0, 0],
   ];
   var line2 = [128, 1, 4, colors[2]];
-  var lineIndexes = [127,126,125,125-16,125-32,125-48];
+  var lineIndexes = arrange(27,31);
   var beatLines = [];
 
   // The beat lines have 6 states
@@ -39,7 +39,7 @@ var sequenceVisualizer = props => {
     beatLines.push([tl, comp])
   })
   var scene = scene
-  var segments = parseInt(W/20,10)
+  var segments = parseInt(W/8,10)
 
   return {
     visible: true,
@@ -58,13 +58,13 @@ var sequenceVisualizer = props => {
       if (gameState!=2 || subState == 2) return;
       for (var i = 0; i < beatsDisplayed; i++) {
         var des = ~~((i + delta) * spacing) - 1;
-        var currentSegment = ~~(des*200/W);
+        var currentSegment = ~~(des*segments*10/W);
         var targetLine = ~~(currentSegment/segments);
         beatLines[targetLine].forEach(lp => {
           lp.visible = true
           lp.x = des-4 + lp.offsetX;
         });
-        beatLines[11-targetLine].forEach(lp => {
+        beatLines[(beatLines.length-1)-targetLine].forEach(lp => {
           lp.visible = true
           lp.x = (W - des - 2) + lp.offsetX;
         });

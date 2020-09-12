@@ -160,17 +160,26 @@ var Robot = (props, scene) => {
 
   self.addKey = function(key) {
     self.sequence.push(key);
+    PlayerCommands.setText(self.sequence.reduce((com, cod) => com+String.fromCharCode(cod).toLowerCase(),''));
+    PlayerCommands.b = 1;
+    PlayerCommands.inErr = false;
     if (self.sequence.length == 4) {
-      console.log('send command');
+      GUI_CODE_EFFECT(PlayerCommands,null,300,{y:SIXTEEN});
       self.score += checkStep(self.sequence);
       if (self.score >= level.score) finishGame();
       self.sequence = [];
+      setTimeout(() => PlayerCommands.setText(''),300+350);
     }
   }
 
   self.badKey = function() {
-    GUI_CODE_EFFECT(GUI404, 5);
-    shakeIt(DPU, 1, 500);
+    hudScene.feedback(404)
+    PlayerCommands.setText(PlayerCommands.rawText+'*', '401', 's2l');
+    PlayerCommands.x = player.x+EIGHT-(PlayerCommands.width/2);
+    PlayerCommands.b = 1;
+    PlayerCommands.inErr = true;
+    shakeIt(PlayerCommands,0.1,500);
+    GUI_CODE_EFFECT(PlayerCommands,PlayerCommands.y+SIXTEEN,500);
     //keyOnBeat.p = 'bad';
     zzfx(...[.6, 0.8, 0, .03, .14, .22, 4, 1.93, -53.9, .2, u, .02, -0.01, -0.2, -0.1, u, u, .8, .03, .01]);
     self.sequence = [];

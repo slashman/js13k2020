@@ -3,23 +3,20 @@
 // The HUD
 // ░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░▓░
 var BOARD_Y = 7;
-var NUMBERS_Y = SIXTEEN/2*2;
+var NUMBERS_Y = EIGHT*2;
 var CODES_Y = (BOARD_Y - 1)*SIXTEEN;
 var CODES_X = W/2;
-var HEY_CHAR = '~';
+var HEY_CHAR = '#';
 var PROGRESS_WIDTH = 33;
 
 var hudScene = Scene();
 var seq = sequenceVisualizer({ x: 0, y: BOARD_Y, instrument: 0, scene: hudScene });
 var numObjects = [];
-var gpiMap = [
-  "ffffffffffff",
-  "gggggggggggg",
-];
+var gpiMap = [ (arrange(0,11,'f')).join(''), (arrange(0,11,'g')).join('') ];
 
 // ---- [ LETTERS AND NUMBERS ] ------------------------------------------------
-var abc = `0123456789abcdefghijklmnopqrstuvwxyz${HEY_CHAR}#=*`;
-var abcIndexes = [43, 44, 45, 46, 47, 60, 61, 62, 63, 61, ...arrange(68, 76), ...arrange(84, 92), ...arrange(100, 107), 28, 29, 30, 108];
+var abc = `012345678abcdefghijklmnopqrstuvwxyz${HEY_CHAR}$=*!?9`;
+var abcIndexes = [...arrange(64, 104), 70];
 
 var createLetter = (baseStroke, baseFill, x, frame, flipped = false) => {
   var letterObj = GameObject([x, 0, abcIndexes, 0, 0]);
@@ -31,16 +28,18 @@ var createLetter = (baseStroke, baseFill, x, frame, flipped = false) => {
 }
 var GUIString = (x, y, text, fill, stroke, b=1) => {
   let self = GameObject([x, y]);
-  self.setText = text => {
+  self.setText = (text, _stroke, _fill) => {
     var letters = text.split('');
     if (letters[0] === HEY_CHAR) letters.push(HEY_CHAR)
     self.x = x - 4 * letters.length;
     self.parts = letters.map((letter, i) => {
       let frame = abc.indexOf(letter);
-      return frame != -1 && createLetter(stroke, fill, i * 8, frame, i === text.length);
+      return frame != -1 && createLetter(_stroke, _fill, i * 8, frame, i === text.length);
     });
+    self.width = self.parts.length*EIGHT;
+    self.rawText = letters.join('')
   };
-  self.setText(text);
+  self.setText(text,stroke,fill);
   self.update = noop;
   self.b = b; // BrightNES
   self.draw = b => self.visible && self.parts.forEach(letter => letter && letter.draw(self.b, self.x, self.y));
@@ -48,21 +47,21 @@ var GUIString = (x, y, text, fill, stroke, b=1) => {
   return self;
 }
 
-var GUI404 = GUIString(CODES_X, CODES_Y, `${HEY_CHAR}#=#`, '401', 's2l', 0); // 404
-var GUI100 = GUIString(CODES_X, CODES_Y, '100', u, u, 0);
-var GUI200 = GUIString(CODES_X, CODES_Y, `${HEY_CHAR}200`, 'ou5', '574', 0);
+let GUI404 = GUIString(CODES_X, CODES_Y, `${HEY_CHAR}$=$`, '401', 's2l', 0); // 404
+let GUI100 = GUIString(CODES_X, CODES_Y, '100', u, u, 0);
+let GUI200 = GUIString(CODES_X, CODES_Y, `${HEY_CHAR}200`, 'ou5', '574', 0);
 // ---- [ LETTERS AND NUMBERS ] ------------------------------------------------
 
 // ---- [ SPEAKERS ] -----------------------------------------------------------
-var speakerCfg = [[arrange(22,26),arrange(38,42)], 13];
-var LeftSpeaker = MechaGameObject(0, 5*SIXTEEN/2, ...speakerCfg);
-var RightSpeaker = MechaGameObject(0, 5*SIXTEEN/2, ...speakerCfg, 1, noop, true);
+let speakerCfg = [[arrange(22,26),arrange(38,42)], 13];
+let LeftSpeaker = MechaGameObject(0, 5*EIGHT, ...speakerCfg);
+let RightSpeaker = MechaGameObject(0, 5*EIGHT, ...speakerCfg, 1, noop, true);
 RightSpeaker.x = W - RightSpeaker.width;
-// LeftSpeaker.y += LeftSpeaker.height;
-// RightSpeaker.y += RightSpeaker.height;
+LeftSpeaker.y += LeftSpeaker.height;
+RightSpeaker.y += RightSpeaker.height;
 
 // ---- [ PROGRESS BAR ] -------------------------------------------------------
-var progressCfg = [
+let progressCfg = [
   [[11,12,12,12,13,14,15]], 9,
   1,
   function () {
@@ -81,8 +80,8 @@ var progressCfg = [
     }
   }
 ];
-var PlayerProgress = MechaGameObject(5*SIXTEEN/2, 0, ...progressCfg);
-var EnemyProgress = MechaGameObject(5*SIXTEEN/2, 0, ...progressCfg, true);
+let PlayerProgress = MechaGameObject(5*EIGHT, 0, ...progressCfg);
+let EnemyProgress = MechaGameObject(5*EIGHT, 0, ...progressCfg, true);
 EnemyProgress.x += EnemyProgress.width;
 PlayerProgress.y -= 100;
 EnemyProgress.y -= 100;
@@ -91,18 +90,25 @@ EnemyProgress.y -= 100;
 loadMap(gpiMap, hudScene, {x:0, y: BOARD_Y});
 seq.addBeatLinesToScene();
 hudScene.add(seq);
-var DPU = MechaGameObject(10*SIXTEEN/2, 7*SIXTEEN/2, [arrange(117,120),arrange(121,124)], 9);
+let DPU = MechaGameObject(10*EIGHT, 7*EIGHT, [arrange(44,47),arrange(60,63)], 9);
 
-const GUI_CODE_EFFECT = (GUICode, targetY) => {
+const GUI_CODE_EFFECT = (GUICode, targetY, delay, cfg) => {
   GUICode.b = 1;
-  GUICode.y = CODES_Y;
+  if (!cfg) GUICode.y = CODES_Y;
   setTimeout(_ => {
     addAnimation(GUICode, 'b', 1, 0, 300);
-    addAnimation(GUICode, 'y', CODES_Y, CODES_Y + targetY, 300);
-  }, 60);
+    if (!cfg) return addAnimation(GUICode, 'y', CODES_Y, CODES_Y + targetY, 300);
+    if (cfg.y) addAnimation(GUICode, 'y', GUICode.y, cfg.y, cfg.time || 300);
+    if (cfg.x) addAnimation(GUICode, 'x', GUICode.x, cfg.x, cfg.time || 300);
+  }, delay || 60);
 }
 
-// Function overrides ----------------------------------------------------------
+// ---- [ PLAYER COMMANDS ] ----------------------------------------------------
+let PlayerCommands = GUIString(8*SIXTEEN, 20, '', u, u, 0);
+PlayerCommands.inErr = false;
+
+
+// Functions -------------------------------------------------------------------
 hudScene.onMetronomeTick = (tick) => {
   seq.updateLines(tick)
   LeftSpeaker.y += LeftSpeaker.dfltY !== LeftSpeaker.y ? -2 : 2;
@@ -115,6 +121,17 @@ hudScene.showLevelElements = () => {
   addAnimation(PlayerProgress, 'y', -24, PlayerProgress.dfltY, 1150);
   addAnimation(EnemyProgress, 'y', -24, EnemyProgress.dfltY, 1150);
 };
+
+hudScene.feedback = (function() {
+  var feedback = {
+    404: function() {
+      GUI_CODE_EFFECT(GUI404, 5);
+      shakeIt(DPU, 1, 500);
+    },
+    default: () => console.log('nothing to show Z:(')
+  };
+  return (code) => feedback[code]();
+})()
 // -----------------------------------------------------------------------------
 
 let gameTitle = GUIString(CODES_X, 20, 'rythm not found', 'v0v', '000', 0);

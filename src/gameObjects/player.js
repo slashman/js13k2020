@@ -34,6 +34,10 @@ var MainCharacter = props => {
   }
   self.update = dt => {
     self._update(dt); // Robot
+    if (!PlayerCommands.inErr) {
+      PlayerCommands.x = self.x+EIGHT-(PlayerCommands.width/2);
+      PlayerCommands.y = self.y + THIRTYTWO;
+    }
   }
   return self;
 }
