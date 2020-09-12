@@ -130,7 +130,7 @@ let setPressEnter = lock => {
 setTimeout(_ => {
   addAnimation(gameTitle, 'b', 0, 1, 500);
   addAnimation(gameTitle, 'y', 20, 30, 500).onEnd(_ => setPressEnter(false));
-  addAnimation(pressEnter, 'b', 0.2, 1, 500, u, true);
+  addAnimation(pressEnter, 'b', 0.2, 1, 500, easeLinear, true);
 }, 1000);
 
 // Load the scene in the game
