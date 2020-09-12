@@ -163,6 +163,7 @@ var Robot = (props, scene) => {
     if (self.sequence.length == 4) {
       console.log('send command');
       self.score += checkStep(self.sequence);
+      if (self.score >= level.score) finishGame();
       self.sequence = [];
     }
   }

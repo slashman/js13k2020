@@ -56,17 +56,18 @@ const startSong = _ => {
   
   // song start
   song = zzfxP(...buffer);
+  song.loop = true;
   current_tick = -1;
   updateMetronome();
+}
 
-  song.onended = _ => {
-    subState = 2;
-    win = player.score >= level.score;
-    addAnimation(countdownLabel, 'b', 0, 1, 350);
-    countdownLabel.setText(win ? 'you win' : 'you lose');
-    setTimeout(_ => setPressEnter(false), 1000);
-  };
-
+const finishGame = _ => {
+  song.stop();
+  subState = 2;
+  win = player.score >= level.score;
+  addAnimation(countdownLabel, 'b', 0, 1, 350);
+  countdownLabel.setText(win ? 'you win' : 'you lose');
+  setTimeout(_ => setPressEnter(false), 1000);
 }
 
 const displayEnemyScene = _ => {
