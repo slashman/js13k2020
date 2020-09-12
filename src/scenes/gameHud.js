@@ -18,8 +18,8 @@ var gpiMap = [
 ];
 
 // ---- [ LETTERS AND NUMBERS ] ------------------------------------------------
-var abc = `0123456789adefghijklmnoprstuwy${HEY_CHAR}#=*`;
-var abcIndexes = [43, 44, 45, 46, 47, 60, 61, 62, 63, 61,72, 73, 74, 75, 76, 88, 89, 90, 91, 92, 104, 105, 106, 107, 108, 120, 121, 122, 123, 124, 94, 110, 111, 71];
+var abc = `0123456789abcdefghijklmnopqrstuvwxyz${HEY_CHAR}#=*`;
+var abcIndexes = [43, 44, 45, 46, 47, 60, 61, 62, 63, 61, ...arrange(68, 76), ...arrange(84, 92), ...arrange(100, 107), 28, 29, 30, 108];
 
 var createLetter = (baseStroke, baseFill, x, frame, flipped = false) => {
   var letterObj = GameObject([x, 0, abcIndexes, 0, 0]);
@@ -54,13 +54,12 @@ var GUI200 = GUIString(CODES_X, CODES_Y, `${HEY_CHAR}200`, 'ou5', '574', 0);
 // ---- [ LETTERS AND NUMBERS ] ------------------------------------------------
 
 // ---- [ SPEAKERS ] -----------------------------------------------------------
-var speakerCfg = [[arrayFromTo(22,26),arrayFromTo(38,42)], 13];
+var speakerCfg = [[arrange(22,26),arrange(38,42)], 13];
 var LeftSpeaker = MechaGameObject(0, 5*SIXTEEN/2, ...speakerCfg);
 var RightSpeaker = MechaGameObject(0, 5*SIXTEEN/2, ...speakerCfg, 1, noop, true);
 RightSpeaker.x = W - RightSpeaker.width;
 LeftSpeaker.y += LeftSpeaker.height;
 RightSpeaker.y += RightSpeaker.height;
-console.log('h:', LeftSpeaker.height);
 
 // ---- [ PROGRESS BAR ] -------------------------------------------------------
 var progressCfg = [
@@ -92,7 +91,7 @@ EnemyProgress.y -= 100;
 loadMap(gpiMap, hudScene, {x:0, y: BOARD_Y});
 seq.addBeatLinesToScene();
 hudScene.add(seq);
-var DPU = MechaGameObject(10*SIXTEEN/2, 7*SIXTEEN/2, [arrayFromTo(100,103),arrayFromTo(116,119)], 9);
+var DPU = MechaGameObject(10*SIXTEEN/2, 7*SIXTEEN/2, [arrange(117,120),arrange(121,124)], 9);
 
 const GUI_CODE_EFFECT = (GUICode, targetY) => {
   GUICode.b = 1;
