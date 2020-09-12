@@ -52,28 +52,14 @@ var sequenceVisualizer = props => {
       // startTime from metronome
       var base = timeBetweenBeats*4
       delta = ((Date.now() - startTime) % base)/base;
-      /*if (onBeat) {
-        if (keyOnBeat.beat == current_tick){
-          status = 1;  // good!
-        } else {
-          status = 2; // miss!
-        }
-      } else {
-        if (keyOnBeat.beat == current_tick) {
-          status = 3; // bad!
-        } else {
-          status = 0; // normal
-        }
-      }*/
-      //status = onBeat ? (keyOnBeat.beat == current_tick ? 1 : 2) : (keyOnBeat.beat == current_tick ? 3: 0);
     },
     draw: _ => {
-      beatLines.forEach(gp => gp.forEach(l => l.visible = false))
+      beatLines.forEach(gp => gp.forEach(l => l.visible = false));
       if (gameState!=2 || subState == 2) return;
       for (var i = 0; i < beatsDisplayed; i++) {
         var des = ~~((i + delta) * spacing) - 1;
-        var currentSegment = parseInt((des*100/(W/2)), 10);
-        var targetLine = parseInt(currentSegment/segments,10);
+        var currentSegment = ~~(des*200/W);
+        var targetLine = ~~(currentSegment/segments);
         beatLines[targetLine].forEach(lp => {
           lp.visible = true
           lp.x = des-4 + lp.offsetX;
