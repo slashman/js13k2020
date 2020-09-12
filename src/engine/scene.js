@@ -26,6 +26,7 @@ var Scene = () => {
     fadeIn: _ => addAnimation(self, 'b', 0, 1, 1000),
     fadeOut: _ => addAnimation(self, 'b', 1, 0, 1000),
     onMetronomeTick: noop, // tick
+    onMetronomeBeat: noop, // beat
   }
   return self;
 }

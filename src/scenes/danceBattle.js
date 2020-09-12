@@ -100,6 +100,8 @@ paletteRenderer.beatPalette(7, 1, ['vuu', 'vvv', 'tqv']);
 // The GPI ---------------------------------------------------------------------
 paletteRenderer.beatPalette(9, 2, ['vuu', '9st', 'i0d', '8u8', 'v9d']);
 paletteRenderer.beatPalette(10, 5, ['1m7', '3o9', '5qb', '7sd']);
+paletteRenderer.cyclePaletteIndex(13, 7, ['1m7', '3o9', '5qb', '7sd']);
+paletteRenderer.cyclePaletteIndex(13, 1, ['3o9', '7sd', '1m7', '5qb']);
 
 
 var danceFrame = 0;
@@ -130,6 +132,7 @@ var theBeat = () => {
     enemy.turnHead(danceFrame % 3 == 0 ? 1 : -1)
   }
   paletteRenderer.onMetronomeBeat();
+  hudScene.onMetronomeBeat();
 }
 var theTick = (tick) => {
   hudScene.onMetronomeTick(tick);

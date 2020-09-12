@@ -41,6 +41,8 @@ const loadLevel = levelIndex => {
   player.stats = {};
   player.maxCombo = 0;
   pressEnter.visible = false;
+
+  hudScene.showLevelElements();
   updateMetronome();
 }
 

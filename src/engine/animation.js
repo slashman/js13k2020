@@ -7,7 +7,7 @@ const updateAnimations = dt => animations.forEach((animation, index) => animatio
 const addAnimation = (gameObject, property, initialValue, targetValue, time, ease, yoyo=false) => {
   let t = 0;
   let intervalValue = targetValue - initialValue;
-  let _onEnd = noop;
+  let _onEnd = () => gameObject[property] = targetValue;
   var animation = {
     onEnd: fn => _onEnd = fn,
     update: dt => {
