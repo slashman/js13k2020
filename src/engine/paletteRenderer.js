@@ -22,7 +22,7 @@ var paletteRenderer = {
       this.sprites8[i * 2 + 1] = splitSpriteData(s);
     })
   },
-  shiftPalette: function (paletteId, start = 0, end = 7, direction = 1) {
+  shiftPalette: function (paletteId, start = 0, end = 7) {
     var palette = this.palettes[paletteId];
     var lastColor = palette[end];
     for (var i = 0; i < end - start; i++) {
@@ -44,7 +44,8 @@ var paletteRenderer = {
       this.palettes[paletteId][index] = colorCycle[cycleIndex];
     }, 200);
   },
-  registerMetroPalette: function(target, paletteId, index, colorCycle) {
+  // registerMetroPalette
+  rmp: function(target, paletteId, index, colorCycle) {
     target.push({
       paletteId,
       index,
@@ -54,10 +55,10 @@ var paletteRenderer = {
     })
   },
   tickPalette: function () {
-    this.registerMetroPalette(this.tickPalettes, ...arguments)
+    this.rmp(this.tickPalettes, ...arguments)
   },
   beatPalette: function () {
-    this.registerMetroPalette(this.beatPalettes, ...arguments)
+    this.rmp(this.beatPalettes, ...arguments)
   },
   metronomeCycle: function (target) {
     target.forEach(p => {
@@ -112,7 +113,7 @@ paletteRenderer.palettes = [
     /*4*/  ['0k0', '0k0', '0d0', '080', '0e0', '0d0', '080', '0e0'],
     /*5*/  ['555', 't57', 'p13', 'l00', 'h00', 'l00', 'p13', 't57'],
     //6    ['#346f00", "#2a4600", "#e84723", "#a33b24", "#000000", "#000000", "#000000", "#000000'],
-           ['6d0', '580', 't84', 'k74',,,,],
+           ['6d0', '580', 't84', 'k74',u,u,u,u],
     //7    ['#FF0000", "#FFF6F6", "#D82DEB", "#CB71EF", "#C7ADFF", "#E067B3", "#F4A4C4", "#FFDBDF'],
            ['v00', 'vuu', 'r5t', 'pet', 'olv', 'scm', 'uko', 'vrr'],
     //8    ["#44891A", "#1B2632", "#F7E26B", "#493C2B", "#A46422", "#2F484E", "#44891A", "#A3CE27"],
@@ -122,10 +123,10 @@ paletteRenderer.palettes = [
     //10   ["#FF0000", "#221C1A", "#FFFFFF", "#08B23B", "#47F641", "#47F641"],
            ['v00', '433', 'vvv', '1m7', '8u8', '8u8'],
     //11   ["#000000", "#000000", "#111111", "#000000", "#111111", "#000000", "#111111", "#000000"],
-           [,, '222',, '222',, '222',, ],
+           [u,u, '222',u, '222',u, '222',u, u],
     //12   ["#FF0000", "#000000", "#25000D", "#E214A8", "#293F21", "#C4F129", "#115E33", "#15C2A5"],
            /* numbers */
-           ['v00',, '401', 's2l', '574', 'ou5', '2b6', '2ok'],
+           ['v00',u, '401', 's2l', '574', 'ou5', '2b6', '2ok'],
     //13   ['#FF0000", "#09070D", "#ECEEEF", , , "#353658", "#8B97B6", "#C5CDDB'], ?????
            ['v00', '433', 'vuu', 'vq8', 'vv8', '876', 'fca', 'sql'],
 ];
@@ -140,13 +141,7 @@ var hexToRgb = hex => {
   } : {r: 0, g: 0, b: 0};
 }
 
-paletteRenderer.palettes = paletteRenderer.palettes.map(palette => {
-  let newArray = [];
-  for (let index = 0; index < palette.length; index++) {
-    newArray.push(hexToRgb(palette[index]));
-  }
-  return newArray;
-});
+paletteRenderer.palettes = paletteRenderer.palettes.map(palette => palette.map(hexToRgb));
 
 // Waterfall effect
 setInterval(_ => {

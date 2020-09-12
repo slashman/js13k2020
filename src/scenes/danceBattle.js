@@ -81,6 +81,7 @@ sceneManager.add(discoScene);
 sceneManager.add(jungleScene);
 sceneManager.add(dancersScene);
 
+// cycle palette does somekind of hearthbeat effect
 paletteRenderer.cyclePaletteIndex(1, 3, ['t57', 'r35', 'p13', 'n01']);
 paletteRenderer.cyclePaletteIndex(1, 4, ['vd3', 'tb1', 'r90', 'p70']);
 paletteRenderer.cyclePaletteIndex(0, 3, ['1m7', '3o9', '5qb', '7sd']);
@@ -105,36 +106,21 @@ paletteRenderer.cyclePaletteIndex(13, 1, ['3o9', '7sd', '1m7', '5qb']);
 
 
 var danceFrame = 0;
-var theBeat = () => {
+var theBeat = _ => {
   if (subState == 0) {
-    var text = ['3', '2', '1', 'danse',''][~~(current_tick / 4)];
-    countdownLabel.setText(text);
-    if (current_tick == 16) {
-      addAnimation(countdownLabel, 'b', 1, 0, 100);
-      startSong();
-    }
+    countdownLabel.setText(['3', '2', '1', 'danse', ''][~~(current_tick / 4)]);
+    current_tick == 16 && addAnimation(countdownLabel, 'b', 1, 0, 100)&&startSong();
     return;
   }
   danceFrame++;
-  if (danceFrame > 9) {
-    danceFrame = 0;
-  }
-  //var toggleBeat = danceFrame % 2 == 0;
-  //robot3.x += 6*(toggleBeat?-1:1); 
-  //enemy.setPalette(toggleBeat?0:1);
-  //if (danceFrame%3 == 0)
+  if (danceFrame > 9) danceFrame = 0;
   enemy.flipArm(danceFrame % 4 == 0)
-  if (danceFrame % 3 == 0) {
-    enemy.dash(danceFrame % 2 == 0 ? 1 : -1)
-  }
-
-  if (danceFrame % 4 == 0) {
-    enemy.turnHead(danceFrame % 3 == 0 ? 1 : -1)
-  }
+  danceFrame % 3 == 0 && enemy.dash(danceFrame % 2 == 0 ? 1 : -1);
+  danceFrame % 4 == 0 && enemy.turnHead(danceFrame % 3 == 0 ? 1 : -1);
   paletteRenderer.onMetronomeBeat();
   hudScene.onMetronomeBeat();
 }
-var theTick = (tick) => {
+var theTick = tick => {
   hudScene.onMetronomeTick(tick);
   paletteRenderer.onMetronomeTick();
 }
