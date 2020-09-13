@@ -127,15 +127,17 @@ enemy.guiCommands = EnemyCommands;
 
 
 // Functions -------------------------------------------------------------------
-hudScene.onMetronomeTick = (tick) => {
+hudScene.onMetronomeTick = tick => {
   seq.updateLines(tick)
   if (subState == 1) {
+    // SFX - GECKO -- speaker bounce
     LeftSpeaker.y += LeftSpeaker.dfltY !== LeftSpeaker.y ? -2 : 2;
     RightSpeaker.y += RightSpeaker.dfltY !== RightSpeaker.y ? -2 : 2;
   }
 }
 
-hudScene.showLevelElements = () => {
+hudScene.showLevelElements = _ => {
+  // SFX - GECKO -- speaker appears
   addAnimation(LeftSpeaker, 'y', LeftSpeaker.y, LeftSpeaker.dfltY, 1000);
   addAnimation(RightSpeaker, 'y', RightSpeaker.y, RightSpeaker.dfltY, 1000);
   addAnimation(PlayerProgress, 'y', -24, PlayerProgress.dfltY, 1150);

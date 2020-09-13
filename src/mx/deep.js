@@ -62,8 +62,7 @@ const deepMX = [
     ],
   ],
   [0, 1, 1, 2, 3, 4, 4],
-  bpm,
-  { title: "groovy_110", instruments: ["Instrument 0", "Instrument 1", "Instrument 2", "Instrument 3", "Instrument 4", "Instrument 5", "Instrument 6", "Instrument 7", "Instrument 8", "Instrument 9"], patterns: ["Pattern 0", "Pattern 1", "Pattern 2", "Pattern 3", "Pattern 4"] },
+  bpm
 ];
 
 /* 👇 The old deep song 👇 */

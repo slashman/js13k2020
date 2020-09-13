@@ -31,6 +31,7 @@ const enemyIntro = _ => {
     theEnemies.forEach((enemy, i) => {
       addAnimation(enemy, 'x', enemy.x, i == currentLevel ? W/2-8 : enemy.x, 800);
       addAnimation(enemy, 'y', enemy.y, i == currentLevel ? 40 : 148, 800);
+      // SFX - GECKO - cuando aparece el enemigo
     })
   }, 1200);
 

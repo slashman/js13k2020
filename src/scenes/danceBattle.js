@@ -101,9 +101,15 @@ paletteRenderer.beatPalette(7, 1, ['vuu', 'vvv', 'tqv']);
 
 
 var danceFrame = 0;
+var prevTickBeat = -1;
 var theBeat = _ => {
   if (subState == 0) {
-    countdownLabel.setText(['3', '2', '1', 'dance', ''][~~(current_tick / 4)]);
+    var nextTickBeat = ~~(current_tick / 4);
+    if (prevTickBeat != nextTickBeat) {
+      // SFX - GECKO -- countdown
+      countdownLabel.setText(['3', '2', '1', 'dance', ''][nextTickBeat]);
+      prevTickBeat = nextTickBeat;
+    }
     current_tick == 16 && addAnimation(countdownLabel, 'b', 1, 0, 100)&&startSong();
     return;
   }
