@@ -68,9 +68,9 @@ const finishGame = _ => {
   subState = 2;
   win = player.score >= level.score;
   if (win) {
-    // SFX - GECKO -- win
+  zzfx(...[u,u,196,u,.3,.9,u,1.84,,50,500,.05,.08,.3,u,u,.16,.91]);// SFX - GECKO -- win
   }else {
-    // SFX - GECKO -- lose
+  zzfx(...[u,u,196,u,.8,.9,u,.3,8,u,-6,u,.03,.3,u,u,.32,0,1]);  // SFX - GECKO -- lose
   }
   addAnimation(countdownLabel, 'b', 0, 1, 350);
   countdownLabel.setText(win ? 'you win' : 'you lose');

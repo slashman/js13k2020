@@ -108,7 +108,7 @@ var theBeat = _ => {
   if (subState == 0) {
     var nextTickBeat = ~~(current_tick / 4);
     if (prevTickBeat != nextTickBeat) {
-      // SFX - GECKO -- countdown
+      zzfx(...[,30,18,.06,.04,.15,1,1.8,9,-0.6,750,.07,u,.2,u,u,.04,0,.05]);// SFX - GECKO -- countdown
       countdownLabel.setText(['3', '2', '1', 'dance', ''][nextTickBeat]);
       prevTickBeat = nextTickBeat;
     }

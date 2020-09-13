@@ -189,7 +189,7 @@ var Robot = (props, scene) => {
   self.badKey = function() {
     self.isPC && hudScene.feedback(404);
     // SFX - GECKO
-    zzfx(...[u, u, u, u, .1, u, 1, .3, 1, 15, self.isPC?400:200, .05, .03, 1.1, u, .4, u, .5]);
+    zzfx(...[self.isPC?.7:.2, u, self.isPC?220:80, u, .1, u, 1, .3, 1, 15, 400, .05, .03, 1.1, u, .4, u, .5]);
 
     self.guiCommands.setText(self.guiCommands.rawText+'*', 's2l', '401');
     self.guiCommands.x = self.x+EIGHT-(self.guiCommands.width/2);
@@ -216,11 +216,13 @@ var Robot = (props, scene) => {
       self.focus = 0;
       self.combo = 0;
     }
+
     if (temp == self.focus || !self.isPC) return;
     if (self.focus == 4) enterZone(...allSlides[rando(0, 4)]);
 
     if (self.focus === 0) {
       exitZone();
+      zzfx(...[1.4,u,338,u,.15,.06,1,.4,.4,.1,-250,.03,.02,.6,-13,u,.11,.74,u,.17]);// SFX - GECKO -- switch up todos al tiempo
       // SFX - GECKO -- switch up todos al tiempo
       guiFocusSwitches.forEach(g => g.forEach( s => {
         s.frame=0;
@@ -228,6 +230,7 @@ var Robot = (props, scene) => {
       }));
     } else {
       // SFX - GECKO -- switch down
+      zzfx(...[u,.1,349,u,.05,.04,u,.7,70,4,50,-0.12,.03,.8,16,.1,.06,.8,.05]);// SFX - GECKO -- switch down
       guiFocusSwitches[self.focus-1].forEach(s => {
         s.frame=1;
         s.paletteOverrides={3:hexToRgb('ou5')};

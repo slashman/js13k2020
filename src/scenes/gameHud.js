@@ -130,14 +130,14 @@ enemy.guiCommands = EnemyCommands;
 hudScene.onMetronomeTick = tick => {
   seq.updateLines(tick)
   if (subState == 1) {
-    // SFX - GECKO -- speaker bounce
+    zzfx(...[.6,u,50,.01,.05]);// SFX - GECKO -- speaker bounce
     LeftSpeaker.y += LeftSpeaker.dfltY !== LeftSpeaker.y ? -2 : 2;
     RightSpeaker.y += RightSpeaker.dfltY !== RightSpeaker.y ? -2 : 2;
   }
 }
 
 hudScene.showLevelElements = _ => {
-  // SFX - GECKO -- speaker appears
+  zzfx(...[.7,0,10,.01,.7,.4,,.7,.7,u,15,.7,u,.3,u,u,u,u,.08]);// SFX - GECKO -- speaker appears
   addAnimation(LeftSpeaker, 'y', LeftSpeaker.y, LeftSpeaker.dfltY, 1000);
   addAnimation(RightSpeaker, 'y', RightSpeaker.y, RightSpeaker.dfltY, 1000);
   addAnimation(PlayerProgress, 'y', -24, PlayerProgress.dfltY, 1150);

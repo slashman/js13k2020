@@ -36,6 +36,7 @@ const enemyIntro = _ => {
       addAnimation(enemy, 'x', enemy.x, i == currentLevel ? W/2-8 : enemy.x, 800);
       addAnimation(enemy, 'y', enemy.y, i == currentLevel ? 50 : 148, 800);
       // SFX - GECKO - cuando aparece el enemigo
+      zzfx(...[.7,10,30,u,.5,1.1,u,.4,2,-2,10,50,.7,.3,u,u,.04,.3,1]);  // SFX - GECKO - cuando aparece el enemigo
       enterZone(...closeEnemyHorizontal);
     })
   }, 1200);
