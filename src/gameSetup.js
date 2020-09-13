@@ -22,7 +22,7 @@ var gameState = 0;
 var subState = 0;
 
 var currentLevel = -1;
-var buffer = zzfxM(...deepMX);    // Generate the sample data
+var buffer;    // Generate the sample data
 level = LEVELS[0];
 var song;
 var win = false;
@@ -69,7 +69,7 @@ const finishGame = _ => {
   subState = 2;
   win = player.score >= level.score;
   if (win) {
-  zzfx(...[u,u,196,u,.3,.9,u,1.84,,50,500,.05,.08,.3,u,u,.16,.91]);// SFX - GECKO -- win
+  zzfx(...[u,u,196,u,.3,.9,u,1.84,u,50,500,.05,.08,.3,u,u,.16,.91]);// SFX - GECKO -- win
   }else {
   zzfx(...[u,u,196,u,.8,.9,u,.3,8,u,-6,u,.03,.3,u,u,.32,0,1]);  // SFX - GECKO -- lose
   }

@@ -154,7 +154,7 @@ var initHUDpositions = _ => {
 }
 
 hudScene.showLevelElements = _ => {
-  zzfx(...[.7,0,10,.01,.7,.4,,.7,.7,u,15,.7,u,.3,u,u,u,u,.08]);// SFX - GECKO -- speaker appears
+  zzfx(.7,0,10,.01,.7,.4,u,.7,.7,u,15,.7,u,.3,u,u,u,u,.08);// SFX - GECKO -- speaker appears
   //console.log(DPU.y)
   mainBoard.forEach(go => addAnimation(go, 'y', go.yy, go.yy - THIRTYTWO, 1000));
   guiFocusSwitches.forEach(pair => pair.forEach(part => addAnimation(part, 'y', H, CODES_Y, 1300)));

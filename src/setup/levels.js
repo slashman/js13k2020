@@ -1,10 +1,10 @@
 
 const LEVELS = [
   { sequence: [0, 1], bpm: 80, score: 2000, robot: [1, 3, 5, 1],palette:2},
-  { sequence: [1, 2, 3], bpm: 100, score: 3000, robot: [2, 1, 2, 2],palette:18},
-  { sequence: [3, 4, 3, 2], bpm: 120, score: 4500, robot: [5, 0, 3, 5],palette:19},
-  { sequence: [3, 4, 3, 2, 3], bpm: 144, score: 6000, robot: [3, 4, 4, 3],palette:20},
-  { sequence: [3, 4, 3, 4, 3, 3, 4], bpm: 160, score: 10000, robot: [4, 2, 1, 4],palette:21}
+  { sequence: [1, 2, 0], bpm: 100, score: 3000, robot: [2, 1, 2, 2],palette:18},
+  { sequence: [3, 1, 3, 2], bpm: 120, score: 4500, robot: [5, 0, 3, 5],palette:19},
+  { sequence: [0, 2, 3, 2], bpm: 144, score: 6000, robot: [3, 4, 4, 3],palette:20},
+  { sequence: [3, 0, 1, 3, 2], bpm: 160, score: 10000, robot: [4, 2, 1, 4],palette:21}
 ]
 
 

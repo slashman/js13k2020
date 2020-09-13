@@ -102,7 +102,7 @@ var theBeat = _ => {
   if (subState == 0) {
     var nextTickBeat = ~~(current_tick / 4);
     if (prevTickBeat != nextTickBeat) {
-      zzfx(...[,30,18,.06,.04,.15,1,1.8,9,-0.6,750,.07,u,.2,u,u,.04,0,.05]);// SFX - GECKO -- countdown
+      zzfx(u,30,18,.06,.04,.15,1,1.8,9,-0.6,750,.07,u,.2,u,u,.04,0,.05);// SFX - GECKO -- countdown
       countdownLabel.setText(['3', '2', '1', 'dance', ''][nextTickBeat]);
       prevTickBeat = nextTickBeat;
     }
@@ -117,8 +117,8 @@ var theBeat = _ => {
     danceFrame % 3 == 0 && enemy.dash(danceFrame % 2 == 0 ? 1 : -1);
     danceFrame % 4 == 0 && enemy.turnHead(danceFrame % 3 == 0 ? 1 : -1);
     var perforbot = getRandomValue();
-    if (perforbot < 0.85) enemy.tryBeat(randoArrel(validKeys)); // do perfect
-    else if (perforbot < 0.95) setTimeout(() => enemy.tryBeat(randoArrel(validKeys)), 100); // do good
+    if (perforbot < 0.9) enemy.addKey(randoArrel(validKeys)); // do perfect
+    else enemy.badKey(randoArrel(validKeys)); // do good
   }
 
   paletteRenderer.onMetronomeBeat();
