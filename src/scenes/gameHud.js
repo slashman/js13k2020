@@ -16,8 +16,8 @@ var numObjects = [];
 var gpiMap = [ (arrange(0,11,'f')).join(''), (arrange(0,11,'g')).join('') ];
 
 // ---- [ LETTERS AND NUMBERS ] ------------------------------------------------
-var abc = `012345678abcdefghijklmnopqrstuvwxyz${HEY_CHAR}$=*!?9`;
-var abcIndexes = [...arrange(64, 104), 70];
+var abc = `012345678abcdefghijklmnopqrstuvwxyz${HEY_CHAR}$=*9`;
+var abcIndexes = [...arrange(64, 102), 70];
 
 var createLetter = (baseStroke, baseFill, x, frame, flipped = false) => {
   var letterObj = GameObject([x, 0, abcIndexes, 0, 0]);

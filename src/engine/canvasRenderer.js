@@ -39,9 +39,8 @@ var draw = _ => {
 // that needs to be mirrored. Something like what we do for the robotz heads.
 var gpiBoard = { sprite: 43, palette: 9, small: true, mirror: true }
 var indexToSprite = { // Maps the map above to sprite and palette indexes 
-  a: { sprite: 56, palette: 7 },
-  b: { sprite: 57, palette: 7 },
-  c: { sprites: [{ sprite: 62, palette: 8 }, { sprite: 63, palette: 8 }] },
+  a: { sprite: 52, palette: 7 },
+  b: { sprite: 53, palette: 7 },
   // GPI: Graphic Player Interface
   f: { ...gpiBoard, vFlip: true },
   g: { ...gpiBoard },

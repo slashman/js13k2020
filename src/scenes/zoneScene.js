@@ -1,7 +1,7 @@
 
 var zoneScene = Scene();
 
-var parts = [p1=textureRect(0, 0, 0, 0, 117, 15), p2=textureRect(0, 0, 0, 0, 117, 15)];
+var parts = [p1=textureRect(0, 0, 0, 0, 105, 15), p2=textureRect(0, 0, 0, 0, 103, 15)];
 
 parts.forEach(zoneScene.add);
 
@@ -10,7 +10,7 @@ const enterZone = (p1X, p1Y, p1W, p1H, p1Xt, p1Yt, p1Wt, p1Ht, p2X, p2Y, p2W, p2
   p1.b = 1;
   p2.b = 1;
   
-  var texture = [116, 117, 118][rando(0, 2)];
+  var texture = [105, 106, 107][rando(0, 2)];
   p1.setSprite(texture);
   p2.setSprite(texture);
   var paletteIndex = [3, 13, 15, 16][rando(0, 3)];
