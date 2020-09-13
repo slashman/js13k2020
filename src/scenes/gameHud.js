@@ -53,8 +53,8 @@ let speakerCfg = [[arrange(22,26),arrange(38,42)], 11];
 let LeftSpeaker = MechaGameObject(0, 5*EIGHT, ...speakerCfg);
 let RightSpeaker = MechaGameObject(0, 5*EIGHT, ...speakerCfg, 1, noop, true);
 RightSpeaker.x = W - RightSpeaker.width;
-LeftSpeaker.y += LeftSpeaker.height;
-RightSpeaker.y += RightSpeaker.height;
+LeftSpeaker.y += LeftSpeaker.height*2;
+RightSpeaker.y += RightSpeaker.height*2;
 
 // ---- [ PROGRESS BAR ] -------------------------------------------------------
 let progressCfg = [
@@ -83,8 +83,9 @@ EnemyProgress.x += EnemyProgress.width;
 EnemyProgress.y -= 100;
 
 // ---- [ FOCUS SWITCHES ] -----------------------------------------------------
+// CODES_Y is the target of this things
 const guiFocusSwitches = Array.from({length: 4}, (v,i) => {
-  const focusSwitchL = GameObject([EIGHT*6+(i * 24 + (i >= 2 && EIGHT)), CODES_Y, [10,9], 0, BOARD_PALETTE]);
+  const focusSwitchL = GameObject([EIGHT*6+(i * 24 + (i >= 2 && EIGHT)), H, [10,9], 0, BOARD_PALETTE]);
   focusSwitchL.small = true;
   focusSwitchL.paletteOverrides = {3:hexToRgb('574')};
   const focusSwitchR = createComplements(focusSwitchL,[1])[0];
@@ -94,10 +95,12 @@ const guiFocusSwitches = Array.from({length: 4}, (v,i) => {
 })
 
 // ---- [ BOARD ] --------------------------------------------------------------
-loadMap(gpiMap, hudScene, 0, BOARD_Y);
+const mainBoard = loadMap(gpiMap, hudScene, 0, BOARD_Y);
+mainBoard.forEach(go=>go.y+=THIRTYTWO);
 seq.addBeatLinesToScene();
 hudScene.add(seq);
 let DPU = MechaGameObject(10*EIGHT, 7*EIGHT, [arrange(44,47),arrange(60,63)], BOARD_PALETTE);
+DPU.y += DPU.height;
 
 const GUI_CODE_EFFECT = (GUICode, targetY, delay, cfg) => {
   GUICode.b = 1;
@@ -136,9 +139,14 @@ hudScene.onMetronomeTick = tick => {
 }
 
 hudScene.showLevelElements = _ => {
+  // The boardo chambonardo
+  addAnimation(DPU,'y',DPU.y,DPU.y-DPU.height,1000);
+  mainBoard.forEach(go => addAnimation(go,'y',go.y,go.y-THIRTYTWO,1000));
+  guiFocusSwitches.forEach(pair => pair.forEach(part => addAnimation(part,'y',part.y,CODES_Y,1300)));
+
   // SFX - GECKO -- speaker appears
-  addAnimation(LeftSpeaker, 'y', LeftSpeaker.y, LeftSpeaker.dfltY, 1000);
-  addAnimation(RightSpeaker, 'y', RightSpeaker.y, RightSpeaker.dfltY, 1000);
+  addAnimation(LeftSpeaker, 'y', LeftSpeaker.y, LeftSpeaker.dfltY, 1300);
+  addAnimation(RightSpeaker, 'y', RightSpeaker.y, RightSpeaker.dfltY, 1300);
   addAnimation(PlayerProgress, 'y', -24, PlayerProgress.dfltY, 1150);
   addAnimation(EnemyProgress, 'y', -24, EnemyProgress.dfltY, 1150);
 };
