@@ -1,6 +1,6 @@
 
 var discoScene = Scene();
-var jungleScene = Scene();
+//var jungleScene = Scene();
 var dancersScene = Scene();
 
 var discoMap = [
@@ -15,6 +15,7 @@ var discoMap = [
   "abababababab"
 ];
 
+/*
 var jungleMap = [
   "cccccccccccc",
   "cccccccccccc",
@@ -25,13 +26,13 @@ var jungleMap = [
   "cccccccccccc",
   "cccccccccccc",
   "cccccccccccc"
-];
+];*/
 
 loadMap(discoMap, discoScene);
-loadMap(jungleMap, jungleScene);
+//loadMap(jungleMap, jungleScene);
 
-jungleScene.active = false;
-jungleScene.brightness = 0;
+//jungleScene.active = false;
+//jungleScene.brightness = 0;
 
 
 var randomY = [];
@@ -78,7 +79,7 @@ enemy.bounceOffset = 3;
 dancersScene.add(enemy);
 
 sceneManager.add(discoScene);
-sceneManager.add(jungleScene);
+//sceneManager.add(jungleScene);
 sceneManager.add(dancersScene);
 
 // cycle palette does somekind of hearthbeat effect

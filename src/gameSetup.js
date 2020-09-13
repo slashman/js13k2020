@@ -49,10 +49,10 @@ const loadLevel = levelIndex => {
 const startSong = _ => {
   
   subState = 1;
-  setTimeout( discoScene.fadeOut, 4000);
-  setTimeout( _ => { jungleScene.active = true; discoScene.active = false; jungleScene.fadeIn();}, 6000);
-  setTimeout( jungleScene.fadeOut, 8000);
-  setTimeout( _ => { jungleScene.active = false; discoScene.active = true; discoScene.fadeIn();}, 10000);  
+  //setTimeout( discoScene.fadeOut, 4000);
+  //setTimeout( _ => { jungleScene.active = true; discoScene.active = false; jungleScene.fadeIn();}, 6000);
+  //setTimeout( jungleScene.fadeOut, 8000);
+  //setTimeout( _ => { jungleScene.active = false; discoScene.active = true; discoScene.fadeIn();}, 10000);  
   
   // song start
   song = zzfxP(...buffer);

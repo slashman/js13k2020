@@ -63,6 +63,7 @@ cat src/engine/paletteRenderer.js
 cat src/engine/scene.js
 
 # game mechanics
+cat src/scenes/zoneScene.js
 cat src/scenes/danceBattle.js
 cat src/scenes/gameHud.js
 cat src/scenes/enemyIntro.js

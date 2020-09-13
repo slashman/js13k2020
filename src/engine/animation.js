@@ -8,6 +8,7 @@ const easeLinear = t => t;
 const easeRandom = Math.random;
 
 const addAnimation = (gameObject, property, initialValue, targetValue, time, ease=easeLinear, yoyo=false) => {
+  if (initialValue == targetValue) return gameObject[property] = targetValue;
   let t = 0;
   let intervalValue = targetValue - initialValue;
   let _onEnd = noop;
