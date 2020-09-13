@@ -62,9 +62,15 @@ const startSong = _ => {
 }
 
 const finishGame = _ => {
+
   song.stop();
   subState = 2;
   win = player.score >= level.score;
+  if (win) {
+    // SFX - GECKO -- win
+  }else {
+    // SFX - GECKO -- lose
+  }
   addAnimation(countdownLabel, 'b', 0, 1, 350);
   countdownLabel.setText(win ? 'you win' : 'you lose');
   setTimeout(_ => setPressEnter(false), 1000);
@@ -90,13 +96,14 @@ const startGame = _ => {
   hudScene.remove(gameTitle);
 }
 
-const enterSfx = [, , 610, .13, .37, .84, 2, 1.47, , , 204, .09, .1, , , , , .79, .02];
+const startSfx = [0.5,u,u,.2,1,u,1,.5,20,10,10,.7,.7,u,.9,.4,u,u,.7];
+const enterSfx = [0.7,u,u,u,.3,u,1,u,2.2,1.5,750,.15,.14,u,u,.4];
 
 const handleEnterAction = _ => {
   console.log(gameState);
   switch (gameState) {
     case 0:
-      zzfx(...enterSfx);
+      zzfx(...startSfx);
       startGame();
       break;
     case 1:
