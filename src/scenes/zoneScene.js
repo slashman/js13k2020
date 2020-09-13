@@ -38,7 +38,6 @@ sceneManager.add(zoneScene);
 const H2 = H;
 
 var resetTransition = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-console.log(resetTransition);
 
 var closeHorizontal = [
   // p1

@@ -85,7 +85,7 @@ EnemyProgress.x += EnemyProgress.width;
 EnemyProgress.y -= 100;
 
 // ---- [ FOCUS SWITCHES ] -----------------------------------------------------
-const guiFocusSwitches = Array.from({length: 4}, (v,i) => {
+/*const guiFocusSwitches = Array.from({length: 4}, (v,i) => {
   const focusSwitchL = GameObject([EIGHT*6+(i * 24 + (i >= 2 && EIGHT)), H, [10,9], 0, BOARD_PALETTE]);
   focusSwitchL.small = true;
   focusSwitchL.paletteOverrides = {3:hexToRgb('574')};
@@ -93,7 +93,7 @@ const guiFocusSwitches = Array.from({length: 4}, (v,i) => {
   hudScene.add(focusSwitchL);
   hudScene.add(focusSwitchR);
   return [focusSwitchL,focusSwitchR];
-})
+})*/
 
 // ---- [ BOARD ] --------------------------------------------------------------
 const mainBoard = loadMap(gpiMap, hudScene, { x: 0, y: BOARD_Y });
@@ -120,10 +120,10 @@ const GUI_CODE_EFFECT = (GUICode, targetY, delay, cfg) => {
 // ---- [ PLAYER COMMANDS ] ----------------------------------------------------
 let PlayerCommands = GUIString(8*SIXTEEN, 20, '', '004', '0hu', 0);
 PlayerCommands.inErr = false;
-player.guiCommands = PlayerCommands;
+player.gc = PlayerCommands;
 let EnemyCommands = GUIString(8*SIXTEEN, 50, '', '300', 'vd3', 0);
 EnemyCommands.inErr = false;
-enemy.guiCommands = EnemyCommands;
+enemy.gc = EnemyCommands;
 
 
 let GUI404 = GUIString(CODES_X, CODES_Y, `${HEY_CHAR}$=$`, '401', 's2l', 0); // 404
@@ -146,7 +146,7 @@ var initHUDpositions = _ => {
   DPU.y = 88;
   DPU.x = 10 * EIGHT;
   mainBoard.forEach(go => go.y=go.yy);
-  guiFocusSwitches.forEach(pair => pair.forEach(part => part.y = H));
+  //guiFocusSwitches.forEach(pair => pair.forEach(part => part.y = H));
   LeftSpeaker.y = LeftSpeaker.dfltY + LeftSpeaker.height * 2;
   RightSpeaker.y = RightSpeaker.dfltY + RightSpeaker.height * 2;
   PlayerProgress.y = -24;
@@ -157,7 +157,7 @@ hudScene.showLevelElements = _ => {
   zzfx(.7,0,10,.01,.7,.4,u,.7,.7,u,15,.7,u,.3,u,u,u,u,.08);// SFX - GECKO -- speaker appears
   //console.log(DPU.y)
   mainBoard.forEach(go => addAnimation(go, 'y', go.yy, go.yy - THIRTYTWO, 1000));
-  guiFocusSwitches.forEach(pair => pair.forEach(part => addAnimation(part, 'y', H, CODES_Y, 1300)));
+  //guiFocusSwitches.forEach(pair => pair.forEach(part => addAnimation(part, 'y', H, CODES_Y, 1300)));
   addAnimation(DPU, 'y', DPU.y, DPU.y - DPU.height, 1000);
   addAnimation(LeftSpeaker, 'y', LeftSpeaker.y, LeftSpeaker.dfltY, 1300);
   addAnimation(RightSpeaker, 'y', RightSpeaker.y, RightSpeaker.dfltY, 1300);

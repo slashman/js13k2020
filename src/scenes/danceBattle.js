@@ -110,7 +110,7 @@ var theBeat = _ => {
     return;
   }
   
-  if (!enemy.guiCommands.inErr) {
+  if (!enemy.gc.inErr) {
     danceFrame++;
     if (danceFrame > 9) danceFrame = 0;
     enemy.flipArm(danceFrame % 4 == 0)

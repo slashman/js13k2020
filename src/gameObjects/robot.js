@@ -49,13 +49,13 @@ var Robot = (props, scene) => {
 
   self.update = dt => {
     // GUI
-    if (self.guiCommands && !self.guiCommands.inErr) {
-      self.guiCommands.x = self.x+EIGHT-(self.guiCommands.width/2);
-      self.guiCommands.y = self.y+THIRTYTWO;
+    if (self.gc && !self.gc.inErr) {
+      self.gc.x = self.x+EIGHT-(self.gc.width/2);
+      self.gc.y = self.y+THIRTYTWO;
     }
 
     // Movement
-    self.components.forEach(c => { 
+    self.c.forEach(c => { 
       c.x = self.x + c.dx;
       c.y = self.y + c.dy;
     });
@@ -64,31 +64,31 @@ var Robot = (props, scene) => {
     iframe = (iframe+ self.bounceOffset) % 6;
     headOffset  =    [0,1,2,3,2,1][iframe];
     torsoOffset =    [0,1,2,2,1,0][iframe]; // For now, arms have the same offset as torso
-    [self.components[0], self.components[1], self.components[6]].forEach(s => s.y += headOffset); // head sprites
-    [self.components[2], self.components[3],self.components[4],self.components[5]].forEach(s => s.y += torsoOffset) // torso and arm sprites
+    [self.c[0], self.c[1], self.c[6]].forEach(s => s.y += headOffset); // head sprites
+    [self.c[2], self.c[3],self.c[4],self.c[5]].forEach(s => s.y += torsoOffset) // torso and arm sprites
   }
   self.setSprites = (rc) => {
     var f = rc.map((pi, i) => partsConfig[i][pi])
-    self.components.forEach((c,i) => c.frames = f[~~(i/2)])
+    self.c.forEach((c,i) => c.frames = f[~~(i/2)])
     if (bigHeads.indexOf(rc[0]) != -1) {
-      self.components[0].dx = -8;
-      [self.components[0], self.components[1]].forEach(s => s.small = false);
+      self.c[0].dx = -8;
+      [self.c[0], self.c[1]].forEach(s => s.small = false);
     }
   }
   self.arms = [false, false]; // Both down
   self.flipArm = (left) => {
     self.arms[left ? 0 : 1] = !self.arms[left ? 0 : 1];
-    self.arms.forEach((s,i) => self.components[4+i].vFlip = s);
+    self.arms.forEach((s,i) => self.c[4+i].vFlip = s);
   }
 
   self.headPosition = 1; // Center;
   var selfPalette = paletteRenderer.palettes[self.paletteIndex]
   self.turnHead = (dir) => {
     self.headPosition = wrap(self.headPosition + dir, 4);
-    self.components[6].visible = self.headPosition % 2 == 0;
-    self.components[6].flipped = self.headPosition === 0;
-    [self.components[0], self.components[1]].forEach(s => {
-      s.visible = !self.components[6].visible
+    self.c[6].visible = self.headPosition % 2 == 0;
+    self.c[6].flipped = self.headPosition === 0;
+    [self.c[0], self.c[1]].forEach(s => {
+      s.visible = !self.c[6].visible
       self.headPosition === 3
         ? [2,3,4,5,6,7].forEach((i) => s.paletteOverrides[i] = selfPalette[i<6?1:5])
         : s.paletteOverrides = {};
@@ -99,8 +99,8 @@ var Robot = (props, scene) => {
     if (self.isPC) zzfx(.7,.5,50,.12,.06,0,3,u,u,50,500,.6,u,.8,15,u,.02,.65,.06,.01);
   };
   self.draw = noop; // We don't draw this gameObject, it's just a container
-  self.components = [...new Array(7)].map(x => GameObject([0, 0, [1], i+3, self.paletteIndex]));
-  var c = self.components;
+  self.c = [...new Array(7)].map(x => GameObject([0, 0, [1], i+3, self.paletteIndex]));
+  var c = self.c;
   c.forEach((x, i) => {
     x.small = true; // Unless big head
     x.dx = i < 4 ? (i%2) * 8 : -8 + (i%2) * 24;
@@ -165,24 +165,24 @@ var Robot = (props, scene) => {
   }
   
   self.overridePalette = function(index, color) {
-    self.components.forEach(c => c.overridePalette(index, color));
+    self.c.forEach(c => c.overridePalette(index, color));
   };
 
   self.addKey = function(key) {
     self.sequence.push(key);
-    self.guiCommands.setText(
+    self.gc.setText(
       self.sequence.reduce((com, cod) => com+String.fromCharCode(cod).toLowerCase(),''),
-      self.guiCommands.dfltStroke,
-      self.guiCommands.dfltFill
+      self.gc.dfltStroke,
+      self.gc.dfltFill
     );
-    self.guiCommands.b = 1;
-    self.guiCommands.inErr = false;
+    self.gc.b = 1;
+    self.gc.inErr = false;
     if (self.sequence.length == 4) {
-      GUI_CODE_EFFECT(self.guiCommands,null,300,{y:SIXTEEN});
+      GUI_CODE_EFFECT(self.gc,null,300,{y:SIXTEEN});
       self.score += checkStep(self.sequence);
       if (self.score >= level.score) finishGame();
       self.sequence = [];
-      setTimeout(() => self.guiCommands.setText(''),300+350);
+      setTimeout(() => self.gc.setText(''),300+350);
     }
   }
 
@@ -191,13 +191,13 @@ var Robot = (props, scene) => {
     // SFX - GECKO
     zzfx(...[self.isPC?.7:.2, u, self.isPC?220:80, u, .1, u, 1, .3, 1, 15, 400, .05, .03, 1.1, u, .4, u, .5]);
 
-    self.guiCommands.setText(self.guiCommands.rawText+'*', 's2l', '401');
-    self.guiCommands.x = self.x+EIGHT-(self.guiCommands.width/2);
-    self.guiCommands.b = 1;
-    self.guiCommands.inErr = true;
-    GUI_CODE_EFFECT(self.guiCommands,null,500,{y: self.guiCommands.y+SIXTEEN});
-    shakeIt(self.guiCommands,0.1,500);
-    setTimeout(() => self.guiCommands.inErr = false, 800);
+    self.gc.setText(self.gc.rawText+'*', 's2l', '401');
+    self.gc.x = self.x+EIGHT-(self.gc.width/2);
+    self.gc.b = 1;
+    self.gc.inErr = true;
+    GUI_CODE_EFFECT(self.gc,null,500,{y: self.gc.y+SIXTEEN});
+    shakeIt(self.gc,0.1,500);
+    setTimeout(() => self.gc.inErr = false, 800);
     self.sequence = [];
     self.addFocus(-1);
   }
@@ -224,17 +224,17 @@ var Robot = (props, scene) => {
       exitZone();
       zzfx(...[1.4,u,338,u,.15,.06,1,.4,.4,.1,-250,.03,.02,.6,-13,u,.11,.74,u,.17]);// SFX - GECKO -- switch up todos al tiempo
       // SFX - GECKO -- switch up todos al tiempo
-      guiFocusSwitches.forEach(g => g.forEach( s => {
-        s.frame=0;
-        s.paletteOverrides={3:hexToRgb('574')};
-      }));
-    } else {
+      // guiFocusSwitches.forEach(g => g.forEach( s => {
+      //   s.frame=0;
+      //   s.paletteOverrides={3:hexToRgb('574')};
+      // }));
+    //} else {
       // SFX - GECKO -- switch down
-      zzfx(...[u,.1,349,u,.05,.04,u,.7,70,4,50,-0.12,.03,.8,16,.1,.06,.8,.05]);// SFX - GECKO -- switch down
-      guiFocusSwitches[self.focus-1].forEach(s => {
-        s.frame=1;
-        s.paletteOverrides={3:hexToRgb('ou5')};
-      });
+      //zzfx(...[u,.1,349,u,.05,.04,u,.7,70,4,50,-0.12,.03,.8,16,.1,.06,.8,.05]);// SFX - GECKO -- switch down
+      // guiFocusSwitches[self.focus-1].forEach(s => {
+      //   s.frame=1;
+      //   s.paletteOverrides={3:hexToRgb('ou5')};
+      // });
     }
   }
   
