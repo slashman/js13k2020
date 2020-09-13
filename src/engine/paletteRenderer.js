@@ -91,7 +91,7 @@ var paletteRenderer = {
         
         // Palette 0 considers color 0 as "transparency"
         if (index == 0 && this.palettesWithTransparecy.includes(pi)) continue;
-        var color = this.palettes[pi][parseInt(index, 10)];
+        var color = this.palettes[pi][index];
         
         if (overrides[index]) color = overrides[index];
         if (brightness != 1) color = fade(color, brightness);
@@ -134,6 +134,8 @@ paletteRenderer.palettes = [
            [RED, '101', 'jr8', 'bo6', '2k5', '3f7', '4a7', '244'],
     //15   ['#000000', '#202020','#404040','#606060','#808080','#a0a0a0','#c0c0c0','#e0e0e0'] >>> grayscale
            [u, '444', '888', 'ccc', 'ggg', 'kkk', 'ooo', 'sss'],
+           ['222', '555', '888', 'aaa', '888', '555', '222', '111'],
+           ['000', '111', '222', '333', '444', '555', '666', '777']
 ];
 paletteRenderer.palettesWithTransparecy = [0,1,2,9,10,11,12, 13]
 
@@ -151,7 +153,10 @@ paletteRenderer.palettes = paletteRenderer.palettes.map(palette => palette.map(h
 // Waterfall effect
 setInterval(_ => {
   paletteRenderer.shiftPalette(3, 1, 7, 1);
-}, 100);
+  
+  paletteRenderer.shiftPalette(15, 0, 7, -1);
+  paletteRenderer.shiftPalette(16, 0, 7, -1);
+}, 150);
 
 var randomPastel = _ => {
   var array = hslToRgb(Math.random(), 0.7, 0.5);

@@ -39,6 +39,7 @@ cat src/setup/levels.js
 cat src/engine/animation.js
 cat src/engine/gameObject.js
 cat src/engine/metronome.js
+cat src/gameObjects/textureRect.js
 cat src/gameObjects/robot.js
 cat src/gameObjects/sprite.js
 cat src/gameObjects/items.js
