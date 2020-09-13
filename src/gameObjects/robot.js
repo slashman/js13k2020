@@ -43,10 +43,16 @@ var Robot = (props, scene) => {
   self.stats = {};
   self.scene = scene;
   self.v = {x:0.0, y:0.0};
+  self.isPC = false;
 
   self.sequence = [];
 
   self.update = dt => {
+    // GUI
+    if (self.guiCommands && !self.guiCommands.inErr) {
+      self.guiCommands.x = self.x+EIGHT-(self.guiCommands.width/2);
+      self.guiCommands.y = self.y+THIRTYTWO;
+    }
 
     // Movement
     self.components.forEach(c => { 
@@ -136,18 +142,22 @@ var Robot = (props, scene) => {
     diff = Math.abs(diff);
     if (diff < intervals[0]) {
       // keyOnBeat.p = 'perfect';
-      zzfx(...[.6, 0.3, 508 + key, .03, .14, .22, 1, 1.93, -53.9, .2, u, .02, -0.01, -0.2, -0.1, u, u, .8, .03, .01]);
-      GUI_CODE_EFFECT(GUI200, -16);
-      self.addCombo();
+      if (self.isPC) {
+        zzfx(...[.6, 0.3, 508 + key, .03, .14, .22, 1, 1.93, -53.9, .2, u, .02, -0.01, -0.2, -0.1, u, u, .8, .03, .01]);
+        GUI_CODE_EFFECT(GUI200, -16);
+        self.addCombo();
+        self.addFocus(self.combo % 2 == 0 ? 1 : 0);
+      }
       self.addKey(key);
-      self.addFocus(self.combo % 2 == 0 ? 1 : 0);
     } else if (diff < intervals[1]) {
       //keyOnBeat.p = 'good';
-      zzfx(...[.6, 0.3, 308+key, .03, .14, .22, 1, 1.93, -53.9, .2, u, .02, -0.01, -0.2, -0.1, u, u, .8, .03, .01]);
-      GUI_CODE_EFFECT(GUI100, -10);
-      self.addCombo();
+      if (self.isPC) {
+        zzfx(...[.6, 0.3, 308+key, .03, .14, .22, 1, 1.93, -53.9, .2, u, .02, -0.01, -0.2, -0.1, u, u, .8, .03, .01]);
+        GUI_CODE_EFFECT(GUI100, -10);
+        self.addCombo();
+        self.addFocus(self.combo % 3 == 0 ? 1 : 0);
+      }
       self.addKey(key);
-      self.addFocus(self.combo % 3 == 0 ? 1 : 0);
     } else {
       self.badKey();
     }
@@ -160,30 +170,38 @@ var Robot = (props, scene) => {
 
   self.addKey = function(key) {
     self.sequence.push(key);
-    PlayerCommands.setText(self.sequence.reduce((com, cod) => com+String.fromCharCode(cod).toLowerCase(),''));
-    PlayerCommands.b = 1;
-    PlayerCommands.inErr = false;
+    self.guiCommands.setText(
+      self.sequence.reduce((com, cod) => com+String.fromCharCode(cod).toLowerCase(),''),
+      self.guiCommands.dfltStroke,
+      self.guiCommands.dfltFill
+    );
+    self.guiCommands.b = 1;
+    self.guiCommands.inErr = false;
     if (self.sequence.length == 4) {
-      GUI_CODE_EFFECT(PlayerCommands,null,300,{y:SIXTEEN});
+      GUI_CODE_EFFECT(self.guiCommands,null,300,{y:SIXTEEN});
       self.score += checkStep(self.sequence);
       if (self.score >= level.score) finishGame();
       self.sequence = [];
-      setTimeout(() => PlayerCommands.setText(''),300+350);
+      setTimeout(() => self.guiCommands.setText(''),300+350);
     }
   }
 
   self.badKey = function() {
-    hudScene.feedback(404)
-    PlayerCommands.setText(PlayerCommands.rawText+'*', '401', 's2l');
-    PlayerCommands.x = player.x+EIGHT-(PlayerCommands.width/2);
-    PlayerCommands.b = 1;
-    PlayerCommands.inErr = true;
-    shakeIt(PlayerCommands,0.1,500);
-    GUI_CODE_EFFECT(PlayerCommands,PlayerCommands.y+SIXTEEN,500);
-    //keyOnBeat.p = 'bad';
-    zzfx(...[.6, 0.8, 0, .03, .14, .22, 4, 1.93, -53.9, .2, u, .02, -0.01, -0.2, -0.1, u, u, .8, .03, .01]);
+    if (self.isPC === true) {
+      hudScene.feedback(404);
+      zzfx(...[.6, 0.8, 0, .03, .14, .22, 4, 1.93, -53.9, .2, u, .02, -0.01, -0.2, -0.1, u, u, .8, .03, .01]);
+    }
+
+    self.guiCommands.setText(self.guiCommands.rawText+'*', 's2l', '401');
+    self.guiCommands.x = self.x+EIGHT-(self.guiCommands.width/2);
+    self.guiCommands.b = 1;
+    self.guiCommands.inErr = true;
+    GUI_CODE_EFFECT(self.guiCommands,null,500,{y: self.guiCommands.y+SIXTEEN});
+    shakeIt(self.guiCommands,0.1,500);
+    setTimeout(() => self.guiCommands.inErr = false, 800);
+    //keyOnBeat.p = 'bad';    
     self.sequence = [];
-    self.addFocus(-2);
+    // self.addFocus(-2);
   }
 
   self.addCombo = function() {

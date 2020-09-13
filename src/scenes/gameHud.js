@@ -28,7 +28,7 @@ var createLetter = (baseStroke, baseFill, x, frame, flipped = false) => {
 }
 var GUIString = (x, y, text, fill, stroke, b=1) => {
   let self = GameObject([x, y]);
-  self.setText = (text, _stroke, _fill) => {
+  self.setText = (text, _fill, _stroke) => {
     var letters = text.split('');
     if (letters[0] === HEY_CHAR) letters.push(HEY_CHAR)
     self.x = x - 4 * letters.length;
@@ -39,7 +39,9 @@ var GUIString = (x, y, text, fill, stroke, b=1) => {
     self.width = self.parts.length*EIGHT;
     self.rawText = letters.join('')
   };
-  self.setText(text,stroke,fill);
+  self.setText(text,fill,stroke);
+  self.dfltStroke = stroke;
+  self.dfltFill = fill;
   self.update = noop;
   self.b = b; // BrightNES
   self.draw = b => self.visible && self.parts.forEach(letter => letter && letter.draw(self.b, self.x, self.y));
@@ -75,15 +77,15 @@ let progressCfg = [
       fillRectPixel(_x, _y, leftProgress, 7, [15, 146, 240]);
     }
     else {
-      const rightProgress = PROGRESS_WIDTH * enemy.score / level.score;
-      fillRectPixel(_x+PROGRESS_WIDTH-rightProgress, _y, rightProgress, 7, [251, 107, 29]);
+      const rightProgress = PROGRESS_WIDTH * Math.min(enemy.score, level.score) / level.score;
+      fillRectPixel(_x, _y, rightProgress, 7, [251, 107, 29]);
     }
   }
 ];
 let PlayerProgress = MechaGameObject(5*EIGHT, 0, ...progressCfg);
+PlayerProgress.y -= 100;
 let EnemyProgress = MechaGameObject(5*EIGHT, 0, ...progressCfg, true);
 EnemyProgress.x += EnemyProgress.width;
-PlayerProgress.y -= 100;
 EnemyProgress.y -= 100;
 
 // ---- [ BOARD ] --------------------------------------------------------------
@@ -104,8 +106,12 @@ const GUI_CODE_EFFECT = (GUICode, targetY, delay, cfg) => {
 }
 
 // ---- [ PLAYER COMMANDS ] ----------------------------------------------------
-let PlayerCommands = GUIString(8*SIXTEEN, 20, '', u, u, 0);
+let PlayerCommands = GUIString(8*SIXTEEN, 20, '', '004', '0hu', 0);
 PlayerCommands.inErr = false;
+player.guiCommands = PlayerCommands;
+let EnemyCommands = GUIString(8*SIXTEEN, 50, '', '300', 'vd3', 0);
+EnemyCommands.inErr = false;
+enemy.guiCommands = EnemyCommands;
 
 
 // Functions -------------------------------------------------------------------

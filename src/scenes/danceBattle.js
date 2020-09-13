@@ -67,9 +67,11 @@ var player = MainCharacter([EIGHT*7, THIRTYTWO, [3, 4], 8, 0]);
 //player.rc = ; // robot config, [head, arms, torso, sideHead]
 player.setSprites([pcHead = 0, 0, 0, pcHead]);
 player.bounceOffset = 0;
+player.isPC = true;
 dancersScene.add(player);
 dancersScene.following = player; // TODO: Remove?
 
+var validKeys = [ inputs.F, inputs.D, inputs.S, inputs.J, inputs.K, inputs.L ];
 var enemy = Robot([W-EIGHT*7-SIXTEEN, THIRTYTWO, [3, 4], 8, 2], dancersScene);
 enemy.setSprites([enemyHead = rando(0, 4), rando(0, 4), rando(0, 5), enemyHead]);
 enemy.bounceOffset = 3;
@@ -104,11 +106,17 @@ var theBeat = _ => {
     current_tick == 16 && addAnimation(countdownLabel, 'b', 1, 0, 100)&&startSong();
     return;
   }
-  danceFrame++;
-  if (danceFrame > 9) danceFrame = 0;
-  enemy.flipArm(danceFrame % 4 == 0)
-  danceFrame % 3 == 0 && enemy.dash(danceFrame % 2 == 0 ? 1 : -1);
-  danceFrame % 4 == 0 && enemy.turnHead(danceFrame % 3 == 0 ? 1 : -1);
+  
+  if (!enemy.guiCommands.inErr) {
+    danceFrame++;
+    if (danceFrame > 9) danceFrame = 0;
+    enemy.flipArm(danceFrame % 4 == 0)
+    danceFrame % 3 == 0 && enemy.dash(danceFrame % 2 == 0 ? 1 : -1);
+    danceFrame % 4 == 0 && enemy.turnHead(danceFrame % 3 == 0 ? 1 : -1);
+    if (randomSign() < 0) enemy.tryBeat(randoArrel(validKeys)); // do perfect
+    else if (randomSign() < 0) setTimeout(() => enemy.tryBeat(randoArrel(validKeys)), 300); // do good
+  }
+
   paletteRenderer.onMetronomeBeat();
   hudScene.onMetronomeBeat();
 }
