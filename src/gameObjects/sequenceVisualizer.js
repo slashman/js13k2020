@@ -29,7 +29,7 @@ var sequenceVisualizer = props => {
   // The beat lines have 6 states
   [...lineIndexes, ...lineIndexes.reverse()].forEach((si, idx) => {
     // Top left of the beat line
-    var tl = GameObject([-8, SIXTEEN  * props.y, [si], 1, 10])
+    var tl = GameObject([-8, SIXTEEN  * props.y, [si], 1, 8])
     tl.flipped = idx > 5
     tl.small = true
     tl.visible = false

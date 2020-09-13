@@ -78,6 +78,7 @@ var paletteRenderer = {
     this.metronomeCycle(this.beatPalettes)
   },
   draw: function (spriteId, x, y, pi, flip, vflip, small, overrides, brightness) {
+    // if (pi === 15) console.log('aaaaaaaaaa');
     this.drawRaw(small ? this.sprites8[spriteId] : this.sprites[spriteId], x, y, pi, flip, vflip, small, overrides, brightness);
   },
   drawRaw: function (sprite, px, py, pi, flip, vflip, small, overrides, brightness) { // TODO: Just receive a gameObject and use its attributes
@@ -106,38 +107,36 @@ paletteRenderer.setSprites(sprites); // Using global variable tsk tsk
 
 paletteRenderer.palettes = [
     // Transparency // Outline // Shine // Cold Light // Warm Light // Cold Base // Base // Warm Base
-    //0    ['#FF0000', '#02001F','#FFFFFF','#009E2F','#21FF1A','#0024C2','#008CF0','#50F7F7'] >>> Blue roboto
-           [RED, '003', 'vvv', '0j5', '4v3', '04o', '0hu', 'auu'],
-    /*1*/  [RED, '004', 'vvv', 't77', 'vd3', '36k', '5ir', 'btt'],
-    //2    ['#FF0000', '#1F0200','#FCFF66','#F90B0B','#FF7B00','#941037','#FA4700','#FF9D0A'] >>> Red roboto
-           [RED, '300', 'vvc', 'v11', 'vf0', 'i26', 'v80', 'vj1'],
-    /*3*/  ['08e', 'emo', 'fpv', '3kr', 'ruu', 'ruu', '3kr', '08e'],
-    /*4*/  ['0k0', '0k0', '0d0', '080', '0e0', '0d0', '080', '0e0'],
-    /*5*/  ['555', 't57', 'p13', 'l00', 'h00', 'l00', 'p13', 't57'],
-    //6    ['#346f00", "#2a4600", "#e84723", "#a33b24", "#000000", "#000000", "#000000", "#000000'],
-           ['6d0', '580', 't84', 'k74',u,u,u,u],
-    //7    ['#FF0000", "#FFF6F6", "#D82DEB", "#CB71EF", "#C7ADFF", "#E067B3", "#F4A4C4", "#FFDBDF'],
-           [RED, 'vuu', 'r5t', 'pet', 'olv', 'scm', 'uko', 'vrr'],
-    //8    ["#44891A", "#1B2632", "#F7E26B", "#493C2B", "#A46422", "#2F484E", "#44891A", "#A3CE27"],
-           ['8h3', '346', 'usd', '975', 'kc4', '599', '8h3', 'kp4'],
-    //9    ["#FF0000", "#221C1A", "#FFF6F6", "#FFD541", "#FFFC40", "#423934", "#796755", "#E4D2AA"],
-           [RED, '433', 'vuu', 'vq8', 'vv8', '876', 'fca', 'sql'],
-    //10   ["#FF0000", "#221C1A", "#FFFFFF", "#08B23B", "#47F641", "#47F641"],
-           [RED, '433', 'vvv', '1m7', '8u8', '8u8'],
-    //11   ["#000000", "#000000", "#111111", "#000000", "#111111", "#000000", "#111111", "#000000"],
-           [u,u, '222',u, '222',u, '222',u, u],
-    //12   ["#FF0000", "#000000", "#25000D", "#E214A8", "#293F21", "#C4F129", "#115E33", "#15C2A5"],
-           /* numbers */
-           [RED,u, '401', 's2l', '574', 'ou5', '2b6', '2ok'],
-    //13   ['#FF0000', '#09070D', '#ECEEEF', '#FF4F69', '#FFDA45', '#353658', '#8B97B6', '#C5CDDB'],
-           [RED, '101', '8u8', '6d0', '580', '66b', 'him', 'opr'],
-           [RED, '101', 'jr8', 'bo6', '2k5', '3f7', '4a7', '244'],
-    //15   ['#000000', '#202020','#404040','#606060','#808080','#a0a0a0','#c0c0c0','#e0e0e0'] >>> grayscale
-           [u, '444', '888', 'ccc', 'ggg', 'kkk', 'ooo', 'sss'],
-           ['222', '555', '888', 'aaa', '888', '555', '222', '111'],
-           ['000', '111', '222', '333', '444', '555', '666', '777']
+    //0    ['#FF0000','#02001F','#FFFFFF','#009E2F','#21FF1A','#0024C2','#008CF0','#50F7F7'] >>> Blue roboto
+           [RED,'003','vvv','0j5','4v3','04o','0hu','auu'],
+    //1    ['#FF0000','#1F0200','#FCFF66','#F90B0B','#FF7B00','#941037','#FA4700','#FF9D0A'] >>> Red roboto
+           [RED,'300','vvc','v11','vf0','i26','v80','vj1'],
+    //2    ['#FF0000','#021812','#C7FFCC','#00A1E6','#1ADDFF','#08676E','#3F9509','#B2EA0B'] >>> Green roboto
+           [RED,'032','ovp','0ks','3rv','1cd','7i1','mt1'],
+    //3    ['#FF0000','#11083F','#FDE6FF','#F95875','#FD9BA3','#7354FC','#BF7BFE','#F19AFE'] >>> Pink roboto
+           [RED,'217','vsv','vbe','vjk','eav','nfv','ujv'],
+    //4    ['#FF0000','#11080B','#F5FFE8','#4386A3','#72E3A7','#B9631D','#F8B02A','#FEE762'] >>> Gold roboto
+           ['0k0','211','uvt','8gk','esk','nc3','vm5','vsc'],
+    //5    ['#FF0000','#070A18','#DCEAEE','#4D896E','#86D59A','#37465C','#566F95','#80A3C2'] >>> Grey roboto
+           ['555','013','rtt','9hd','gqj','68b','adi','gko'],
+    //6    ['#FF0000','#FFF6F6','#D82DEB','#CB71EF','#C7ADFF','#E067B3','#F4A4C4','#FFDBDF'] >>> Dance floor
+           [RED,'vuu','r5t','pet','olv','scm','uko','vrr'],
+    //7    ['#FF0000','#221C1A','#FFF6F6','#FFD541','#FFFC40','#423934','#796755','#E4D2AA'] >>> Board palette
+           [RED,'433','vuu','vq8','vv8','876','fca','sql'],
+    //8    ['#FF0000','#221C1A','#FFFFFF','#08B23B','#47F641','#47F641'],                    >>> Beat lines
+           [RED,'433','vvv','1m7','8u8','8u8'],
+    //9    ['#000000','#000000','#111111','#000000','#111111','#000000','#111111','#000000'] >>> Enemy shadows
+           [u,u,'222',u,'222',u,'222',u, u],
+    //10   ['#FF0000','#000000','#25000D','#E214A8','#293F21','#C4F129','#115E33','#15C2A5'] >>> Numbers
+           [RED,u,'401','s2l','574','ou5','2b6','2ok'],
+    //11   ['#FF0000','#09070D','#ECEEEF','#FF4F69','#FFDA45','#353658','#8B97B6','#C5CDDB'] >>> Speakers
+           [RED,'101','8u8','6d0','580','66b','him','opr'],
+    //12   ['#000000','#202020','#404040','#606060','#808080','#a0a0a0','#c0c0c0','#e0e0e0'] >>> Grayscale
+           [u,'444','888','ccc','ggg','kkk','ooo','sss'],
+    //13                                                                                     >>> Another grayscale
+           ['222','555','888','aaa','888','555','222','111'],
 ];
-paletteRenderer.palettesWithTransparecy = [0,1,2,9,10,11,12, 13]
+paletteRenderer.palettesWithTransparecy = [...arrange(0,13)]; // All palettes have transparency... JA!
 
 var parseColor = val => parseInt(val, 32)*8;
 var hexToRgb = hex => {
@@ -152,10 +151,8 @@ paletteRenderer.palettes = paletteRenderer.palettes.map(palette => palette.map(h
 
 // Waterfall effect
 setInterval(_ => {
-  paletteRenderer.shiftPalette(3, 1, 7, 1);
-  
-  paletteRenderer.shiftPalette(15, 0, 7, -1);
-  paletteRenderer.shiftPalette(16, 0, 7, -1);
+  paletteRenderer.shiftPalette(12, 0, 7, -1);
+  paletteRenderer.shiftPalette(13, 0, 7, -1);
 }, 150);
 
 var randomPastel = _ => {

@@ -8,14 +8,12 @@ var CODES_Y = (BOARD_Y - 1)*SIXTEEN;
 var CODES_X = W/2;
 var HEY_CHAR = '#';
 var PROGRESS_WIDTH = 33;
-var BOARD_PALETTE = 9;
 
 var hudScene = Scene();
 var seq = sequenceVisualizer({ x: 0, y: BOARD_Y, instrument: 0, scene: hudScene });
 var numObjects = [];
 var gpiMap = [ (arrange(0,11,'f')).join(''), (arrange(0,11,'g')).join('') ];
 
-// ---- [ LETTERS AND NUMBERS ] ------------------------------------------------
 var abc = `012345678abcdefghijklmnopqrstuvwxyz${HEY_CHAR}$=*9`;
 var abcIndexes = [...arrange(64, 102), 70];
 
@@ -50,13 +48,8 @@ var GUIString = (x, y, text, fill, stroke, b=1) => {
   return self;
 }
 
-let GUI404 = GUIString(CODES_X, CODES_Y, `${HEY_CHAR}$=$`, '401', 's2l', 0); // 404
-let GUI100 = GUIString(CODES_X, CODES_Y, '100', u, u, 0);
-let GUI200 = GUIString(CODES_X, CODES_Y, `${HEY_CHAR}200`, 'ou5', '574', 0);
-// ---- [ LETTERS AND NUMBERS ] ------------------------------------------------
-
 // ---- [ SPEAKERS ] -----------------------------------------------------------
-let speakerCfg = [[arrange(22,26),arrange(38,42)], 13];
+let speakerCfg = [[arrange(22,26),arrange(38,42)], 11];
 let LeftSpeaker = MechaGameObject(0, 5*EIGHT, ...speakerCfg);
 let RightSpeaker = MechaGameObject(0, 5*EIGHT, ...speakerCfg, 1, noop, true);
 RightSpeaker.x = W - RightSpeaker.width;
@@ -101,7 +94,7 @@ const guiFocusSwitches = Array.from({length: 4}, (v,i) => {
 })
 
 // ---- [ BOARD ] --------------------------------------------------------------
-loadMap(gpiMap, hudScene, {x:0, y: BOARD_Y});
+loadMap(gpiMap, hudScene, 0, BOARD_Y);
 seq.addBeatLinesToScene();
 hudScene.add(seq);
 let DPU = MechaGameObject(10*EIGHT, 7*EIGHT, [arrange(44,47),arrange(60,63)], BOARD_PALETTE);
@@ -120,10 +113,16 @@ const GUI_CODE_EFFECT = (GUICode, targetY, delay, cfg) => {
 // ---- [ PLAYER COMMANDS ] ----------------------------------------------------
 let PlayerCommands = GUIString(8*SIXTEEN, 20, '', '004', '0hu', 0);
 PlayerCommands.inErr = false;
-player.guiCommands = PlayerCommands;
+player.gC = PlayerCommands;
 let EnemyCommands = GUIString(8*SIXTEEN, 50, '', '300', 'vd3', 0);
 EnemyCommands.inErr = false;
-enemy.guiCommands = EnemyCommands;
+enemy.gC = EnemyCommands;
+
+// ---- [ LETTERS AND NUMBERS ] ------------------------------------------------
+let GUI404 = GUIString(CODES_X, CODES_Y, `${HEY_CHAR}$=$`, '401', 's2l', 0); // 404
+let GUI100 = GUIString(CODES_X, CODES_Y, '100', u, u, 0);
+let GUI200 = GUIString(CODES_X, CODES_Y, `${HEY_CHAR}200`, 'ou5', '574', 0);
+// ---- [ LETTERS AND NUMBERS ] ------------------------------------------------
 
 
 // Functions -------------------------------------------------------------------
@@ -178,10 +177,6 @@ paletteRenderer.beatPalette(BOARD_PALETTE, 2, ['vuu', '9st', 'i0d', '8u8', 'v9d'
 paletteRenderer.beatPalette(10, 5, ['1m7', '3o9', '5qb', '7sd']);
 // speaker leds
 setInterval(_ => {
-  paletteRenderer.shiftPalette(13, 2, 4, 1);
+  paletteRenderer.shiftPalette(11, 2, 4, 1);
 }, 100);
 paletteRenderer.cyclePaletteIndex(13, 7, ['him', 'opr']);
-// paletteRenderer.cyclePaletteIndex(13, 6, ['him', '66b', 'him', 'opr']);
-
-console.log('seq visualizer');
-console.log(seq);

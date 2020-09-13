@@ -37,10 +37,10 @@ var draw = _ => {
 
 // The mirror property will be used to draw another sprite in front of the one
 // that needs to be mirrored. Something like what we do for the robotz heads.
-var gpiBoard = { sprite: 43, palette: 9, small: true, mirror: true }
+var gpiBoard = { sprite: 43, palette: BOARD_PALETTE, small: true, mirror: true }
 var indexToSprite = { // Maps the map above to sprite and palette indexes 
-  a: { sprite: 52, palette: 7 },
-  b: { sprite: 53, palette: 7 },
+  a: { sprite: 52, palette: 6 },
+  b: { sprite: 53, palette: 6 },
   // GPI: Graphic Player Interface
   f: { ...gpiBoard, vFlip: true },
   g: { ...gpiBoard },
@@ -71,7 +71,7 @@ var createComplements = (obj, complements = [1, 2, 3], small = true) => {
   });
 }
 
-var loadMap = (map, scene, offset = { x: 0, y: 0 }) =>{
+var loadMap = (map, scene, offsetX, offsetY) =>{
   for (var y = 0; y < map.length; y++) {
     for (var x = 0; x < map[y].length; x++) {
       var char = map[y].charAt(x);
@@ -81,7 +81,7 @@ var loadMap = (map, scene, offset = { x: 0, y: 0 }) =>{
       else spriteData = spriteData.sprites;
       
       spriteData.forEach(sd => {
-        var obj = GameObject([SIXTEEN * (x + offset.x), SIXTEEN * (y + offset.y), [sd.sprite], i + 3, sd.palette]);
+        var obj = GameObject([SIXTEEN * (x + offsetX), SIXTEEN * (y + offsetY), [sd.sprite], i + 3, sd.palette]);
         obj.small = sd.small || false
         obj.vFlip = sd.vFlip || false
         if (obj.vFlip) obj.y += 10

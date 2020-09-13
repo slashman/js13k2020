@@ -49,9 +49,9 @@ var Robot = (props, scene) => {
 
   self.update = dt => {
     // GUI
-    if (self.guiCommands && !self.guiCommands.inErr) {
-      self.guiCommands.x = self.x+EIGHT-(self.guiCommands.width/2);
-      self.guiCommands.y = self.y+THIRTYTWO;
+    if (self.gC && !self.gC.inErr) {
+      self.gC.x = self.x+EIGHT-(self.gC.width/2);
+      self.gC.y = self.y+THIRTYTWO;
     }
 
     // Movement
@@ -170,19 +170,19 @@ var Robot = (props, scene) => {
 
   self.addKey = function(key) {
     self.sequence.push(key);
-    self.guiCommands.setText(
+    self.gC.setText(
       self.sequence.reduce((com, cod) => com+String.fromCharCode(cod).toLowerCase(),''),
-      self.guiCommands.dfltStroke,
-      self.guiCommands.dfltFill
+      self.gC.dfltStroke,
+      self.gC.dfltFill
     );
-    self.guiCommands.b = 1;
-    self.guiCommands.inErr = false;
+    self.gC.b = 1;
+    self.gC.inErr = false;
     if (self.sequence.length == 4) {
-      GUI_CODE_EFFECT(self.guiCommands,null,300,{y:SIXTEEN});
+      GUI_CODE_EFFECT(self.gC,null,300,{y:SIXTEEN});
       self.score += checkStep(self.sequence);
       if (self.score >= level.score) finishGame();
       self.sequence = [];
-      setTimeout(() => self.guiCommands.setText(''),300+350);
+      setTimeout(() => self.gC.setText(''),300+350);
     }
   }
 
@@ -191,13 +191,13 @@ var Robot = (props, scene) => {
     // SFX - GECKO
     zzfx(...[u, u, u, u, .1, u, 1, .3, 1, 15, self.isPC?400:200, .05, .03, 1.1, u, .4, u, .5]);
 
-    self.guiCommands.setText(self.guiCommands.rawText+'*', 's2l', '401');
-    self.guiCommands.x = self.x+EIGHT-(self.guiCommands.width/2);
-    self.guiCommands.b = 1;
-    self.guiCommands.inErr = true;
-    GUI_CODE_EFFECT(self.guiCommands,null,500,{y: self.guiCommands.y+SIXTEEN});
-    shakeIt(self.guiCommands,0.1,500);
-    setTimeout(() => self.guiCommands.inErr = false, 800);
+    self.gC.setText(self.gC.rawText+'*', 's2l', '401');
+    self.gC.x = self.x+EIGHT-(self.gC.width/2);
+    self.gC.b = 1;
+    self.gC.inErr = true;
+    GUI_CODE_EFFECT(self.gC,null,500,{y: self.gC.y+SIXTEEN});
+    shakeIt(self.gC,0.1,500);
+    setTimeout(() => self.gC.inErr = false, 800);
     self.sequence = [];
     self.addFocus(-1);
   }

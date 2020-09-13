@@ -48,17 +48,10 @@ for (var i = 0; i < 12; i++) {
   var ry = randomY[i];
   if (Math.abs(ry - 60) + Math.abs(rx - 100) < 90) { i--; continue; }
   if (Math.abs(ry - 60) + Math.abs(rx - 200) < 90) { i--; continue; }
-  var robot = Robot([rx, ry, [], 8, 1], discoScene);
-  //robot.rc =; // robot config, [head, arms, torso, sideHead]
+  var robot = Robot([rx, ry, [], 8, rando(2,5)], discoScene);
   robot.setSprites([dancerHead = rando(0, 4), rando(0, 4), rando(0, 5), dancerHead]);
   robot.bounceOffset = rando(0, 4);
   robot.flipArm(rando(0, 10) > 4);
-  var warmBase = randomPastel();
-  var base = darker(warmBase);
-  var coldBase = darker(base);
-  robot.overridePalette(5, coldBase);
-  robot.overridePalette(6, base);
-  robot.overridePalette(7, warmBase);
   dancingRobots.push(robot);
   discoScene.add(robot);
 }
@@ -73,7 +66,7 @@ dancersScene.add(player);
 dancersScene.following = player; // TODO: Remove?
 
 var validKeys = [ inputs.F, inputs.D, inputs.S, inputs.J, inputs.K, inputs.L ];
-var enemy = Robot([W-EIGHT*7-SIXTEEN, THIRTYTWO, [3, 4], 8, 2], dancersScene);
+var enemy = Robot([W-EIGHT*7-SIXTEEN, THIRTYTWO, [3, 4], 8, RED_ROBOTO], dancersScene);
 enemy.setSprites([enemyHead = rando(0, 4), rando(0, 4), rando(0, 5), enemyHead]);
 enemy.bounceOffset = 3;
 dancersScene.add(enemy);
@@ -89,15 +82,15 @@ paletteRenderer.cyclePaletteIndex(0, 3, ['1m7', '3o9', '5qb', '7sd']);
 paletteRenderer.cyclePaletteIndex(0, 4, ['8u8', '6t6', '4r4', '2p2']);
 
 // The dance floor 💃🕺 --------------------------------------------------------
-paletteRenderer.beatPalette(7, 2, ['pet', 'r5t']);
-paletteRenderer.tickPalette(7, 3, ['olv', 'pet']);
-paletteRenderer.beatPalette(7, 4, ['tqv', 'olv', 'pet', 'r5t']);
+paletteRenderer.beatPalette(6, 2, ['pet', 'r5t']);
+paletteRenderer.tickPalette(6, 3, ['olv', 'pet']);
+paletteRenderer.beatPalette(6, 4, ['tqv', 'olv', 'pet', 'r5t']);
 
-paletteRenderer.beatPalette(7, 5, ['scm', 'uko']);
-paletteRenderer.tickPalette(7, 6, ['uko', 'vrr']);
-paletteRenderer.tickPalette(7, 7, ['vuu', 'vrr', 'uko', 'scm']);
+paletteRenderer.beatPalette(6, 5, ['scm', 'uko']);
+paletteRenderer.tickPalette(6, 6, ['uko', 'vrr']);
+paletteRenderer.tickPalette(6, 7, ['vuu', 'vrr', 'uko', 'scm']);
 
-paletteRenderer.beatPalette(7, 1, ['vuu', 'vvv', 'tqv']);
+paletteRenderer.beatPalette(6, 1, ['vuu', 'vvv', 'tqv']);
 
 
 var danceFrame = 0;
@@ -114,7 +107,7 @@ var theBeat = _ => {
     return;
   }
   
-  if (!enemy.guiCommands.inErr) {
+  if (!enemy.gC.inErr) {
     danceFrame++;
     if (danceFrame > 9) danceFrame = 0;
     enemy.flipArm(danceFrame % 4 == 0)
