@@ -90,13 +90,14 @@ const startGame = _ => {
   hudScene.remove(gameTitle);
 }
 
-const enterSfx = [, , 610, .13, .37, .84, 2, 1.47, , , 204, .09, .1, , , , , .79, .02];
+const startSfx = [0.5,,,.2,1,,1,.5,20,10,10,.7,.7,,.9,.4,,,.7];
+const enterSfx = [0.7,,,,.3,,1,,2.2,1.5,750,.15,.14,,,.4];
 
 const handleEnterAction = _ => {
   console.log(gameState);
   switch (gameState) {
     case 0:
-      zzfx(...enterSfx);
+      zzfx(...startSfx);
       startGame();
       break;
     case 1:

@@ -143,7 +143,7 @@ var Robot = (props, scene) => {
     if (diff < intervals[0]) {
       // keyOnBeat.p = 'perfect';
       if (self.isPC) {
-        zzfx(...[.6, 0.3, 508 + key, .03, .14, .22, 1, 1.93, -53.9, .2, u, .02, -0.01, -0.2, -0.1, u, u, .8, .03, .01]);
+        zzfx(...[u,50,15,u,u,.21,u,1.84,.5,450,u,.7,u,.4,u,.1,.02,u,.01,.01]);
         GUI_CODE_EFFECT(GUI200, -16);
         self.addCombo();
         self.addFocus(self.combo % 2 == 0 ? 1 : 0);
@@ -152,7 +152,7 @@ var Robot = (props, scene) => {
     } else if (diff < intervals[1]) {
       //keyOnBeat.p = 'good';
       if (self.isPC) {
-        zzfx(...[.6, 0.3, 308+key, .03, .14, .22, 1, 1.93, -53.9, .2, u, .02, -0.01, -0.2, -0.1, u, u, .8, .03, .01]);
+        zzfx(...[u,6,50,u,.3,.8,u,9,5,90,u,u,u,.7,50,.2,.02,u,.6,.01]);
         GUI_CODE_EFFECT(GUI100, -10);
         self.addCombo();
         self.addFocus(self.combo % 3 == 0 ? 1 : 0);
@@ -189,7 +189,7 @@ var Robot = (props, scene) => {
   self.badKey = function() {
     if (self.isPC === true) {
       hudScene.feedback(404);
-      zzfx(...[.6, 0.8, 0, .03, .14, .22, 4, 1.93, -53.9, .2, u, .02, -0.01, -0.2, -0.1, u, u, .8, .03, .01]);
+      zzfx(...[u, u, u, u, .1, u, 1, .3, 1, 15, 400, .05, .03, 1.1, u, .4, u, .5]);
     }
 
     self.guiCommands.setText(self.guiCommands.rawText+'*', 's2l', '401');
@@ -199,9 +199,8 @@ var Robot = (props, scene) => {
     GUI_CODE_EFFECT(self.guiCommands,null,500,{y: self.guiCommands.y+SIXTEEN});
     shakeIt(self.guiCommands,0.1,500);
     setTimeout(() => self.guiCommands.inErr = false, 800);
-    //keyOnBeat.p = 'bad';    
     self.sequence = [];
-    // self.addFocus(-2);
+    self.addFocus(-1);
   }
 
   self.addCombo = function() {
