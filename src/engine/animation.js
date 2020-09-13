@@ -1,7 +1,7 @@
 
 // animation managers
 let animations = [];
-console.log('animations loaded');
+//console.log('animations loaded');
 const updateAnimations = dt => animations.forEach((animation, index) => animation.update(dt) && animations.splice(index, 1));
 
 const easeLinear = t => t;

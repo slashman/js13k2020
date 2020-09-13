@@ -7,6 +7,7 @@ var textureRect = (x, y, width, height, frame, palette) => {
     self.offsetX = frame % 2;
     self.sprite = sprites[~~(frame / 2)]
   };
+  self.b = 1;
   self.palette = palette;
   self.setSprite(frame);
   self.draw = _b => {

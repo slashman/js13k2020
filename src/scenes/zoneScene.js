@@ -1,19 +1,19 @@
 
 var zoneScene = Scene();
 
-var parts = [p1=textureRect(0, 0, 0, 0, 105, 15), p2=textureRect(0, 0, 0, 0, 103, 15)];
+var partsZoneScene = [p1=textureRect(0, 0, 0, 0, 108, 15), p2=textureRect(0, 0, 0, 0, 108, 15)];
 
-parts.forEach(zoneScene.add);
+partsZoneScene.forEach(zoneScene.add);
 
 // close horizontal
-const enterZone = (p1X, p1Y, p1W, p1H, p1Xt, p1Yt, p1Wt, p1Ht, p2X, p2Y, p2W, p2H, p2Xt, p2Yt, p2Wt, p2Ht) => {
+const enterZone = (p1X, p1Y, p1W, p1H, p1Xt, p1Yt, p1Wt, p1Ht, p2X, p2Y, p2W, p2H, p2Xt, p2Yt, p2Wt, p2Ht, _texture, _paletteIndex) => {
   p1.b = 1;
   p2.b = 1;
   
-  var texture = [105, 106, 107][rando(0, 2)];
+  var texture = isNaN(_texture) ? [108, 109, 110][rando(0, 2)]:_texture;
   p1.setSprite(texture);
   p2.setSprite(texture);
-  var paletteIndex = [3, 13, 15, 16][rando(0, 3)];
+  var paletteIndex = isNaN(_paletteIndex) ? [3, 13, 15, 16][rando(0, 3)]: _paletteIndex;
   p1.palette = paletteIndex;
   p2.palette = paletteIndex;
 
@@ -35,7 +35,10 @@ const exitZone = _ => {
 
 sceneManager.add(zoneScene);
 
-const H2 = H - 32;
+const H2 = H;
+
+var resetTransition = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+console.log(resetTransition);
 
 var closeHorizontal = [
   // p1
@@ -85,12 +88,13 @@ var openCenter = [
 // pending to update
 var closeEnemyHorizontal = [
   // p1
-  0, 0, W, 0,
-  0, 0, W, 20,
+  0, 0, W, -20,
+  0, 0, W, 45,
   // p2
   0, H, W, 0,
-  0, 50, W, H - 50
+  0, 90, W, H - 90,
+  0,
+  3
 ];
 var allSlides = [closeHorizontal, openHorizontal, closeVertical, openVertical, openCenter];
 
-enterZone(...allSlides[rando(0, 4)]);

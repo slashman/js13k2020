@@ -2,7 +2,11 @@
 
 var enemyScene = Scene();
 
-loadMap(discoMap, enemyScene);
+//loadMap(discoMap, enemyScene);
+
+enemyScene.add(textureRect(0, 0, W, H, 103, 15));
+partsZoneScene.forEach(enemyScene.add);
+
 var theEnemies = [];
 for (var i=0; i<LEVELS.length; i++) {
   var localEnemy = Robot([i*36 + 16, 60, [], 8, 11], enemyScene);
@@ -30,8 +34,9 @@ const enemyIntro = _ => {
   setTimeout( _ => {
     theEnemies.forEach((enemy, i) => {
       addAnimation(enemy, 'x', enemy.x, i == currentLevel ? W/2-8 : enemy.x, 800);
-      addAnimation(enemy, 'y', enemy.y, i == currentLevel ? 40 : 148, 800);
+      addAnimation(enemy, 'y', enemy.y, i == currentLevel ? 50 : 148, 800);
       // SFX - GECKO - cuando aparece el enemigo
+      enterZone(...closeEnemyHorizontal);
     })
   }, 1200);
 
@@ -41,6 +46,7 @@ enemyScene.add(pressEnter);
 
 const enemyOut = _ => {
   enemyScene.fadeOut();
+  exitZone();
   enemyScene.active = false;
   pressEnter.visible = false;
   discoIntro();

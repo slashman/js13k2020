@@ -35,11 +35,12 @@ const loadLevel = levelIndex => {
   subState = 0;
   startTime = null;
   current_tick = -1;
+  enemy.score = 0;
+  enemy.combo = 0;
+  enemy.focus = 0;
   player.combo = 0;
-  player.focus = 0;
+  player.addFocus(-4);
   player.score = 0;
-  player.stats = {};
-  player.maxCombo = 0;
   pressEnter.visible = false;
 
   hudScene.showLevelElements();
@@ -62,7 +63,7 @@ const startSong = _ => {
 }
 
 const finishGame = _ => {
-
+  exitZone();
   song.stop();
   subState = 2;
   win = player.score >= level.score;
@@ -92,7 +93,13 @@ const displayEnemyScene = _ => {
 
 const startGame = _ => {
   //gameState = 1;
+  setTimeout(() => {
+    sceneManager.remove(zoneScene);
+    partsZoneScene.forEach(zoneScene.remove);
+  }, 100);
   displayEnemyScene();
+  //enterZone(resetTransition);
+  exitZone();
   hudScene.remove(gameTitle);
 }
 
@@ -100,7 +107,7 @@ const startSfx = [0.5,u,u,.2,1,u,1,.5,20,10,10,.7,.7,u,.9,.4,u,u,.7];
 const enterSfx = [0.7,u,u,u,.3,u,1,u,2.2,1.5,750,.15,.14,u,u,.4];
 
 const handleEnterAction = _ => {
-  console.log(gameState);
+  //console.log(gameState);
   switch (gameState) {
     case 0:
       zzfx(...startSfx);
@@ -114,6 +121,14 @@ const handleEnterAction = _ => {
       if (subState==2) {
         if (win) {
           pressEnter.visible = false;
+          if (currentLevel == 4) {
+            gameState = 5;
+            addAnimation(enemy, 'y', enemy.y, H, 600);
+            addAnimation(player, 'x', player.x, W/2-8, 600);
+            hudScene.add(GUIString(CODES_X, 20, 'thanks for playing', 'v0v', '000', 1));
+            enterZone(...allSlides[rando(0, 4)]);
+            return true;
+          }
           discoOut();
           displayEnemyScene();
         } else loadLevel();

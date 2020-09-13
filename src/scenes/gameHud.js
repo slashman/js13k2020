@@ -157,7 +157,7 @@ hudScene.feedback = (function() {
 // -----------------------------------------------------------------------------
 
 let gameTitle = GUIString(CODES_X, 20, 'rythm not found', 'v0v', '000', 0);
-let pressEnter = GUIString(CODES_X, 80, 'press enter', 'vvv','332', 0);
+let pressEnter = GUIString(CODES_X, 95, 'press enter', 'vvv','332', 0);
 pressEnter.visible = false;
 let countdownLabel = GUIString(CODES_X, H/2-8, '3', u, u, 0);
 let setPressEnter = lock => {
@@ -169,6 +169,7 @@ setTimeout(_ => {
   addAnimation(gameTitle, 'b', 0, 1, 500);
   addAnimation(gameTitle, 'y', 20, 30, 500).onEnd(_ => setPressEnter(false));
   addAnimation(pressEnter, 'b', 0.2, 1, 500, easeLinear, true);
+  enterZone(...allSlides[rando(0, 4)]);
 }, 1000);
 
 // Load the scene in the game
@@ -182,6 +183,3 @@ setInterval(_ => {
 }, 100);
 paletteRenderer.cyclePaletteIndex(13, 7, ['him', 'opr']);
 // paletteRenderer.cyclePaletteIndex(13, 6, ['him', '66b', 'him', 'opr']);
-
-console.log('seq visualizer');
-console.log(seq);

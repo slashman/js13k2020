@@ -29,7 +29,7 @@ for ( var i = 0; i<hFrames*vFrames; i++) {
 
 // group octal pixels in sprite frames
 // assumes horizontal spritesheet hframes = n, vframes = 1
-console.log(allSprites.length)
+//console.log(allSprites.length)
 for (var i = 0; i < allSprites.length / SIXTEEN; i+=1) {
   var hIndex = i % hFrames;
   var vIndex = ~~(i/(SIXTEEN*hFrames));

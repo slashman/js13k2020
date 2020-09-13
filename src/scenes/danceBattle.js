@@ -63,7 +63,9 @@ for (var i = 0; i < 12; i++) {
   discoScene.add(robot);
 }
 
+partsZoneScene.forEach(dancersScene.add);
 var player = MainCharacter([EIGHT*7, THIRTYTWO, [3, 4], 8, 0]);
+
 
 //player.rc = ; // robot config, [head, arms, torso, sideHead]
 player.setSprites([pcHead = 0, 0, 0, pcHead]);
@@ -148,4 +150,3 @@ const discoOut = _ => {
 }
 
 discoOut();
-

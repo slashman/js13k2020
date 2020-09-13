@@ -96,7 +96,7 @@ var Robot = (props, scene) => {
   }
   self.dash = dir => {
     addAnimation(self, 'x', self.x, self.x+dir*10, 100);
-    if (self.isPC) zzfx(...[.7,.5,50,.12,.06,0,3,,,50,500,.6,,.8,15,,.02,.65,.06,.01]);
+    if (self.isPC) zzfx(.7,.5,50,.12,.06,0,3,u,u,50,500,.6,u,.8,15,u,.02,.65,.06,.01);
   };
   self.draw = noop; // We don't draw this gameObject, it's just a container
   self.components = [...new Array(7)].map(x => GameObject([0, 0, [1], i+3, self.paletteIndex]));
@@ -209,27 +209,29 @@ var Robot = (props, scene) => {
   }
   
   self.addFocus = function(val) {
+    var temp = self.focus;
     self.focus += val;
     self.focus = self.focus>4?4:self.focus;
     if (self.focus < 0) {
       self.focus = 0;
       self.combo = 0;
     }
-    
-    if (self.isPC) {
-      if (self.focus === 0) {
-        // SFX - GECKO -- switch up todos al tiempo
-        guiFocusSwitches.forEach(g => g.forEach( s => {
-          s.frame=0;
-          s.paletteOverrides={3:hexToRgb('574')};
-        }));
-      } else {
-        // SFX - GECKO -- switch down
-        guiFocusSwitches[self.focus-1].forEach(s => {
-          s.frame=1;
-          s.paletteOverrides={3:hexToRgb('ou5')};
-        });
-      }
+    if (temp == self.focus || !self.isPC) return;
+    if (self.focus == 4) enterZone(...allSlides[rando(0, 4)]);
+
+    if (self.focus === 0) {
+      exitZone();
+      // SFX - GECKO -- switch up todos al tiempo
+      guiFocusSwitches.forEach(g => g.forEach( s => {
+        s.frame=0;
+        s.paletteOverrides={3:hexToRgb('574')};
+      }));
+    } else {
+      // SFX - GECKO -- switch down
+      guiFocusSwitches[self.focus-1].forEach(s => {
+        s.frame=1;
+        s.paletteOverrides={3:hexToRgb('ou5')};
+      });
     }
   }
   

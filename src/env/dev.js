@@ -1,6 +1,6 @@
 
 const DEBUG = true; // eslint-disable-line no-unused-vars
-console.log(DEBUG)
+//console.log(DEBUG)
 var _fps_ = new Stats();
 var _processing_ = new Stats();
 var _memory_ = new Stats();

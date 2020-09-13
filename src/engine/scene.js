@@ -4,8 +4,12 @@
 var sceneManager = {
   scenes: [],
   add: scene => sceneManager.scenes.push(scene),
+  remove: scene => {
+    var index = sceneManager.scenes.indexOf(scene);
+    sceneManager.scenes.splice(index, 1);
+  },
   update: (time, dt) => sceneManager.scenes.map(scene => scene.update(time, dt)),
-  draw: _ => sceneManager.scenes.map( scene => scene.draw())
+  draw: _ => sceneManager.scenes.map( scene => scene.draw()),
 };
 
 var Scene = () => {
