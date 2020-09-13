@@ -67,6 +67,7 @@ var createComplements = (obj, complements = [1, 2, 3], small = true) => {
     p.small = small;
     p.flipped = k != 3;
     p.vFlip = obj.vFlip || k != 1;
+    p.paletteOverrides = obj.paletteOverrides;
     return p;
   });
 }

@@ -96,7 +96,7 @@ var Robot = (props, scene) => {
   }
   self.dash = dir => {
     addAnimation(self, 'x', self.x, self.x+dir*10, 100);
-    //self.v.x = dir;
+    if (self.isPC) zzfx(...[.7,.5,50,.12,.06,0,3,,,50,500,.6,,.8,15,,.02,.65,.06,.01]);
   };
   self.draw = noop; // We don't draw this gameObject, it's just a container
   self.components = [...new Array(7)].map(x => GameObject([0, 0, [1], i+3, self.paletteIndex]));
@@ -212,10 +212,21 @@ var Robot = (props, scene) => {
   
   self.addFocus = function(val) {
     self.focus += val;
-    self.focus = self.focus>5?5:self.focus;
+    self.focus = self.focus>4?4:self.focus;
     if (self.focus < 0) {
       self.focus = 0;
       self.combo = 0;
+    }
+    
+    if (self.isPC) {
+      if (self.focus === 0) guiFocusSwitches.forEach((g)=>g.forEach((s)=>{
+        s.frame=0;
+        s.paletteOverrides={3:hexToRgb('574')};
+      }));
+      else guiFocusSwitches[self.focus-1].forEach((s)=>{
+        s.frame=1;
+        s.paletteOverrides={3:hexToRgb('ou5')};
+      });
     }
   }
   

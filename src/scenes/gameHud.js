@@ -8,6 +8,7 @@ var CODES_Y = (BOARD_Y - 1)*SIXTEEN;
 var CODES_X = W/2;
 var HEY_CHAR = '#';
 var PROGRESS_WIDTH = 33;
+var BOARD_PALETTE = 9;
 
 var hudScene = Scene();
 var seq = sequenceVisualizer({ x: 0, y: BOARD_Y, instrument: 0, scene: hudScene });
@@ -64,7 +65,7 @@ RightSpeaker.y += RightSpeaker.height;
 
 // ---- [ PROGRESS BAR ] -------------------------------------------------------
 let progressCfg = [
-  [[11,12,12,12,13,14,15]], 9,
+  [[11,12,12,12,13,14,15]], BOARD_PALETTE,
   1,
   function () {
     const _x = this.x+(!this.flipped?4:20);
@@ -88,11 +89,22 @@ let EnemyProgress = MechaGameObject(5*EIGHT, 0, ...progressCfg, true);
 EnemyProgress.x += EnemyProgress.width;
 EnemyProgress.y -= 100;
 
+// ---- [ FOCUS SWITCHES ] -----------------------------------------------------
+const guiFocusSwitches = Array.from({length: 4}, (v,i) => {
+  const focusSwitchL = GameObject([EIGHT*6+(i * 24 + (i >= 2 && EIGHT)), CODES_Y, [10,9], 0, BOARD_PALETTE]);
+  focusSwitchL.small = true;
+  focusSwitchL.paletteOverrides = {3:hexToRgb('574')};
+  const focusSwitchR = createComplements(focusSwitchL,[1])[0];
+  hudScene.add(focusSwitchL);
+  hudScene.add(focusSwitchR);
+  return [focusSwitchL,focusSwitchR];
+})
+
 // ---- [ BOARD ] --------------------------------------------------------------
 loadMap(gpiMap, hudScene, {x:0, y: BOARD_Y});
 seq.addBeatLinesToScene();
 hudScene.add(seq);
-let DPU = MechaGameObject(10*EIGHT, 7*EIGHT, [arrange(44,47),arrange(60,63)], 9);
+let DPU = MechaGameObject(10*EIGHT, 7*EIGHT, [arrange(44,47),arrange(60,63)], BOARD_PALETTE);
 
 const GUI_CODE_EFFECT = (GUICode, targetY, delay, cfg) => {
   GUICode.b = 1;
@@ -117,8 +129,10 @@ enemy.guiCommands = EnemyCommands;
 // Functions -------------------------------------------------------------------
 hudScene.onMetronomeTick = (tick) => {
   seq.updateLines(tick)
-  LeftSpeaker.y += LeftSpeaker.dfltY !== LeftSpeaker.y ? -2 : 2;
-  RightSpeaker.y += RightSpeaker.dfltY !== RightSpeaker.y ? -2 : 2;
+  if (subState == 1) {
+    LeftSpeaker.y += LeftSpeaker.dfltY !== LeftSpeaker.y ? -2 : 2;
+    RightSpeaker.y += RightSpeaker.dfltY !== RightSpeaker.y ? -2 : 2;
+  }
 }
 
 hudScene.showLevelElements = () => {
@@ -158,7 +172,7 @@ setTimeout(_ => {
 // Load the scene in the game
 sceneManager.add(hudScene);
 
-paletteRenderer.beatPalette(9, 2, ['vuu', '9st', 'i0d', '8u8', 'v9d']);
+paletteRenderer.beatPalette(BOARD_PALETTE, 2, ['vuu', '9st', 'i0d', '8u8', 'v9d']);
 paletteRenderer.beatPalette(10, 5, ['1m7', '3o9', '5qb', '7sd']);
 // speaker leds
 setInterval(_ => {
