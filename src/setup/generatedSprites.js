@@ -21,7 +21,7 @@ for (var i = 0; i<byteSprite.length; i+=3) {
 }
 
 var hFrames = 8;
-var vFrames = 8;
+var vFrames = 7;
 var sprites = [];
 for ( var i = 0; i<hFrames*vFrames; i++) {
   sprites.push([]);
@@ -33,6 +33,6 @@ console.log(allSprites.length)
 for (var i = 0; i < allSprites.length / SIXTEEN; i+=1) {
   var hIndex = i % hFrames;
   var vIndex = ~~(i/(SIXTEEN*hFrames));
-  var index = hIndex + vIndex*vFrames
+  var index = hIndex + vIndex*hFrames
   sprites[index] = sprites[index].concat(allSprites.slice(i * SIXTEEN, (i + 1) * SIXTEEN))
 }

@@ -93,10 +93,4 @@ var closeEnemyHorizontal = [
 ];
 var allSlides = [closeHorizontal, openHorizontal, closeVertical, openVertical, openCenter];
 
-setInterval(() => {
-  enterZone(...allSlides[rando(0, 4)]);
-  //enterZone(...openCenter);
-  setTimeout(() => {
-    exitZone();
-  }, 1500);
-},  2000);
+enterZone(...allSlides[rando(0, 4)]);
