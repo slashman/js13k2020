@@ -61,11 +61,11 @@ var sequenceVisualizer = props => {
         var currentSegment = ~~(des*segments*10/W);
         var targetLine = ~~(currentSegment/segments);
         beatLines[targetLine].forEach(lp => {
-          lp.visible = true
+          lp.visible = subState === 1
           lp.x = des-4 + lp.offsetX;
         });
         beatLines[(beatLines.length-1)-targetLine].forEach(lp => {
-          lp.visible = true
+          lp.visible = subState === 1
           lp.x = (W - des - 2) + lp.offsetX;
         });
 

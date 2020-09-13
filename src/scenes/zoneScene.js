@@ -13,7 +13,7 @@ const enterZone = (p1X, p1Y, p1W, p1H, p1Xt, p1Yt, p1Wt, p1Ht, p2X, p2Y, p2W, p2
   var texture = isNaN(_texture) ? [108, 109, 110][rando(0, 2)]:_texture;
   p1.setSprite(texture);
   p2.setSprite(texture);
-  var paletteIndex = isNaN(_paletteIndex) ? [3, 13, 15, 16][rando(0, 3)]: _paletteIndex;
+  var paletteIndex = isNaN(_paletteIndex) ? [3, 15, 16][rando(0, 2)]: _paletteIndex;
   p1.palette = paletteIndex;
   p2.palette = paletteIndex;
 

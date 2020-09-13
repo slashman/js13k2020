@@ -42,6 +42,7 @@ const loadLevel = levelIndex => {
   player.addFocus(-4);
   player.score = 0;
   pressEnter.visible = false;
+  initHUDpositions();
 
   hudScene.showLevelElements();
   updateMetronome();
@@ -81,6 +82,7 @@ const displayEnemyScene = _ => {
   gameState = 1;
   subState = 0;
   level = LEVELS[++currentLevel];
+  enemy.setPalette(level.palette);
   enemy.setSprites(level.robot);
   deepMX[2] = level.sequence;
   deepMX[3] = level.bpm;

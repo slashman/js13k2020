@@ -71,7 +71,8 @@ var createComplements = (obj, complements = [1, 2, 3], small = true) => {
   });
 }
 
-var loadMap = (map, scene, offset = { x: 0, y: 0 }) =>{
+var loadMap = (map, scene, offset = { x: 0, y: 0 }) => {
+  var _mecha = [];
   for (var y = 0; y < map.length; y++) {
     for (var x = 0; x < map[y].length; x++) {
       var char = map[y].charAt(x);
@@ -86,15 +87,20 @@ var loadMap = (map, scene, offset = { x: 0, y: 0 }) =>{
         obj.vFlip = sd.vFlip || false
         if (obj.vFlip) obj.y += 10
         scene.add(obj);
+        _mecha.push(obj);
 
         // Draw a mirrored object in front of the created one (like with the
         // heads) --------------------------------------------------------------
         // TODO: There should be a better way to do this for sure
-        if (sd.mirror) createComplements(obj, [1]).forEach(p => scene.add(p));
+        if (sd.mirror) createComplements(obj, [1]).forEach(p => {
+          _mecha.push(p);
+          scene.add(p);
+        });
         // ---------------------------------------------------------------------
       });
     }
   }
+  return _mecha;
 }
 
 // ending file

@@ -133,11 +133,19 @@ paletteRenderer.palettes = [
            [RED, '101', '8u8', '6d0', '580', '66b', 'him', 'opr'],
            [RED, '101', 'jr8', 'bo6', '2k5', '3f7', '4a7', '244'],
     //15   ['#000000', '#202020','#404040','#606060','#808080','#a0a0a0','#c0c0c0','#e0e0e0'] >>> grayscale
-           [u, '444', '888', 'ccc', 'ggg', 'kkk', 'ooo', 'sss'],
+           ['gko', 'vsc', 'ujv', 'mt1', '3rv', 'veb', 'uvt', 'r5t'],
            ['222', '555', '888', 'aaa', '888', '555', '222', '111'],
-           ['000', '111', '222', '333', '444', '555', '666', '777']
+           ['000', '111', '222', '333', '444', '555', '666', '777'],
+    // 18 ['#FF0000', '#021812', '#C7FFCC', '#00A1E6', '#1ADDFF', '#08676E', '#3F9509', '#B2EA0B'] >>> Green roboto
+           [RED, '032', 'ovp', '0ks', '3rv', '1cd', '7i1', 'mt1'],
+           //3    ['#FF0000','#11083F','#FDE6FF','#F95875','#FD9BA3','#7354FC','#BF7BFE','#F19AFE'] >>> Pink roboto
+           [RED, '217', 'vsv', 'vbe', 'vjk', 'eav', 'nfv', 'ujv'],
+           //4    ['#FF0000','#11080B','#F5FFE8','#4386A3','#72E3A7','#B9631D','#F8B02A','#FEE762'] >>> Gold roboto
+           ['0k0', '211', 'uvt', '8gk', 'esk', 'nc3', 'vm5', 'vsc'],
+            //5    ['#FF0000','#070A18','#DCEAEE','#4D896E','#86D59A','#37465C','#566F95','#80A3C2'] >>> Grey roboto
+           ['555', '013', 'rtt', '9hd', 'gqj', '68b', 'adi', 'gko']
 ];
-paletteRenderer.palettesWithTransparecy = [0,1,2,9,10,11,12, 13]
+paletteRenderer.palettesWithTransparecy = [0,1,2,9,10,11,12, 13,18,19,20,21];
 
 var parseColor = val => parseInt(val, 32)*8;
 var hexToRgb = hex => {

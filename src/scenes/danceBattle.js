@@ -44,21 +44,15 @@ randomY.sort((a, b) => a - b);
 var dancingRobots = [];
 
 for (var i = 0; i < 12; i++) {
-  var rx = rando(0, 192);
+  var rx = rando(-30, 30);
   var ry = randomY[i];
   if (Math.abs(ry - 60) + Math.abs(rx - 100) < 90) { i--; continue; }
   if (Math.abs(ry - 60) + Math.abs(rx - 200) < 90) { i--; continue; }
-  var robot = Robot([rx, ry, [], 8, 1], discoScene);
+  var robot = Robot([rx, ry, [], 8, rando(18, 21)], discoScene);
   //robot.rc =; // robot config, [head, arms, torso, sideHead]
   robot.setSprites([dancerHead = rando(0, 4), rando(0, 4), rando(0, 5), dancerHead]);
   robot.bounceOffset = rando(0, 4);
   robot.flipArm(rando(0, 10) > 4);
-  var warmBase = randomPastel();
-  var base = darker(warmBase);
-  var coldBase = darker(base);
-  robot.overridePalette(5, coldBase);
-  robot.overridePalette(6, base);
-  robot.overridePalette(7, warmBase);
   dancingRobots.push(robot);
   discoScene.add(robot);
 }
@@ -122,8 +116,9 @@ var theBeat = _ => {
     enemy.flipArm(danceFrame % 4 == 0)
     danceFrame % 3 == 0 && enemy.dash(danceFrame % 2 == 0 ? 1 : -1);
     danceFrame % 4 == 0 && enemy.turnHead(danceFrame % 3 == 0 ? 1 : -1);
-    if (randomSign() < 0) enemy.tryBeat(randoArrel(validKeys)); // do perfect
-    else if (randomSign() < 0) setTimeout(() => enemy.tryBeat(randoArrel(validKeys)), 300); // do good
+    var perforbot = getRandomValue();
+    if (perforbot < 0.85) enemy.tryBeat(randoArrel(validKeys)); // do perfect
+    else if (perforbot < 0.95) setTimeout(() => enemy.tryBeat(randoArrel(validKeys)), 100); // do good
   }
 
   paletteRenderer.onMetronomeBeat();
@@ -135,6 +130,7 @@ var theTick = tick => {
 }
 
 const discoIntro = _ => {
+  initHUDpositions();
   discoScene.active = true;
   dancersScene.active = true;
   dancersScene.fadeIn();

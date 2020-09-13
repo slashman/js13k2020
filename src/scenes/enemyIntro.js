@@ -11,6 +11,7 @@ var theEnemies = [];
 for (var i=0; i<LEVELS.length; i++) {
   var localEnemy = Robot([i*36 + 16, 60, [], 8, 11], enemyScene);
   localEnemy.setSprites(LEVELS[i].robot);
+  localEnemy.basePalette = LEVELS[i].palette;
   localEnemy.bounceOffset = 0;
   enemyScene.add(localEnemy);
   theEnemies.push(localEnemy);
@@ -28,7 +29,7 @@ const enemyIntro = _ => {
   });
   enemyScene.active = true;
   enemyScene.brightness = 0;
-  theEnemies[currentLevel].setPalette(2);
+  theEnemies[currentLevel].setPalette(theEnemies[currentLevel].basePalette);
   enemyScene.fadeIn();
   //theEnemies.forEach((enemy, i) => addAnimation(enemy, 'y', 130, 60, i*500 + 400));
   setTimeout( _ => {

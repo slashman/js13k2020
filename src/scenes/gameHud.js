@@ -50,18 +50,13 @@ var GUIString = (x, y, text, fill, stroke, b=1) => {
   return self;
 }
 
-let GUI404 = GUIString(CODES_X, CODES_Y, `${HEY_CHAR}$=$`, '401', 's2l', 0); // 404
-let GUI100 = GUIString(CODES_X, CODES_Y, '100', u, u, 0);
-let GUI200 = GUIString(CODES_X, CODES_Y, `${HEY_CHAR}200`, 'ou5', '574', 0);
-// ---- [ LETTERS AND NUMBERS ] ------------------------------------------------
-
 // ---- [ SPEAKERS ] -----------------------------------------------------------
 let speakerCfg = [[arrange(22,26),arrange(38,42)], 13];
 let LeftSpeaker = MechaGameObject(0, 5*EIGHT, ...speakerCfg);
 let RightSpeaker = MechaGameObject(0, 5*EIGHT, ...speakerCfg, 1, noop, true);
 RightSpeaker.x = W - RightSpeaker.width;
-LeftSpeaker.y += LeftSpeaker.height;
-RightSpeaker.y += RightSpeaker.height;
+LeftSpeaker.y += LeftSpeaker.height * 2;
+RightSpeaker.y += RightSpeaker.height * 2;
 
 // ---- [ PROGRESS BAR ] -------------------------------------------------------
 let progressCfg = [
@@ -91,7 +86,7 @@ EnemyProgress.y -= 100;
 
 // ---- [ FOCUS SWITCHES ] -----------------------------------------------------
 const guiFocusSwitches = Array.from({length: 4}, (v,i) => {
-  const focusSwitchL = GameObject([EIGHT*6+(i * 24 + (i >= 2 && EIGHT)), CODES_Y, [10,9], 0, BOARD_PALETTE]);
+  const focusSwitchL = GameObject([EIGHT*6+(i * 24 + (i >= 2 && EIGHT)), H, [10,9], 0, BOARD_PALETTE]);
   focusSwitchL.small = true;
   focusSwitchL.paletteOverrides = {3:hexToRgb('574')};
   const focusSwitchR = createComplements(focusSwitchL,[1])[0];
@@ -101,10 +96,15 @@ const guiFocusSwitches = Array.from({length: 4}, (v,i) => {
 })
 
 // ---- [ BOARD ] --------------------------------------------------------------
-loadMap(gpiMap, hudScene, {x:0, y: BOARD_Y});
+const mainBoard = loadMap(gpiMap, hudScene, { x: 0, y: BOARD_Y });
+mainBoard.forEach(go => {
+  go.y += THIRTYTWO;
+  go.yy = go.y;
+});
 seq.addBeatLinesToScene();
 hudScene.add(seq);
 let DPU = MechaGameObject(10*EIGHT, 7*EIGHT, [arrange(44,47),arrange(60,63)], BOARD_PALETTE);
+
 
 const GUI_CODE_EFFECT = (GUICode, targetY, delay, cfg) => {
   GUICode.b = 1;
@@ -126,6 +126,11 @@ EnemyCommands.inErr = false;
 enemy.guiCommands = EnemyCommands;
 
 
+let GUI404 = GUIString(CODES_X, CODES_Y, `${HEY_CHAR}$=$`, '401', 's2l', 0); // 404
+let GUI100 = GUIString(CODES_X, CODES_Y, '100', u, u, 0);
+let GUI200 = GUIString(CODES_X, CODES_Y, `${HEY_CHAR}200`, 'ou5', '574', 0);
+// ---- [ LETTERS AND NUMBERS ] ------------------------------------------------
+
 // Functions -------------------------------------------------------------------
 hudScene.onMetronomeTick = tick => {
   seq.updateLines(tick)
@@ -135,11 +140,27 @@ hudScene.onMetronomeTick = tick => {
     RightSpeaker.y += RightSpeaker.dfltY !== RightSpeaker.y ? -2 : 2;
   }
 }
+DPU.y = H*2;
+
+var initHUDpositions = _ => {
+  DPU.y = 88;
+  DPU.x = 10 * EIGHT;
+  mainBoard.forEach(go => go.y=go.yy);
+  guiFocusSwitches.forEach(pair => pair.forEach(part => part.y = H));
+  LeftSpeaker.y = LeftSpeaker.dfltY + LeftSpeaker.height * 2;
+  RightSpeaker.y = RightSpeaker.dfltY + RightSpeaker.height * 2;
+  PlayerProgress.y = -24;
+  EnemyProgress.y = -24;
+}
 
 hudScene.showLevelElements = _ => {
   zzfx(...[.7,0,10,.01,.7,.4,,.7,.7,u,15,.7,u,.3,u,u,u,u,.08]);// SFX - GECKO -- speaker appears
-  addAnimation(LeftSpeaker, 'y', LeftSpeaker.y, LeftSpeaker.dfltY, 1000);
-  addAnimation(RightSpeaker, 'y', RightSpeaker.y, RightSpeaker.dfltY, 1000);
+  //console.log(DPU.y)
+  mainBoard.forEach(go => addAnimation(go, 'y', go.yy, go.yy - THIRTYTWO, 1000));
+  guiFocusSwitches.forEach(pair => pair.forEach(part => addAnimation(part, 'y', H, CODES_Y, 1300)));
+  addAnimation(DPU, 'y', DPU.y, DPU.y - DPU.height, 1000);
+  addAnimation(LeftSpeaker, 'y', LeftSpeaker.y, LeftSpeaker.dfltY, 1300);
+  addAnimation(RightSpeaker, 'y', RightSpeaker.y, RightSpeaker.dfltY, 1300);
   addAnimation(PlayerProgress, 'y', -24, PlayerProgress.dfltY, 1150);
   addAnimation(EnemyProgress, 'y', -24, EnemyProgress.dfltY, 1150);
 };
@@ -150,7 +171,7 @@ hudScene.feedback = (function() {
       GUI_CODE_EFFECT(GUI404, 5);
       shakeIt(DPU, 1, 500);
     },
-    default: () => console.log('nothing to show Z:(')
+    default: noop
   };
   return (code) => feedback[code]();
 })()
